@@ -7,15 +7,7 @@
   'use strict';
 
   // ================================================================
-  // 1. 终端光标闪烁
-  // ================================================================
-  const cursor = document.querySelector('.cursor');
-  if (cursor) {
-    // CSS 动画已经处理了闪烁，这里不做额外处理
-  }
-
-  // ================================================================
-  // 2. 导航栏滚动效果
+  // 1. 导航栏滚动效果
   // ================================================================
   const navBar = document.querySelector('.nav-bar');
   let lastScrollY = 0;
@@ -33,20 +25,111 @@
   });
 
   // ================================================================
-  // 3. 卡片悬停效果增强
+  // 2. 卡片悬停效果增强
   // ================================================================
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
     card.addEventListener('mouseenter', function() {
       // CSS 已经处理了 hover 效果
+      this.style.transform = 'translateY(-4px)';
+    });
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
     });
   });
 
   // ================================================================
-  // 4. 终端逐行输出动画（手动控制版）
+  // 3. 平滑滚动锚点
   // ================================================================
-  // 如果页面有 .terminal-line，它们已经通过 CSS animation 处理
-  // 这里是备用方案，但如果需要更精细控制可以启用
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ================================================================
+  // 4. 深色/浅色主题切换（可选）
+  // ================================================================
+  const themeToggle = document.getElementById('theme-toggle');
+  if (themeToggle) {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    
+    themeToggle.addEventListener('click', function() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+
+    // 应用保存的主题
+    if (savedTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  }
+
+  // ================================================================
+  // 5. 复制到剪贴板功能
+  // ================================================================
+  const copyButtons = document.querySelectorAll('.copy-code');
+  copyButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const codeBlock = this.parentElement.querySelector('.code-block');
+      const text = codeBlock.innerText;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = this.innerText;
+        this.innerText = '✓ 已复制';
+        setTimeout(() => {
+          this.innerText = originalText;
+        }, 2000);
+      });
+    });
+  });
+
+  // ================================================================
+  // 6. 外链在新标签页打开
+  // ================================================================
+  document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    if (!link.classList.contains('internal')) {
+      link.addEventListener('click', function(e) {
+        // 已经通过 target="_blank" 处理了
+      });
+    }
+  });
+
+  // ================================================================
+  // 7. 页面加载完成动画
+  // ================================================================
+  window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
+  });
+
+  // ================================================================
+  // 8. 检查是否在移动设备上
+  // ================================================================
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    document.body.classList.add('mobile');
+  }
+
+  window.addEventListener('resize', function() {
+    const newIsMobile = window.innerWidth <= 768;
+    if (newIsMobile !== isMobile) {
+      if (newIsMobile) {
+        document.body.classList.add('mobile');
+      } else {
+        document.body.classList.remove('mobile');
+      }
+    }
+  });
 
   // ================================================================
   // 5. 平滑滚动

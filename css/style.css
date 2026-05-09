@@ -721,10 +721,124 @@ body {
 }
 
 /* ==========================================================================
+   代码块复制按钮
+   ========================================================================== */
+.code-block-wrapper {
+  position: relative;
+  margin: 12px 0 20px;
+}
+
+.copy-code {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 12px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  color: var(--terminal-green);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-mono);
+  display: none;
+}
+
+.code-block-wrapper:hover .copy-code {
+  display: block;
+}
+
+.copy-code:hover {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: var(--terminal-green);
+}
+
+/* ==========================================================================
+   页面加载动画
+   ========================================================================== */
+body.loaded {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.95;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   卡片动画增强
+   ========================================================================== */
+.card {
+  animation: slideInUp 0.6s ease-out backwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+.card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   链接悬停下划线动画
+   ========================================================================== */
+a {
+  position: relative;
+}
+
+a.card-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--terminal-green);
+  transition: width 0.3s ease;
+}
+
+a.card-link:hover::after {
+  width: 100%;
+}
+
+/* ==========================================================================
+   代码高亮增强
+   ========================================================================== */
+code {
+  background: rgba(0, 255, 136, 0.08);
+  color: var(--terminal-green);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.project-detail code {
+  background: rgba(0, 255, 136, 0.08);
+  color: var(--terminal-green);
+}
+
+/* ==========================================================================
    打印优化
    ========================================================================== */
 @media print {
   .nav-bar, .footer, .resume-section { display: none; }
   body { background: white; color: black; }
   .project-detail { padding-top: 20px; }
+  .card-tag, .card-tech { display: none; }
 }
