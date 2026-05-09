@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="STM32 小游戏机控制板 - 项目详情">
+  <title>STM32 小游戏机控制板 | 冯威成</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="../" class="nav-brand">weicheng.dev</a>
+      <ul class="nav-links">
+        <li><a href="../#projects">/projects</a></li>
+        <li><a href="../#resume">/resume</a></li>
+        <li><a href="../notes/debug-log-1.html">/notes</a></li>
+        <li><a href="https://github.com/Weicheng77777777" target="_blank">/github</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="project-detail">
+    <div class="container">
+      <a href="../#projects" class="back-link">← 返回项目列表</a>
+
+      <h1>STM32 小游戏机控制板</h1>
+      <p class="subtitle">原理图设计 · PCB 打样 · 焊接调试 · 板级验证</p>
+
+      <h2>项目背景</h2>
+      <p>
+        独立设计基于 STM32 的小游戏机控制板，完成原理图设计、PCB 绘制、打样验证、
+        焊接检查、上电排障和基础外设联调。通过这个项目，系统性地积累了板级硬件设计与调试经验，
+        理解"电路能画出来"和"板子能稳定工作"之间的工程差异。
+      </p>
+
+      <h2>硬件组成</h2>
+      <ul>
+        <li><strong>主控：</strong>STM32 MCU</li>
+        <li><strong>显示：</strong>小尺寸 LCD/OLED 屏</li>
+        <li><strong>交互：</strong>按键阵列</li>
+        <li><strong>电源：</strong>板载稳压电路 + 去耦设计</li>
+      </ul>
+
+      <h2>PCB 设计要点</h2>
+      <h3>供电与去耦</h3>
+      <p>
+        在电源设计阶段重点关注去耦电容、供电回路和关键电容布局。
+        每个 VDD 引脚就近放置 100nF 去耦电容，电源入口放置 10μF 电解电容，
+        保证上电稳定性和抗干扰能力。
+      </p>
+
+      <h3>布局布线</h3>
+      <ul>
+        <li>MCU 居中，外设模块围绕 MCU 布局</li>
+        <li>电源走线加宽 (≥20mil)</li>
+        <li>数字信号走线远离电源和模拟信号</li>
+        <li>GND 铺铜覆铜，减少地回路阻抗</li>
+      </ul>
+
+      <div class="img-placeholder">
+        <span class="icon">📷</span>
+        PCB 实物图（待添加）
+        <br><small>请替换为 pcb-photo.jpg</small>
+      </div>
+
+      <h2>调试过程</h2>
+      <ul>
+        <li><strong>焊接检查：</strong>目测 + 万用表通断测试，检查虚焊和短路</li>
+        <li><strong>上电排障：</strong>先测电源电压，再测晶振起振，最后测 MCU 程序运行</li>
+        <li><strong>外设联调：</strong>逐个使能外设，验证显示、按键、通信等功能</li>
+      </ul>
+
+      <h2>最终结果</h2>
+      <div class="result-grid">
+        <div class="result-item"><span class="status">✅</span> 原理图设计完成</div>
+        <div class="result-item"><span class="status">✅</span> PCB 打样验证通过</div>
+        <div class="result-item"><span class="status">✅</span> 上电正常，无短路/过热</div>
+        <div class="result-item"><span class="status">✅</span> 基础外设功能正常</div>
+      </div>
+
+      <h2>复盘总结</h2>
+      <ul>
+        <li><strong>去耦电容不是摆设</strong> — 位置不对等于没用，必须靠近 VDD 引脚</li>
+        <li><strong>焊接是基本功</strong> — 很多"电路问题"其实是虚焊问题</li>
+        <li><strong>上电要分级测试</strong> — 先电源、再时钟、最后功能，定位更快</li>
+        <li><strong>原理图和 PCB 是两回事</strong> — 元件布局和走线直接影响板子稳定性</li>
+      </ul>
+
+      <div class="info-block green">
+        <strong>关键词：</strong>
+        STM32 · 原理图 · PCB · 供电去耦 · 板级调试 · 外设驱动 · 硬件联调
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Weicheng77777777" target="_blank">GitHub</a>
+        <a href="mailto:2590752572@qq.com">Email</a>
+        <a href="../resume.pdf" download>Resume</a>
+      </div>
+      <p class="footer-copy">© 2026 Feng Weicheng · Embedded Portfolio</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LoRa 遥控坦克小车系统 - 项目详情">
+  <title>LoRa 遥控坦克小车系统 | 冯威成</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="../" class="nav-brand">weicheng.dev</a>
+      <ul class="nav-links">
+        <li><a href="../#projects">/projects</a></li>
+        <li><a href="../#resume">/resume</a></li>
+        <li><a href="../notes/debug-log-1.html">/notes</a></li>
+        <li><a href="https://github.com/Weicheng77777777" target="_blank">/github</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="project-detail">
+    <div class="container">
+      <a href="../#projects" class="back-link">← 返回项目列表</a>
+
+      <h1>LoRa 遥控坦克小车系统</h1>
+      <p class="subtitle">双 MCU · LoRa 无线通信 · GPS 定位 · 电机控制 · ADC 回传</p>
+
+      <a href="https://github.com/Weicheng77777777" class="project-github-link" target="_blank">
+        ▷ 查看 GitHub 仓库
+      </a>
+
+      <h2>项目背景</h2>
+      <p>
+        基于 STM32F4 和 STM32F1 设计双 MCU 遥控坦克小车系统。车端 STM32F4 负责运动控制、
+        传感器采集和数据回传，控制端 STM32F1 负责人机交互、指令发送和状态显示。
+        实现 LoRa 无线通信、GPS 定位解析、ADC 数据回传和电机驱动控制，
+        覆盖嵌入式系统中常见的双机通信、无线传输、传感器融合和电机控制等核心场景。
+      </p>
+
+      <h2>系统架构</h2>
+      <div class="code-block">
+<span class="comment">/* 双 MCU 系统架构 */</span>
+┌─────────────────────┐          LoRa          ┌─────────────────────┐
+│ <span class="keyword">控制端 (STM32F1)</span>   │ ◄──────────────────► │ <span class="keyword">车端 (STM32F4)</span>    │
+│                     │       UART+无线         │                     │
+│  · 按键输入         │                         │  · 电机控制 (DRV8701)│
+│  · OLED 显示        │                         │  · GPS 数据采集     │
+│  · LoRa 发送指令     │                         │  · ADC 模拟采集     │
+│  · 回传数据解析      │                         │  · LoRa 数据回传    │
+└─────────────────────┘                         └─────────────────────┘</div>
+
+      <h2>硬件组成</h2>
+      <ul>
+        <li><strong>车端 MCU：</strong>STM32F4 — 运动控制、数据采集</li>
+        <li><strong>控制端 MCU：</strong>STM32F1 — 遥控输入、人机交互</li>
+        <li><strong>无线通信：</strong>LoRa 模块 (UART 接口)</li>
+        <li><strong>定位：</strong>GPS 模块 (NMEA 协议解析)</li>
+        <li><strong>电机驱动：</strong>DRV8701 驱动直流减速电机</li>
+        <li><strong>显示：</strong>OLED 屏幕</li>
+      </ul>
+
+      <h2>关键难点与解决方案</h2>
+
+      <h3>1. LoRa 通信稳定性与数据包格式</h3>
+      <p>
+        LoRa 无线通信受距离和环境干扰影响，传输过程中可能出现丢包和乱序。
+        设计自定义数据包格式，加入帧头、帧尾和 CRC 校验，确保数据完整性。
+      </p>
+      <div class="code-block">
+<span class="comment">/* 数据包格式 */</span>
+<span class="keyword">typedef struct</span> {
+    uint8_t  header;       <span class="comment">// 帧头 0xAA</span>
+    uint8_t  cmd;          <span class="comment">// 命令类型</span>
+    uint8_t  data[8];      <span class="comment">// 数据负载</span>
+    uint8_t  checksum;     <span class="comment">// CRC 校验</span>
+    uint8_t  footer;       <span class="comment">// 帧尾 0x55</span>
+} lora_packet_t;</div>
+
+      <h3>2. GPS NMEA 数据解析</h3>
+      <p>
+        GPS 模块输出 NMEA 0183 格式数据，需要解析 $GPGGA 和 $GPRMC 语句提取经纬度、
+        时间、海拔和定位状态等信息。在串口中断中逐字符解析，状态机管理解析流程。
+      </p>
+
+      <h3>3. 电机运动与通信的协同调度</h3>
+      <p>
+        电机动作、串口通信和 LoRa 数据传输需要协同工作，采用超级循环 + 状态机组织，
+        将遥控、回传和显示任务分配到不同时间片，避免任务饿死。
+      </p>
+
+      <h2>最终结果</h2>
+      <div class="result-grid">
+        <div class="result-item"><span class="status">✅</span> 双 MCU 系统通信正常</div>
+        <div class="result-item"><span class="status">✅</span> LoRa 无线链路稳定 (200m+)</div>
+        <div class="result-item"><span class="status">✅</span> GPS 定位数据成功解析</div>
+        <div class="result-item"><span class="status">✅</span> 电机前进/后退/转向可控</div>
+        <div class="result-item"><span class="status">✅</span> ADC 数据无线回传 PC 端</div>
+      </div>
+
+      <h2>调试工具</h2>
+      <ul>
+        <li><strong>串口调试助手</strong> — 查看 LoRa 收发数据</li>
+        <li><strong>逻辑分析仪</strong> — 分析 UART 通信时序</li>
+        <li><strong>万用表</strong> — 检查供电和信号电平</li>
+        <li><strong>PC 端串口解析工具</strong> — 验证 GPS 和 ADC 回传数据</li>
+      </ul>
+
+      <h2>复盘总结</h2>
+      <ul>
+        <li>双 MCU 系统的核心是 <strong>通信协议设计</strong> — 帧格式、校验、超时重传缺一不可</li>
+        <li>LoRa 虽然传输距离远，但 <strong>速率和稳定性需要权衡</strong></li>
+        <li><strong>状态机</strong> 是组织多任务嵌入式系统的核心思想</li>
+        <li>GPS NMEA 解析看似简单，但 <strong>异常字符和断帧处理</strong> 才是工程难点</li>
+      </ul>
+
+      <div class="info-block green">
+        <strong>关键词：</strong>
+        STM32F4 · STM32F1 · LoRa · UART · ADC · OLED · GPS NMEA · DRV8701 · 电机控制 · 状态机 · 无线通信 · 系统联调
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Weicheng77777777" target="_blank">GitHub</a>
+        <a href="mailto:2590752572@qq.com">Email</a>
+        <a href="../resume.pdf" download>Resume</a>
+      </div>
+      <p class="footer-copy">© 2026 Feng Weicheng · Embedded Portfolio</p>
+    </div>
+  </footer>
+
+</body>
+</html>

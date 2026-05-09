@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="冯威成 · 嵌入式个人作品集 · ARM64 Linux BSP · STM32 · IoT 智能硬件">
+  <meta name="keywords" content="嵌入式, Linux BSP, STM32, ARM64, 驱动开发, 智能硬件, IoT">
+  <meta name="author" content="冯威成">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="冯威成 · 嵌入式作品集">
+  <meta property="og:description" content="ARM64 Linux BSP / STM32 / IoT 智能硬件">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://weichengfeng.github.io">
+
+  <title>冯威成 · 嵌入式作品集 | Embedded Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- ====== 导航栏 ====== -->
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">weicheng.dev</a>
+      <ul class="nav-links">
+        <li><a href="/#projects">/projects</a></li>
+        <li><a href="/#resume">/resume</a></li>
+        <li><a href="notes/debug-log-1.html">/notes</a></li>
+        <li><a href="https://github.com/Weicheng77777777" target="_blank">/github</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ====== 首页终端区 ====== -->
+  <section class="hero">
+    <div class="container">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">weicheng@embedded:~$</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="prompt">$ </span><span class="cmd">cat /etc/profile</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output"># 冯威成 · Feng Weicheng</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output"># 嵌入式系统开发 · Embedded Systems Engineer</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output"># ARM64 Linux BSP · STM32 MCU · IoT · Hardware Debug</span>
+          </div>
+          <div class="terminal-line">&nbsp;</div>
+          <div class="terminal-line">
+            <span class="prompt">$ </span><span class="cmd">systemctl status</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output">● <span class="success">weicheng.dev</span> - 嵌入式系统工程师</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output">   ├─ <span class="highlight">教育</span>: 广东白云学院 · 通信工程 (2023-2027)</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output">   ├─ <span class="highlight">方向</span>: ARM64 Linux BSP / STM32 固件 / 智能硬件</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output">   ├─ <span class="highlight">获奖</span>: 全国嵌入式芯片设计大赛 国三 / 省一 / 省三</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output">   └─ <span class="highlight">状态</span>: <span class="success">● ACTIVE</span> (求职中)</span>
+          </div>
+          <div class="terminal-line">&nbsp;</div>
+          <div class="terminal-line">
+            <span class="prompt">$ </span><span class="cmd"><span class="loading">▮</span> 正在加载项目列表...</span>
+          </div>
+          <div class="terminal-line">
+            <span class="prompt">$ </span><span class="success">[OK] 3 个主要项目已加载. 输入项目编号查看详情.</span>
+          </div>
+          <div class="terminal-cursor-line">
+            <span>$ </span>weicheng@embedded:<span style="color:var(--accent-cyan)">~/projects</span><span style="color:var(--terminal-green)">$</span>
+            <span class="cursor"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 项目卡片 ====== -->
+      <div id="projects">
+        <h2 class="section-title">已部署项目 (3)</h2>
+      </div>
+      <div class="projects-grid">
+        <!-- 项目 1: GEC6818 -->
+        <div class="card">
+          <div class="card-tag">ARM64 · Linux BSP</div>
+          <h3>GEC6818 ARM64 Linux 系统移植</h3>
+          <p>基于 S5P6818 Cortex-A53 进行 ARM64 Linux bring-up，完成 U-Boot、Kernel、DTS/DTB、LCD RGB、FT5206 触摸和 I2C 板级适配。</p>
+          <div class="card-tech">
+            <span>ARM64</span>
+            <span>S5P6818</span>
+            <span>U-Boot</span>
+            <span>Linux Kernel</span>
+            <span>DTS/DTB</span>
+            <span>LCD RGB</span>
+            <span>I2C</span>
+          </div>
+          <a href="projects/gec6818.html" class="card-link">查看详情 →</a>
+        </div>
+
+        <!-- 项目 2: STM32F411 -->
+        <div class="card">
+          <div class="card-tag">STM32 · IoT · 智能家居</div>
+          <h3>STM32F411 智能家居环境监测系统</h3>
+          <p>集成 DHT11/DS18B20 传感器采集、ST7789 TFT 显示、ESP8266 Wi-Fi、MQTT 云端上传、按键菜单交互和 PCB 打样调试。</p>
+          <div class="card-tech">
+            <span>STM32F411</span>
+            <span>ST7789</span>
+            <span>SPI DMA</span>
+            <span>DHT11</span>
+            <span>ESP8266</span>
+            <span>MQTT</span>
+            <span>PCB</span>
+          </div>
+          <a href="projects/stm32f411.html" class="card-link">查看详情 →</a>
+        </div>
+
+        <!-- 项目 3: LoRa 小车 -->
+        <div class="card">
+          <div class="card-tag">STM32 · LoRa · 无线通信</div>
+          <h3>LoRa 遥控坦克小车系统</h3>
+          <p>双 MCU 系统架构，车端 STM32F4 运动控制，控制端 STM32F1 人机交互，LoRa 无线通信、GPS 定位解析、ADC 数据回传。</p>
+          <div class="card-tech">
+            <span>STM32F4</span>
+            <span>STM32F1</span>
+            <span>LoRa</span>
+            <span>GPS NMEA</span>
+            <span>DRV8701</span>
+            <span>电机控制</span>
+            <span>状态机</span>
+          </div>
+          <a href="projects/lora-car.html" class="card-link">查看详情 →</a>
+        </div>
+
+        <!-- 项目 4: 磁悬浮 -->
+        <div class="card">
+          <div class="card-tag">PID · 闭环控制</div>
+          <h3>电赛磁悬浮控制系统</h3>
+          <p>基于 STM32F1、霍尔传感器和电磁线圈构建磁悬浮闭环控制系统，实现 PID 参数整定和 PWM 动态调节。</p>
+          <div class="card-tech">
+            <span>STM32F1</span>
+            <span>PID</span>
+            <span>PWM</span>
+            <span>霍尔传感器</span>
+            <span>闭环控制</span>
+            <span>示波器</span>
+          </div>
+          <a href="projects/maglev.html" class="card-link">查看详情 →</a>
+        </div>
+
+        <!-- 项目 5: 小游戏机 -->
+        <div class="card">
+          <div class="card-tag">PCB · 硬件设计</div>
+          <h3>STM32 小游戏机控制板</h3>
+          <p>独立完成原理图设计、PCB 绘制、打样验证、焊接检查、上电排障和基础外设联调，积累板级硬件设计与调试经验。</p>
+          <div class="card-tech">
+            <span>原理图</span>
+            <span>PCB</span>
+            <span>供电去耦</span>
+            <span>STM32</span>
+            <span>板级调试</span>
+          </div>
+          <a href="projects/game-console.html" class="card-link">查看详情 →</a>
+        </div>
+
+        <!-- 项目 6: RK3566 -->
+        <div class="card">
+          <div class="card-tag">RK3566 · Linux 入门</div>
+          <h3>RK3566 泰山派 Linux 训练营</h3>
+          <p>基于 RK3566 平台进行嵌入式 Linux 入门实践，完成设备树修改、内核编译、HDMI/eDP/MIPI 显示调试和 GT9271 触摸适配。</p>
+          <div class="card-tech">
+            <span>RK3566</span>
+            <span>Linux BSP</span>
+            <span>设备树</span>
+            <span>HDMI</span>
+            <span>eDP</span>
+            <span>MIPI</span>
+            <span>I2C</span>
+          </div>
+          <a href="projects/rk3566.html" class="card-link">查看详情 →</a>
+        </div>
+      </div>
+
+      <!-- ====== 简历下载区 ====== -->
+      <div id="resume" class="resume-section">
+        <a href="resume.pdf" class="resume-btn" download>
+          ⬇ <span>$ wget resume.pdf</span>
+        </a>
+        <p class="resume-hint">// 下载一页精简简历 · PDF 格式</p>
+      </div>
+
+      <!-- ====== 调试笔记入口 ====== -->
+      <div style="margin-top: 20px; padding: 24px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card);">
+        <h2 class="section-title" style="margin-bottom: 16px;">调试笔记 (2)</h2>
+        <div class="notes-list">
+          <div class="note-item" style="border: none; padding: 0 0 16px 0; border-bottom: 1px solid var(--border-color) !important; border-radius: 0;">
+            <div class="note-date">2026.04.15</div>
+            <h3><a href="notes/debug-log-1.html">GEC6818 DTB 加载失败：从串口日志到设备树修复</a></h3>
+            <div class="note-excerpt">uboot 阶段 DTB 地址错误导致 Kernel panic，通过对比启动日志定位问题...</div>
+          </div>
+          <div class="note-item" style="border: none; padding: 16px 0 0 0;">
+            <div class="note-date">2026.04.20</div>
+            <h3><a href="notes/debug-log-1.html">FT5206 触摸驱动 probe 失败：I2C 地址与设备树节点排查</a></h3>
+            <div class="note-excerpt">触摸设备在 i2c-1 上 probe 失败，通过 /proc/bus/input/devices 和 hexdump 验证事件流...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====== 页脚 ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Weicheng77777777" target="_blank">GitHub</a>
+        <a href="mailto:2590752572@qq.com">Email</a>
+        <a href="resume.pdf" download>Resume</a>
+      </div>
+      <p class="footer-copy">
+        <span class="terminal-green">$ echo "Built with ⚡ by Feng Weicheng"</span><br>
+        <span style="color: var(--text-muted);">© 2026 Feng Weicheng · Embedded Portfolio</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

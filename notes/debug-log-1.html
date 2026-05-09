@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="嵌入式调试笔记 - DTB 加载失败 | 串口日志分析">
+  <title>调试笔记: DTB 加载失败分析 | 冯威成</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="../" class="nav-brand">weicheng.dev</a>
+      <ul class="nav-links">
+        <li><a href="../#projects">/projects</a></li>
+        <li><a href="../#resume">/resume</a></li>
+        <li><a href="../notes/debug-log-1.html">/notes</a></li>
+        <li><a href="https://github.com/Weicheng77777777" target="_blank">/github</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="project-detail">
+    <div class="container">
+      <a href="../" class="back-link">← 返回首页</a>
+
+      <h1>嵌入式调试笔记</h1>
+      <p class="subtitle">记录板级调试中的关键问题和解决思路</p>
+
+      <!-- 笔记 1 -->
+      <h2>GEC6818 DTB 加载失败：从串口日志到设备树修复</h2>
+      <p style="color: var(--text-muted);">2026.04.15 · 阅读时间约 5 分钟</p>
+
+      <h3>问题现象</h3>
+      <p>
+        将编译好的 SD 卡镜像插入 GEC6818 开发板后，串口输出如下日志：
+      </p>
+      <div class="code-block">
+U-Boot 2020.01 (Apr 10 2026 - 14:30:00)
+CPU:   S5P6818
+Model: GEC6818 based on S5P6818
+DRAM:  1 GiB
+MMC:   SD: 0
+...
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] <span class="keyword">Machine model:</span> FriendlyElec NanoPi3
+[    0.000000] <span class="keyword">Kernel panic</span> - not syncing: Unable to ...
+---[ end Kernel panic ]---</div>
+
+      <p><strong>关键发现：</strong>Machine model 显示的是 "FriendlyElec NanoPi3"，而不是 GEC6818。这说明 U-Boot 加载的是 NanoPi3 的 DTB，而不是自定义的 GEC6818 DTB。</p>
+
+      <h3>排查过程</h3>
+      <ol>
+        <li>
+          <strong>检查 U-Boot 环境变量：</strong>
+          <div class="code-block">
+<span class="prompt">#</span> printenv
+fdtfile=s5p6818-nanopi3-rev01.dtb  <span class="comment">// 问题在这里！</span>
+bootcmd=mmc read 0x48000000 0x800 0x4000; fdt addr 0x49000000; bootm 0x48000000</div>
+          <p>U-Boot 的 <code>fdtfile</code> 变量仍指向 NanoPi3 的 DTB。</p>
+        </li>
+        <li>
+          <strong>验证 DTB 编译：</strong>确认 <code>s5p6818-gec6818-rev01.dtb</code> 是否在镜像中。
+          <div class="code-block">
+<span class="prompt">#</span> ls /boot/*.dtb
+s5p6818-nanopi3-rev01.dtb  s5p6818-gec6818-rev01.dtb  <span class="comment">// ✓ DTB 已编译</span></div>
+        </li>
+        <li>
+          <strong>修改 U-Boot 环境变量：</strong>
+          <div class="code-block">
+<span class="prompt">#</span> setenv fdtfile s5p6818-gec6818-rev01.dtb
+<span class="prompt">#</span> saveenv
+<span class="prompt">#</span> reset</div>
+        </li>
+      </ol>
+
+      <h3>验证结果</h3>
+      <div class="code-block">
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] <span class="keyword">Machine model:</span> <span class="string">GEC6818 based on S5P6818</span>
+[    0.000000] <span class="keyword">Kernel:</span> <span class="string">Linux 4.4.172</span>
+...
+[    2.345678] <span class="keyword">VFS:</span> Mounted root (ext4 filesystem) on device 179:2
+[    2.456789] <span class="keyword">Freeing unused kernel memory:</span> 1024K
+[    2.567890] <span class="keyword">INIT:</span> version 2.96 booting</div>
+      <p><span style="color: var(--terminal-green);">✓ Machine model 正确显示 GEC6818，系统成功启动到 rootfs。</span></p>
+
+      <h3>总结</h3>
+      <ul>
+        <li>U-Boot 的 <code>fdtfile</code> 环境变量决定加载哪个 DTB，必须与自定义设备树文件名一致</li>
+        <li>串口日志的第一行 "Machine model" 是判断 DTB 是否正确的快速验证方法</li>
+        <li><code>cat /proc/device-tree/model</code> 是进入系统后验证设备树的可靠方式</li>
+        <li>编译镜像后，建议先检查 boot 分区内容确认 DTB 文件是否存在</li>
+      </ul>
+
+      <hr style="border-color: var(--border-color); margin: 40px 0;">
+
+      <!-- 笔记 2 -->
+      <h2>FT5206 触摸驱动 probe 失败：I2C 地址与设备树节点排查</h2>
+      <p style="color: var(--text-muted);">2026.04.20 · 阅读时间约 4 分钟</p>
+
+      <h3>问题现象</h3>
+      <p>
+        系统启动后触摸无响应，dmesg 中未看到 ft5206 驱动成功 probe 的信息。
+      </p>
+      <div class="code-block">
+<span class="prompt">#</span> dmesg | grep -i ft5
+<span class="prompt">#</span> dmesg | grep -i touch
+<span class="comment">// 没有任何输出 — 驱动未加载</span></div>
+
+      <h3>排查过程</h3>
+      <ol>
+        <li>
+          <strong>检查 I2C 总线设备：</strong>
+          <div class="code-block">
+<span class="prompt">#</span> i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- <span class="keyword">38</span> -- -- -- -- --
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+...
+            <span class="comment">// ✅ 0x38 地址有设备</span></div>
+        </li>
+        <li>
+          <strong>比对设备树 I2C 节点配置：</strong>
+          <p>旧配置（错误）：<code>i2c_2 + GPIOC16 + one-wire</code></p>
+          <p>正确配置：<code>i2c_1 + GPIOB26(INT) + GPIOB8(WAKE) + FT5206</code></p>
+        </li>
+        <li>
+          <strong>修正设备树节点：</strong>
+          <div class="code-block">
+&i2c_1 {
+    status = "okay";
+    ft5206: touchscreen@38 {
+        compatible = "edt,ft5206";
+        reg = &lt;0x38&gt;;
+        interrupt-parent = &lt;&gpa0&gt;;
+        interrupts = &lt;6 0&gt;;        <span class="comment">// GPIOB26 中断</span>
+        wake-gpios = &lt;&gpa0 8 0&gt;;   <span class="comment">// GPIOB8 Wake</span>
+    };
+};</div>
+        </li>
+        <li>
+          <strong>重新编译并验证：</strong>
+          <div class="code-block">
+<span class="prompt">#</span> dmesg | grep ft5
+[    5.123456] ft5206 1-0038: FT5206 Touch Screen Controller
+[    5.234567] ft5206 1-0038: Firmware version: 0x01
+<span class="comment">// ✅ probe 成功！</span>
+
+<span class="prompt">#</span> cat /proc/bus/input/devices
+I: Bus=0018 Vendor=0000 Product=0000 Version=0000
+N: Name="FT5206 Touch Screen"
+H: Handlers=event1
+B: EV=b
+B: ABS=2608000 3
+<span class="comment">// ✅ 触摸设备已注册</span></div>
+        </li>
+      </ol>
+
+      <h3>总结</h3>
+      <ul>
+        <li>I2C 设备 probe 失败首先检查 <strong>总线号、设备地址、中断引脚</strong> 三个要素</li>
+        <li><code>i2cdetect</code> 确认硬件层面设备是否在线</li>
+        <li>设备树的 <code>compatible</code> 必须与驱动代码中的 of_match_table 完全匹配</li>
+        <li><code>/proc/bus/input/devices</code> 是验证输入设备是否注册的标准方式</li>
+      </ul>
+
+      <div class="info-block green">
+        <strong>相关项目：</strong>
+        <a href="../projects/gec6818.html" style="color: var(--terminal-green);">GEC6818 ARM64 Linux 系统移植 →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Weicheng77777777" target="_blank">GitHub</a>
+        <a href="mailto:2590752572@qq.com">Email</a>
+        <a href="../resume.pdf" download>Resume</a>
+      </div>
+      <p class="footer-copy">© 2026 Feng Weicheng · Embedded Portfolio</p>
+    </div>
+  </footer>
+
+</body>
+</html>

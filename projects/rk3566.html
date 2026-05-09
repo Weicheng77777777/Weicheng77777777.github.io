@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RK3566 泰山派 Linux 训练营 - 项目详情">
+  <title>RK3566 泰山派 Linux 训练营 | 冯威成</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="../" class="nav-brand">weicheng.dev</a>
+      <ul class="nav-links">
+        <li><a href="../#projects">/projects</a></li>
+        <li><a href="../#resume">/resume</a></li>
+        <li><a href="../notes/debug-log-1.html">/notes</a></li>
+        <li><a href="https://github.com/Weicheng77777777" target="_blank">/github</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="project-detail">
+    <div class="container">
+      <a href="../#projects" class="back-link">← 返回项目列表</a>
+
+      <h1>RK3566 泰山派 Linux 训练营</h1>
+      <p class="subtitle">Linux BSP 入门 · 设备树修改 · 内核编译 · 显示/触摸调试</p>
+
+      <h2>项目背景</h2>
+      <p>
+        基于 RK3566 平台进行嵌入式 Linux 入门实践，围绕 Linux 开发环境搭建、设备树修改、
+        内核编译、镜像烧录、显示接口调试和触摸模块调试开展训练，建立对 Linux BSP 和驱动适配流程的基础认知。
+      </p>
+
+      <h2>主要工作</h2>
+      <ul>
+        <li>完成 RK3566 Linux 开发环境搭建，使用 Linux 命令行进行设备树修改、内核编译和镜像烧录</li>
+        <li>理解 Kernel、DTB、rootfs 和启动镜像之间的配合关系</li>
+        <li>调试 HDMI、eDP 30pin、MIPI 等显示接口，理解不同显示链路在设备树配置、接口连接上的差异</li>
+        <li>完成 GT9271 电容触控模块 I2C 调试，围绕 I2C 地址、设备树节点、驱动匹配和事件验证进行问题定位</li>
+        <li>形成"修改配置 → 编译烧录 → 上板验证 → 日志分析 → 继续修正"的 Linux BSP 调试闭环</li>
+      </ul>
+
+      <h2>调试工具</h2>
+      <ul>
+        <li>串口调试助手（查看启动日志）</li>
+        <li>dmesg（内核日志分析）</li>
+        <li>/proc/device-tree（验证设备树节点）</li>
+        <li>/sys/bus/i2c/devices（I2C 设备扫描）</li>
+      </ul>
+
+      <h2>最终结果</h2>
+      <div class="result-grid">
+        <div class="result-item"><span class="status">✅</span> Linux 开发环境搭建完成</div>
+        <div class="result-item"><span class="status">✅</span> 内核编译与镜像烧录成功</div>
+        <div class="result-item"><span class="status">✅</span> HDMI/eDP/MIPI 显示接口调试</div>
+        <div class="result-item"><span class="status">✅</span> GT9271 触摸功能正常</div>
+      </div>
+
+      <h2>复盘总结</h2>
+      <ul>
+        <li>Linux BSP 调试的核心流程是 <strong>"改 → 编 → 烧 → 测 → 看日志 → 再改"</strong></li>
+        <li>设备树修改后必须重新编译 DTB 并确认烧录到正确分区</li>
+        <li>不同显示链路（HDMI/eDP/MIPI）的设备树配置差异很大，需要对照 datasheet 逐个确认</li>
+      </ul>
+
+      <div class="info-block green">
+        <strong>关键词：</strong>
+        RK3566 · Linux BSP · 设备树 · Kernel · DTB · HDMI · eDP · MIPI · I2C · GT9271 · 驱动调试 · 串口日志
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Weicheng77777777" target="_blank">GitHub</a>
+        <a href="mailto:2590752572@qq.com">Email</a>
+        <a href="../resume.pdf" download>Resume</a>
+      </div>
+      <p class="footer-copy">© 2026 Feng Weicheng · Embedded Portfolio</p>
+    </div>
+  </footer>
+
+</body>
+</html>
