@@ -1,0 +1,1 @@
+https://github.com/Weicheng77777777/GEC6818-Friendly-Smart6818-64-

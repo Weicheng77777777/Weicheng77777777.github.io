@@ -42,55 +42,18 @@
           <span class="terminal-dot green"></span>
           <span class="terminal-title">weicheng@embedded:~$</span>
         </div>
-        <div class="terminal-body">
-          <div class="terminal-line">
-            <span class="prompt">$ </span><span class="cmd">cat /etc/profile</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output"># 冯威成 · Feng Weicheng</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output"># 嵌入式系统开发 · Embedded Systems Engineer</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output"># ARM64 Linux BSP · STM32 MCU · IoT · Hardware Debug</span>
-          </div>
-          <div class="terminal-line">&nbsp;</div>
-          <div class="terminal-line">
-            <span class="prompt">$ </span><span class="cmd">systemctl status</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output">● <span class="success">weicheng.dev</span> - 嵌入式系统工程师</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output">   ├─ <span class="highlight">教育</span>: 广东白云学院 · 通信工程 (2023-2027)</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output">   ├─ <span class="highlight">方向</span>: ARM64 Linux BSP / STM32 固件 / 智能硬件</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output">   ├─ <span class="highlight">获奖</span>: 全国嵌入式芯片设计大赛 国三 / 省一 / 省三</span>
-          </div>
-          <div class="terminal-line">
-            <span class="output">   └─ <span class="highlight">状态</span>: <span class="success">● ACTIVE</span> (求职中)</span>
-          </div>
-          <div class="terminal-line">&nbsp;</div>
-          <div class="terminal-line">
-            <span class="prompt">$ </span><span class="cmd"><span class="loading">▮</span> 正在加载项目列表...</span>
-          </div>
-          <div class="terminal-line">
-            <span class="prompt">$ </span><span class="success">[OK] 3 个主要项目已加载. 输入项目编号查看详情.</span>
-          </div>
-          <div class="terminal-cursor-line">
-            <span>$ </span>weicheng@embedded:<span style="color:var(--accent-cyan)">~/projects</span><span style="color:var(--terminal-green)">$</span>
-            <span class="cursor"></span>
-          </div>
+        <div class="terminal-output" id="termOutput">
+          <!-- 启动动画由 JS 动态插入 -->
+        </div>
+        <div class="term-input-line" id="termInputLine" style="display:none;">
+          <span class="term-input-prompt" id="termPrompt">weicheng@embedded:~$ </span>
+          <input type="text" class="term-input-field" id="termInput" autofocus spellcheck="false" autocomplete="off">
         </div>
       </div>
 
       <!-- ====== 项目卡片 ====== -->
       <div id="projects">
-        <h2 class="section-title">已部署项目 (3)</h2>
+        <h2 class="section-title">已部署项目 (6)</h2>
       </div>
       <div class="projects-grid">
         <!-- 项目 1: GEC6818 -->
