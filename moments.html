@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="实践剪影 — 冯威成 · 嵌入式个人作品集">
+  <title>实践剪影 | 冯威成</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">weicheng.dev</a>
+      <ul class="nav-links">
+        <li><a href="/#projects">/projects</a></li>
+        <li><a href="/#resume">/resume</a></li>
+        <li><a href="honors.html">/honors</a></li>
+        <li><a href="moments.html" style="color: var(--terminal-green);">/moments</a></li>
+        <li><a href="notes/debug-log-1.html">/notes</a></li>
+        <li><a href="https://github.com/Weicheng77777777" target="_blank">/github</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="project-detail">
+    <div class="container">
+      <a href="/" class="back-link">← 返回首页</a>
+
+      <h1>实践剪影</h1>
+      <p class="subtitle">项目调试 · 硬件焊接 · 开发板学习 · 工程实践</p>
+
+      <p>
+        该页面记录我的项目调试、硬件制作、开发板学习和工程实践照片。相比项目页面更关注最终成果，这里更关注实践过程本身，用于补充展示我在嵌入式学习中的真实动手能力、持续投入和板级调试经历。
+      </p>
+
+      <!-- ====== A. 项目实物与调试 ====== -->
+      <div class="moment-category">
+        <h2>项目实物与调试</h2>
+        <p class="cat-desc">记录嵌入式项目从开发板、PCB、外设到实物运行的过程，证明项目不是停留在文字描述，而是有真实硬件和上板验证。</p>
+
+        <div class="moment-grid">
+          <div class="moment-card">
+            <a href="images/stm32f411/F411温湿度的实物图.jpg" target="_blank"><img class="moment-image" src="images/stm32f411/F411温湿度的实物图.jpg" alt="STM32F411 智能家居实物" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">项目实物</span>
+              <h3>STM32F411 智能家居实物</h3>
+              <p>温湿度采集、TFT 显示、ESP8266 通信和 PCB 调试的实物记录。</p>
+              <a href="projects/stm32f411.html" class="moment-link">关联项目：STM32F411 智能家居 →</a>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/gec6818/GEC6818实物图.jpg" target="_blank"><img class="moment-image" src="images/gec6818/GEC6818实物图.jpg" alt="GEC6818 Linux 移植实物" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">项目调试</span>
+              <h3>GEC6818 Linux 移植实物</h3>
+              <p>ARM64 Linux 系统移植、LCD 显示、触摸适配和串口调试过程记录。</p>
+              <a href="projects/gec6818.html" class="moment-link">关联项目：GEC6818 Linux 移植 →</a>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/lora-car/lora小车实物图.png" target="_blank"><img class="moment-image" src="images/lora-car/lora小车实物图.png" alt="LoRa 遥控小车实物" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">比赛项目</span>
+              <h3>LoRa 遥控小车实物</h3>
+              <p>双 MCU、LoRa 双向通信、PWM 电机控制和数据回传的实物记录。</p>
+              <a href="projects/lora-car.html" class="moment-link">关联项目：LoRa 双端遥控履带车 →</a>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/RK3566点亮EDP.jpg" target="_blank"><img class="moment-image" src="images/RK3566点亮EDP.jpg" alt="RK3566 点亮 eDP 屏幕" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">Linux BSP 学习</span>
+              <h3>RK3566 点亮 eDP 屏幕</h3>
+              <p>RK3566 学习过程中完成显示接口调试和上板验证的过程记录。</p>
+              <a href="projects/rk3566.html" class="moment-link">关联项目：RK3566 BSP 实践 →</a>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/game-console/STM32小游戏机硬件BOM图.jpg" target="_blank"><img class="moment-image" src="images/game-console/STM32小游戏机硬件BOM图.jpg" alt="STM32 小游戏机 BOM 准备" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">硬件准备</span>
+              <h3>STM32 小游戏机 BOM 准备</h3>
+              <p>PCB、显示屏、按键和元器件准备过程，记录从打样到焊接前的硬件准备。</p>
+              <a href="projects/game-console.html" class="moment-link">关联项目：STM32 小游戏机 →</a>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/game-console/STM32小游戏机运行实物图.jpg" target="_blank"><img class="moment-image" src="images/game-console/STM32小游戏机运行实物图.jpg" alt="STM32 小游戏机运行实物" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">板级验证</span>
+              <h3>STM32 小游戏机运行实物</h3>
+              <p>自制 PCB 上电运行，屏幕显示游戏画面，按键完成交互控制。</p>
+              <a href="projects/game-console.html" class="moment-link">关联项目：STM32 小游戏机 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== B. 硬件制作与焊接 ====== -->
+      <div class="moment-category">
+        <h2>硬件制作与焊接</h2>
+        <p class="cat-desc">记录焊接、飞线修复、电源调试和硬件测试过程，体现从原理图到实物调试的动手能力。</p>
+
+        <div class="moment-grid">
+          <div class="moment-card">
+            <a href="images/moments/首次焊接硬件作品（首次焊接就学会了飞线）.jpg" target="_blank"><img class="moment-image" src="images/moments/首次焊接硬件作品（首次焊接就学会了飞线）.jpg" alt="首次硬件焊接与飞线修复" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">焊接调试</span>
+              <h3>首次硬件焊接与飞线修复</h3>
+              <p>第一次完整焊接硬件作品，并通过飞线修复问题，积累硬件排障经验。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/协会板子硬件测试.jpg" target="_blank"><img class="moment-image" src="images/moments/协会板子硬件测试.jpg" alt="协会板卡硬件测试" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">硬件测试</span>
+              <h3>协会板卡硬件测试</h3>
+              <p>参与板卡测试和硬件检查，锻炼万用表测量、通断检查和上电验证能力。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/制作一些酷酷的学习板.jpg" target="_blank"><img class="moment-image" src="images/moments/制作一些酷酷的学习板.jpg" alt="电路学习板制作" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">硬件制作</span>
+              <h3>电路学习板制作</h3>
+              <p>通过制作学习板熟悉元器件焊接、基础电路连接和板级调试。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/课程设计之手机充电器（220v降到12-3V可调电源）.jpg" target="_blank"><img class="moment-image" src="images/moments/课程设计之手机充电器（220v降到12-3V可调电源）.jpg" alt="可调电源课程设计" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">课程设计</span>
+              <h3>可调电源课程设计</h3>
+              <p>完成从高压输入到低压可调输出的电源课程设计，积累电源模块和安全调试经验。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/循迹小车（大一做的 很简陋）.jpg" target="_blank"><img class="moment-image" src="images/moments/循迹小车（大一做的 很简陋）.jpg" alt="循迹小车制作" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">硬件制作</span>
+              <h3>循迹小车制作</h3>
+              <p>大一阶段完成的循迹小车制作，记录早期硬件入门和动手实践过程。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== C. 学习过程 ====== -->
+      <div class="moment-category">
+        <h2>学习过程</h2>
+        <p class="cat-desc">记录从 C 语言、51 单片机、STM32 到嵌入式 Linux 开发板的学习路径，体现持续学习和逐步进阶。</p>
+
+        <div class="moment-grid">
+          <div class="moment-card">
+            <a href="images/moments/学习C语言.jpg" target="_blank"><img class="moment-image" src="images/moments/学习C语言.jpg" alt="C 语言学习记录" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">基础学习</span>
+              <h3>C 语言学习记录</h3>
+              <p>嵌入式开发的基础阶段，学习 C 语言语法、指针、结构体和程序逻辑。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/学习51单片机.jpg" target="_blank"><img class="moment-image" src="images/moments/学习51单片机.jpg" alt="51 单片机学习记录" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">单片机入门</span>
+              <h3>51 单片机学习记录</h3>
+              <p>从基础 IO、定时器、中断等内容入门单片机开发。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/学习32位单片机.jpg" target="_blank"><img class="moment-image" src="images/moments/学习32位单片机.jpg" alt="STM32 学习记录" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">MCU 进阶</span>
+              <h3>STM32 学习记录</h3>
+              <p>学习 STM32 外设、OLED 显示和基础驱动开发。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/继续学习stm32（这里学习到了oled）.jpg" target="_blank"><img class="moment-image" src="images/moments/继续学习stm32（这里学习到了oled）.jpg" alt="STM32 OLED 学习记录" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">外设学习</span>
+              <h3>STM32 OLED 显示学习</h3>
+              <p>深入学习 STM32 外设驱动，完成 OLED 屏幕显示与交互实践。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/学习GEC6818.jpg" target="_blank"><img class="moment-image" src="images/moments/学习GEC6818.jpg" alt="GEC6818 学习记录" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">嵌入式 Linux</span>
+              <h3>GEC6818 学习记录</h3>
+              <p>从 MCU 项目进一步进入 ARM Linux 开发板和 BSP 调试学习。</p>
+              <a href="projects/gec6818.html" class="moment-link">关联项目：GEC6818 Linux 移植 →</a>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/在协会学习（终于面试笔试通过进了协会！）.jpg" target="_blank"><img class="moment-image" src="images/moments/在协会学习（终于面试笔试通过进了协会！）.jpg" alt="协会学习记录" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">社团学习</span>
+              <h3>电子协会学习记录</h3>
+              <p>加入电子协会后的日常学习与实践记录，体现持续投入和技能积累。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== D. 无人机实践 ====== -->
+      <div class="moment-category">
+        <h2>无人机实践</h2>
+        <p class="cat-desc">记录无人机组装、调试和试飞过程，体现机电系统兴趣和动手实践能力。</p>
+
+        <div class="moment-grid">
+          <div class="moment-card">
+            <a href="images/moments/组装无人机并测试.jpg" target="_blank"><img class="moment-image" src="images/moments/组装无人机并测试.jpg" alt="无人机组装与测试" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag">机电实践</span>
+              <h3>无人机组装与测试</h3>
+              <p>参与无人机装配、硬件检查和基础测试，了解飞控、电机和结构安装过程。</p>
+            </div>
+          </div>
+          <div class="moment-card">
+            <a href="images/moments/组装无人机并试飞.jpg" target="_blank"><img class="moment-image" src="images/moments/组装无人机并试飞.jpg" alt="无人机试飞" loading="lazy"></a>
+            <div class="moment-body">
+              <span class="moment-tag green">机电实践</span>
+              <h3>无人机试飞</h3>
+              <p>完成无人机试飞验证，积累实物调试和安全操作经验。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 隐私提示 ====== -->
+      <div class="moment-note">
+        <strong>提示：</strong>本页面仅展示与项目调试、硬件制作和学习过程相关的照片。涉及他人面部、公共活动或隐私信息的照片已尽量避免展示；正式发布前仍建议检查图片中是否包含需要遮挡的信息。
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Weicheng77777777" target="_blank">GitHub</a>
+        <a href="mailto:2590752572@qq.com">Email</a>
+        <a href="resume.pdf" download>Resume</a>
+      </div>
+      <p class="footer-copy">© 2026 Feng Weicheng · Embedded Portfolio</p>
+    </div>
+  </footer>
+
+</body>
+</html>

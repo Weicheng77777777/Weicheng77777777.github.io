@@ -885,6 +885,376 @@ code {
 /* ==========================================================================
    打印优化
    ========================================================================== */
+/* ==========================================================================
+   实践剪影 (复用 honor 卡片体系 + moments 前缀)
+   ========================================================================== */
+.moments-preview {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-card);
+}
+
+.moment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.moment-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.moment-card:hover {
+  border-color: var(--terminal-green-dim);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 255, 136, 0.06);
+}
+
+.moment-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #0a0e12;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.moment-body {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.moment-body h3 {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.moment-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  align-self: flex-start;
+}
+.moment-tag.green {
+  color: var(--terminal-green);
+  background: rgba(0, 255, 136, 0.08);
+  border-color: rgba(0, 255, 136, 0.2);
+}
+
+.moment-body p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.moment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--terminal-green);
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.moment-link:hover {
+  text-decoration: underline;
+}
+
+.moment-section {
+  margin-top: 48px;
+}
+
+.moment-category h2 {
+  font-size: 1.2rem;
+  color: var(--accent-cyan);
+  margin-top: 40px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+.moment-category h2::before {
+  content: '## ';
+  color: var(--text-muted);
+}
+.moment-category .cat-desc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.moment-note {
+  margin-top: 40px;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border-left: 3px solid #ffaa00;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ——— 首页实践剪影预览 ——— */
+.moments-preview .view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--terminal-green);
+  text-decoration: none;
+  font-size: 0.85rem;
+  margin-top: 12px;
+  transition: gap 0.2s;
+}
+.moments-preview .view-all:hover {
+  gap: 10px;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .moment-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   荣誉与竞赛
+   ========================================================================== */
+.honors-preview {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-card);
+}
+
+.honor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.honor-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.honor-card:hover {
+  border-color: var(--terminal-green-dim);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 255, 136, 0.06);
+}
+
+.honor-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #0a0e12;
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px;
+}
+.honor-image.photo {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.honor-body {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.honor-body h3 {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.honor-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  align-self: flex-start;
+}
+.honor-tag.green {
+  color: var(--terminal-green);
+  background: rgba(0, 255, 136, 0.08);
+  border-color: rgba(0, 255, 136, 0.2);
+}
+.honor-tag.warn {
+  color: #ffaa00;
+  background: rgba(255, 170, 0, 0.08);
+  border-color: rgba(255, 170, 0, 0.2);
+}
+
+.honor-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  line-height: 1.5;
+}
+
+.honor-body p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.honor-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--terminal-green);
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.honor-link:hover {
+  text-decoration: underline;
+}
+
+.honor-section {
+  margin-top: 48px;
+}
+
+.honor-category h2 {
+  font-size: 1.2rem;
+  color: var(--accent-cyan);
+  margin-top: 40px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+.honor-category h2::before {
+  content: '## ';
+  color: var(--text-muted);
+}
+.honor-category .cat-desc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.honor-note {
+  margin-top: 40px;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border-left: 3px solid #ffaa00;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ——— 荣誉统计概览 ——— */
+.honor-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 16px 0 32px;
+}
+.honor-stat-item {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 14px 16px;
+  text-align: center;
+}
+.honor-stat-item .stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--font-mono);
+}
+.honor-stat-item .stat-value {
+  font-size: 1.1rem;
+  color: var(--terminal-green);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* ——— 首页荣誉预览 ——— */
+.honors-preview .view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--terminal-green);
+  text-decoration: none;
+  font-size: 0.85rem;
+  margin-top: 12px;
+  transition: gap 0.2s;
+}
+.honors-preview .view-all:hover {
+  gap: 10px;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .honor-grid {
+    grid-template-columns: 1fr;
+  }
+  .honor-image {
+    aspect-ratio: 4 / 3;
+  }
+  .honor-stats {
+    gap: 8px;
+  }
+  .honor-stat-item {
+    min-width: 100px;
+    padding: 10px 12px;
+  }
+}
+
+/* ==========================================================================
+   打印优化
+   ========================================================================== */
 @media print {
   .nav-bar, .footer, .resume-section { display: none; }
   body { background: white; color: black; }
