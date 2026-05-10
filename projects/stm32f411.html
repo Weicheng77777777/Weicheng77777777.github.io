@@ -6,6 +6,106 @@
   <meta name="description" content="STM32F411 智能家居环境监测系统 - 项目详情">
   <title>STM32F411 智能家居环境监测系统 | 冯威成</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ——— 项目亮点表 ——— */
+    .hl-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 24px;
+      font-size: 0.88rem;
+    }
+    .hl-table th, .hl-table td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .hl-table th {
+      color: var(--terminal-green);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-card);
+    }
+    .hl-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .hl-table td:last-child {
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+    }
+    .hl-table tr:hover td {
+      background: rgba(0,255,136,0.03);
+    }
+
+    /* ——— 架构流程图 ——— */
+    .arch-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin: 16px 0 28px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+    }
+    .arch-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+      text-align: center;
+    }
+    .arch-node.mcu {
+      border-color: var(--terminal-green-dim);
+      color: var(--terminal-green);
+    }
+    .arch-node.endpoint {
+      border-color: rgba(0,255,136,0.3);
+      background: rgba(0,255,136,0.06);
+    }
+    .arch-arrow {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .arch-break {
+      width: 100%;
+      height: 0;
+    }
+    .arch-label {
+      width: 100%;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin: -6px 0 2px 0;
+      letter-spacing: 0.3px;
+    }
+
+    /* ——— 图片说明 ——— */
+    .figure-caption {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: -10px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 768px) {
+      .arch-flow {
+        gap: 4px;
+        font-size: 0.7rem;
+      }
+      .arch-node {
+        padding: 8px 10px;
+      }
+      .hl-table th, .hl-table td {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -28,54 +128,89 @@
       <h1>STM32F411 智能家居环境监测系统</h1>
       <p class="subtitle">传感器采集 · TFT 显示 · ESP8266 Wi-Fi · MQTT 云端 · PCB 打样</p>
 
+      <!-- 实物图：第一屏展示 -->
+      <img src="../images/stm32f411/F411温湿度的实物图.jpg" alt="STM32F411 智能家居环境监测系统实物运行图" loading="lazy">
+      <p class="figure-caption">STM32F411 系统实物运行 · DHT11 / DS18B20 传感器采集与 TFT 显示</p>
+
+      <!-- 项目简介 -->
+      <p>
+        本项目基于 STM32F411CEU6 设计并实现了一套智能家居环境监测系统，集成 DHT11、DS18B20、ST7789V TFT 彩屏、ESP8266 Wi-Fi、MQTT 云端上传、按键菜单、ADC 采集和蜂鸣器报警等功能。项目覆盖原理图设计、PCB 打样、焊接调试、外设驱动开发、显示界面设计、无线通信和云端验证，体现了从硬件到软件的完整嵌入式系统实现流程。
+      </p>
+
       <a href="https://github.com/Weicheng77777777/F411_TFT_V10" class="project-github-link" target="_blank">
         ▷ 查看 GitHub 仓库
       </a>
 
-      <h2>项目背景</h2>
+      <!-- ====== 项目亮点 ====== -->
+      <h2>项目亮点</h2>
+      <table class="hl-table">
+        <thead>
+          <tr><th>内容</th><th>体现能力</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>STM32F411 主控开发</td><td>熟悉 Cortex-M4、HAL、外设初始化</td></tr>
+          <tr><td>ST7789V TFT 显示</td><td>掌握 SPI、DMA、局部刷新和界面绘制</td></tr>
+          <tr><td>DHT11 / DS18B20 采集</td><td>熟悉单总线时序、传感器驱动和数据处理</td></tr>
+          <tr><td>ESP8266 + MQTT</td><td>掌握 UART、AT 指令、Wi-Fi 联网和云端通信</td></tr>
+          <tr><td>按键菜单交互</td><td>掌握状态机、长短按识别和人机交互</td></tr>
+          <tr><td>PCB 打样与调试</td><td>具备原理图、PCB、焊接和硬件问题排查经验</td></tr>
+          <tr><td>供电干扰优化</td><td>具备电源稳定性、去耦和整机调试意识</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ====== 我的主要工作 ====== -->
+      <h2>我的主要工作</h2>
       <p>
-        本项目是一个基于 STM32F411CEU6 的智能家居环境监测系统，集成 DHT11 温湿度传感器、
-        DS18B20 温度传感器、ST7789V 3.5 寸 TFT 彩屏、ESP8266 Wi-Fi 模块、MQTT 云端上传、
-        按键菜单交互、ADC 模拟采集和蜂鸣器提示等功能。项目覆盖原理图设计、PCB 制版、焊接调试、
-        外设驱动开发、菜单界面设计、无线通信和云端数据上传，完整体现嵌入式系统工程化实现流程。
+        本项目由我完成整体方案设计、硬件选型、原理图与 PCB 设计、焊接调试、STM32 固件开发、外设驱动封装、TFT 菜单界面、ESP8266 联网通信和 MQTT 云端验证。项目重点不是简单拼接模块，而是完成从硬件设计到软件调试的完整嵌入式系统闭环。
       </p>
-
-      <h2>系统框图</h2>
-      <div class="img-placeholder">
-        <span class="icon">📐</span>
-        系统架构图（待添加）
-        <br><small>请替换为 architecture.png</small>
-      </div>
-
-      <h2>硬件组成</h2>
       <ul>
-        <li><strong>主控：</strong>STM32F411CEU6 (Cortex-M4, 100MHz)</li>
-        <li><strong>显示：</strong>ST7789V 3.5 寸 TFT 彩屏 (320×480, SPI + DMA)</li>
-        <li><strong>传感器：</strong>DHT11 温湿度 / DS18B20 温度</li>
-        <li><strong>通信：</strong>ESP8266 (UART2 + AT 指令) → Wi-Fi → MQTT</li>
-        <li><strong>交互：</strong>按键 (长短按识别) + 蜂鸣器</li>
+        <li>使用 STM32F411CEU6 作为主控，完成 GPIO、SPI、DMA、UART、TIM、ADC 等外设配置</li>
+        <li>基于 SPI + DMA 驱动 ST7789V TFT 彩屏，设计局部刷新策略，降低刷屏闪烁</li>
+        <li>编写 DHT11、DS18B20 传感器采集逻辑，其中 DS18B20 使用非阻塞状态机避免主循环阻塞</li>
+        <li>使用 ESP8266 通过 UART AT 指令连接 Wi-Fi，并将环境数据通过 MQTT 上传到云端</li>
+        <li>设计按键菜单交互，支持长按、短按和多页面数据显示</li>
+        <li>完成 PCB 打样、焊接、上电测试和供电干扰排查</li>
+        <li>使用串口助手、MQTTX、万用表等工具验证系统运行状态</li>
       </ul>
 
-      <h2>软件架构</h2>
-      <p>采用分层软件架构设计：</p>
-      <div class="code-block">
-<span class="comment">/* 软件分层 */</span>
-├── <span class="keyword">应用层</span>         菜单系统 · 数据显示 · 阈值报警
-├── <span class="keyword">中间层</span>         驱动接口封装 · 状态机调度
-└── <span class="keyword">底层</span>           HAL 外设配置 · SPI+DMA · TIM · UART · ADC</div>
+      <!-- ====== 系统架构 ====== -->
+      <h2>系统架构</h2>
+      <div class="arch-flow">
+        <span class="arch-label">传感器层</span>
+        <span class="arch-node">DHT11</span>
+        <span class="arch-node">DS18B20</span>
+        <span class="arch-node">ADC</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node mcu">STM32F411CEU6<br>数据采集与处理</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node">TFT 菜单显示</span>
+        <span class="arch-node">蜂鸣器报警</span>
+        <span class="arch-break"></span>
+        <span class="arch-label" style="text-align:right; padding-right: 8px;">通信层</span>
+        <span class="arch-node mcu" style="margin-left: auto;">ESP8266<br>UART AT · Wi-Fi</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node endpoint">MQTT 云端上传</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node endpoint">MQTTX 验证</span>
+      </div>
 
-      <!-- 关键难点 -->
-      <h2>关键难点与解决方案</h2>
+      <!-- ====== 关键难点 ====== -->
+      <h2>关键难点</h2>
 
       <h3>1. SPI + DMA 驱动 ST7789V TFT</h3>
       <p>
-        使用 SPI + DMA 实现高速刷屏，设计局部刷新和缓冲显示策略减少闪烁。
-        实测屏幕刷新率可达 50+ fps，DMA 优化后清屏时间小于 1ms。
+        ST7789V 彩屏分辨率为 320×480，如果使用普通阻塞式 SPI 全屏刷新，容易出现刷新慢、界面闪烁和主循环被占用的问题。
+      </p>
+      <p>
+        我使用 SPI + DMA 方式传输显示数据，将 CPU 从大量像素发送中释放出来，并设计局部刷新策略，只更新发生变化的区域，减少无效刷屏。最终实现 TFT 菜单界面流畅显示，屏幕刷新率可达 50+ fps，DMA 优化后清屏时间小于 1ms。
       </p>
 
       <h3>2. DS18B20 非阻塞状态机采集</h3>
       <p>
-        DS18B20 转换时间约 750ms，采用非阻塞状态机设计避免阻塞主循环：
+        DS18B20 温度转换时间较长，典型转换时间约 750ms。如果直接在主循环中阻塞等待，会影响 TFT 刷新、按键响应和 MQTT 上传。
+      </p>
+      <p>
+        因此我将 DS18B20 采集流程拆分为状态机：启动转换、等待转换、读取数据、数据处理。主循环不再等待传感器转换完成，而是在不同时间片中轮询状态，从而保证系统界面和通信任务可以继续运行。
       </p>
       <div class="code-block">
 <span class="keyword">typedef enum</span> {
@@ -85,61 +220,72 @@
     DS18B20_READ_READY
 } ds18b20_state_t;</div>
 
-      <h3>3. MQTT 分时上传防丢包</h3>
+      <h3>3. ESP8266 + MQTT 分时上传</h3>
       <p>
-        MQTT 消息过密可能导致丢包，采用分时上传策略，将不同传感器数据分散到不同时间片上传，
-        避免 ESP8266 缓冲区溢出。
+        系统通过 ESP8266 使用 UART AT 指令连接 Wi-Fi，并将传感器数据上传到 MQTT 云端。调试过程中发现，如果多个传感器数据在短时间内连续上传，可能导致 ESP8266 串口缓冲区压力增大，出现响应延迟或数据丢失。
+      </p>
+      <p>
+        为此我采用分时上传策略，将温度、湿度、ADC 等不同数据分散到不同时间片上传，降低瞬时通信压力。同时通过串口日志和 MQTTX 验证云端消息是否成功接收。
       </p>
 
-      <h3>4. 供电干扰复位问题</h3>
+      <h3>4. PCB 打样后的供电干扰复位问题</h3>
       <p>
-        多模块同时工作导致供电干扰复位。通过增加去耦电容、优化电源走线和分时启动策略解决。
+        PCB 打样和焊接完成后，多模块同时工作时出现过系统复位或运行不稳定现象。问题主要与供电瞬态波动、模块启动电流和电源走线有关。
+      </p>
+      <p>
+        我通过增加去耦电容、优化供电回路、检查焊接连接、加宽关键电源走线，并在软件上采用分时启动策略，降低多个模块同时启动造成的电源冲击。最终系统能够稳定运行。
       </p>
 
-      <div class="img-placeholder">
-        <span class="icon">📷</span>
-        PCB 实物图（待添加）
-        <br><small>请替换为 pcb-hardware.jpg</small>
-      </div>
-
-      <h2>最终结果</h2>
+      <!-- ====== 最终成果 ====== -->
+      <h2>最终成果</h2>
       <div class="result-grid">
-        <div class="result-item"><span class="status">✅</span> 温湿度传感器稳定采集</div>
-        <div class="result-item"><span class="status">✅</span> TFT 彩屏正常显示 (50+ fps)</div>
+        <div class="result-item"><span class="status">✅</span> DHT11 温湿度数据稳定采集</div>
+        <div class="result-item"><span class="status">✅</span> DS18B20 温度数据非阻塞采集</div>
+        <div class="result-item"><span class="status">✅</span> ST7789V TFT 彩屏正常显示，界面刷新流畅</div>
         <div class="result-item"><span class="status">✅</span> ESP8266 Wi-Fi 正常连接</div>
-        <div class="result-item"><span class="status">✅</span> MQTT 数据成功上传云端</div>
-        <div class="result-item"><span class="status">✅</span> 按键菜单交互流畅</div>
-        <div class="result-item"><span class="status">✅</span> PCB 打样验证通过</div>
+        <div class="result-item"><span class="status">✅</span> MQTT 数据成功上传云端，可通过 MQTTX 验证</div>
+        <div class="result-item"><span class="status">✅</span> 按键菜单交互正常，支持长短按识别</div>
+        <div class="result-item"><span class="status">✅</span> ADC 模拟量采集正常</div>
+        <div class="result-item"><span class="status">✅</span> 蜂鸣器报警功能正常</div>
+        <div class="result-item"><span class="status">✅</span> PCB 打样、焊接和整机运行验证通过</div>
       </div>
 
+      <!-- ====== PCB 设计要点 ====== -->
       <h2>PCB 设计要点</h2>
       <ul>
-        <li><strong>去耦电容布局：</strong>每个 VDD 引脚就近放置 100nF + 10μF</li>
-        <li><strong>供电回路优化：</strong>加宽电源走线，减少压降</li>
-        <li><strong>信号完整性：</strong>SPI 走线等长，远离高频干扰源</li>
+        <li>每个 STM32 VDD 引脚附近放置 100nF 去耦电容，并在电源入口增加较大容量滤波电容</li>
+        <li>对 TFT、ESP8266 等电流变化较大的模块，优化供电走线，减少压降和干扰</li>
+        <li>SPI、UART 等高速或关键通信线尽量缩短路径，避免靠近强干扰区域</li>
+        <li>预留调试接口，方便串口日志输出、固件下载和后期问题定位</li>
+        <li>对按键、蜂鸣器、传感器接口进行模块化布局，方便焊接和调试</li>
       </ul>
 
-      <h2>调试工具</h2>
+      <!-- ====== 调试与验证 ====== -->
+      <h2>调试与验证</h2>
+      <p>本项目通过多种方式验证系统功能：</p>
       <ul>
-        <li><strong>Keil MDK</strong> — 固件开发与调试</li>
-        <li><strong>STM32CubeMX</strong> — HAL 外设配置</li>
-        <li><strong>嘉立创 EDA</strong> — 原理图与 PCB 设计</li>
-        <li><strong>串口助手</strong> — 调试信息输出</li>
-        <li><strong>MQTTX</strong> — 云端消息验证</li>
+        <li>使用串口助手输出系统运行状态、ESP8266 AT 指令响应和 MQTT 上传结果</li>
+        <li>使用 MQTTX 验证云端是否成功接收到传感器数据</li>
+        <li>通过 TFT 屏幕实时显示温湿度、菜单状态和报警信息</li>
+        <li>通过按键长短按测试菜单切换和交互逻辑</li>
+        <li>通过上电运行测试验证 PCB 焊接、供电和模块稳定性</li>
       </ul>
 
-      <h2>复盘总结</h2>
-      <p>这个项目让我深刻理解了：</p>
-      <ul>
-        <li><strong>状态机设计</strong> — 非阻塞状态机是嵌入式系统任务调度的基础</li>
-        <li><strong>模块化驱动</strong> — 每个外设独立封装，降低耦合度，提高可维护性</li>
-        <li><strong>供电稳定性的重要性</strong> — 电路能画出来不等于板子能稳定工作</li>
-        <li><strong>分时复用</strong> — 多任务共享总线时，时间片分配和优先级管理至关重要</li>
-      </ul>
+      <!-- ====== 项目复盘 ====== -->
+      <h2>项目复盘</h2>
+      <p>
+        这个项目让我更加理解了嵌入式系统不是单个外设驱动的简单叠加，而是硬件、驱动、任务调度、通信和电源稳定性共同配合的整体工程。TFT 显示、传感器采集、MQTT 上传和按键交互都运行在同一个主循环中，因此必须通过状态机、分时调度和 DMA 降低阻塞，保证系统响应性。
+      </p>
+      <p>
+        在硬件调试方面，PCB 能画出来并不代表系统一定能稳定运行。ESP8266、TFT 屏幕和传感器同时工作时，供电稳定性、去耦电容布局、电源走线和模块启动顺序都会影响整机可靠性。这个项目让我建立了从现象观察、串口日志、硬件测量到软件调整的完整排查思路。
+      </p>
 
-      <div class="info-block green">
-        <strong>关键词：</strong>
-        STM32F411 · C 语言 · ST7789V · SPI DMA · DHT11 · DS18B20 · ADC · TIM · UART · ESP8266 · MQTT · 按键状态机 · TFT 菜单系统 · 智能家居 · IoT · PCB
+      <!-- ====== GitHub 入口 ====== -->
+      <div class="info-block green" style="margin-top: 32px;">
+        <strong>完整源码、PCB 设计文件、驱动代码和详细调试记录见 GitHub 仓库：</strong><br>
+        <a href="https://github.com/Weicheng77777777/F411_TFT_V10" target="_blank" style="color: var(--terminal-green);">
+          github.com/Weicheng77777777/F411_TFT_V10
+        </a>
       </div>
 
     </div>

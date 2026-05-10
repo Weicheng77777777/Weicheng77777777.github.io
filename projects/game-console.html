@@ -3,9 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="STM32 小游戏机控制板 - 项目详情">
-  <title>STM32 小游戏机控制板 | 冯威成</title>
+  <meta name="description" content="STM32 小游戏机集成控制板 - 项目详情">
+  <title>STM32 小游戏机集成控制板 | 冯威成</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ——— 项目亮点表 ——— */
+    .hl-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 24px;
+      font-size: 0.88rem;
+    }
+    .hl-table th, .hl-table td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .hl-table th {
+      color: var(--terminal-green);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-card);
+    }
+    .hl-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .hl-table td:last-child {
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+    }
+    .hl-table tr:hover td {
+      background: rgba(0,255,136,0.03);
+    }
+
+    /* ——— 系统组成树 ——— */
+    .sys-tree {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 16px 0 28px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 2;
+    }
+    .sys-tree .root {
+      color: var(--terminal-green);
+      font-weight: 600;
+    }
+    .sys-tree .branch {
+      color: var(--accent-cyan);
+      padding-left: 24px;
+    }
+    .sys-tree .leaf {
+      color: var(--text-secondary);
+      padding-left: 48px;
+    }
+    .sys-tree .dim {
+      color: var(--text-muted);
+    }
+
+    /* ——— 图片说明 ——— */
+    .figure-caption {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: -10px;
+      margin-bottom: 28px;
+    }
+
+    .repo-note {
+      display: inline-block;
+      padding: 8px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .sys-tree {
+        font-size: 0.75rem;
+        padding: 14px 16px;
+      }
+      .sys-tree .branch { padding-left: 14px; }
+      .sys-tree .leaf { padding-left: 28px; }
+      .hl-table th, .hl-table td {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -25,73 +119,158 @@
     <div class="container">
       <a href="../#projects" class="back-link">← 返回项目列表</a>
 
-      <h1>STM32 小游戏机控制板</h1>
-      <p class="subtitle">原理图设计 · PCB 打样 · 焊接调试 · 板级验证</p>
+      <h1>STM32 小游戏机集成控制板</h1>
+      <p class="subtitle">原理图设计 · PCB 绘制 · BOM 与焊接 · 上电排障 · 板级联调</p>
 
-      <h2>项目背景</h2>
+      <!-- 实物图：第一屏展示 -->
+      <img src="../images/game-console/STM32小游戏机运行实物图.jpg" alt="STM32 小游戏机集成控制板运行实物图" loading="lazy">
+      <p class="figure-caption">PCB 焊接完成后，屏幕正常显示游戏画面，按键可用于交互控制</p>
+
+      <!-- 项目简介 -->
       <p>
-        独立设计基于 STM32 的小游戏机控制板，完成原理图设计、PCB 绘制、打样验证、
-        焊接检查、上电排障和基础外设联调。通过这个项目，系统性地积累了板级硬件设计与调试经验，
-        理解"电路能画出来"和"板子能稳定工作"之间的工程差异。
+        本项目是我第一次将 STM32 单片机最小系统、电源供电、显示屏接口和按键输入集成到同一块 PCB 上的板级硬件项目。项目完成了原理图设计、PCB 绘制、BOM 准备、焊接调试、上电排障和基础外设联调，最终实现板载供电稳定、程序正常运行、屏幕显示游戏画面以及按键交互控制。
       </p>
 
-      <h2>硬件组成</h2>
+      <span class="repo-note">本项目主要展示 PCB 集成设计、焊接调试和板级验证过程，代码暂未单独公开</span>
+
+      <!-- ====== 项目亮点 ====== -->
+      <h2>项目亮点</h2>
+      <table class="hl-table">
+        <thead>
+          <tr><th>内容</th><th>体现能力</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>STM32 最小系统集成</td><td>理解 MCU 供电、复位、时钟、下载接口等基础电路</td></tr>
+          <tr><td>电源模块集成</td><td>具备板载供电、电源入口、稳压和去耦设计意识</td></tr>
+          <tr><td>显示屏接口设计</td><td>能够完成 LCD/OLED 与 MCU 的硬件连接和显示验证</td></tr>
+          <tr><td>按键输入电路</td><td>掌握 GPIO 输入、按键布局和人机交互硬件设计</td></tr>
+          <tr><td>PCB 布局布线</td><td>具备从原理图到 PCB 打样的完整流程经验</td></tr>
+          <tr><td>焊接与上电排障</td><td>具备短路检查、电压测试、逐级上电的调试意识</td></tr>
+          <tr><td>板级外设联调</td><td>能够完成显示、按键、电源和程序运行的整体验证</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ====== 我的主要工作 ====== -->
+      <h2>我的主要工作</h2>
+      <p>
+        本项目是我从单片机模块化实验走向 PCB 集成设计的第一个完整板级项目。我主要完成了硬件方案设计、原理图绘制、PCB 布局布线、BOM 器件准备、焊接检查、上电排障和基础外设联调。项目重点不是单纯运行一个小游戏，而是验证我能够把 MCU、电源、显示屏和按键输入集成到一块可运行的 PCB 上。
+      </p>
       <ul>
-        <li><strong>主控：</strong>STM32 MCU</li>
-        <li><strong>显示：</strong>小尺寸 LCD/OLED 屏</li>
-        <li><strong>交互：</strong>按键阵列</li>
-        <li><strong>电源：</strong>板载稳压电路 + 去耦设计</li>
+        <li>设计 STM32 单片机最小系统，包括供电、复位、时钟和下载调试相关电路</li>
+        <li>将电源供电模块集成到 PCB 上，实现板载供电和基础电源分配</li>
+        <li>设计显示屏接口，用于连接小尺寸 LCD/OLED 屏幕并完成显示验证</li>
+        <li>设计按键输入区域，用于游戏控制和基础人机交互</li>
+        <li>完成 PCB 布局布线，重点关注电源走线、GND 覆铜和关键信号连接</li>
+        <li>根据原理图和 PCB 生成 BOM，完成元件采购、分类和焊接准备</li>
+        <li>焊接完成后使用万用表检查短路、虚焊和关键电源节点</li>
+        <li>按照"先电源、再时钟、再下载、最后外设"的顺序完成上电排障</li>
+        <li>最终实现程序正常运行、屏幕显示游戏画面、按键可进行交互控制</li>
       </ul>
 
+      <!-- ====== 实物展示 ====== -->
+      <h2>实物展示</h2>
+      <img src="../images/game-console/STM32小游戏机硬件BOM图.jpg" alt="STM32 小游戏机硬件BOM与元件准备" loading="lazy">
+      <p class="figure-caption">BOM 与硬件准备：PCB、显示屏、按键、电阻电容等器件，展示从打样到焊接调试前的硬件实现过程</p>
+
+      <!-- ====== 系统组成 ====== -->
+      <h2>系统组成</h2>
+      <div class="sys-tree">
+        <div class="root">电源输入</div>
+        <div class="branch">├── 稳压与去耦电路</div>
+        <div class="leaf">├── 板载稳压</div>
+        <div class="leaf">└── 去耦电容 (VDD 就近 100nF)</div>
+        <div class="root" style="margin-top: 4px;">STM32 最小系统</div>
+        <div class="branch">├── MCU 供电 / 复位 / 时钟</div>
+        <div class="branch">├── 显示屏接口</div>
+        <div class="branch">├── 按键输入</div>
+        <div class="branch">├── 下载调试接口</div>
+        <div class="branch">└── 扩展接口 <span class="dim">/ 预留 IO</span></div>
+      </div>
+
+      <!-- ====== 关键难点 ====== -->
+      <h2>关键难点</h2>
+
+      <h3>1. MCU 最小系统与电源集成</h3>
+      <p>
+        这个项目的核心目标是把原本分散的 STM32 最小系统、电源供电、显示屏和按键输入集成到同一块 PCB 上。相比直接使用开发板，自己画板需要考虑 MCU 供电、复位、时钟、下载接口、电源入口和去耦电容布局。
+      </p>
+      <p>
+        我在设计中将电源输入、稳压电路和 MCU 供电网络统一规划，在每个关键电源引脚附近放置去耦电容，并预留下载调试接口，保证板子能够稳定上电和烧录程序。最终上电后 MCU 能够正常运行，程序可以下载，屏幕和按键可以进行基础联调。
+      </p>
+
+      <h3>2. PCB 电源与去耦布局</h3>
+      <p>
+        板级硬件设计中，电源稳定性直接影响 MCU 启动、屏幕显示和按键输入的可靠性。如果去耦电容距离电源引脚过远，或者电源走线过细，可能导致上电不稳定、屏幕异常或程序运行不可靠。
+      </p>
+      <p>
+        因此我在 PCB 布局时重点关注电源入口、电源走线宽度、GND 覆铜和去耦电容摆放位置。每个 MCU VDD 引脚附近放置 100nF 去耦电容，电源入口放置较大容量滤波电容，并尽量缩短电源回路路径。焊接完成后先测量电源节点，确认无短路和电压正常，再进行程序下载和外设测试。
+      </p>
+
+      <h3>3. 显示屏与按键外设联调</h3>
+      <p>
+        小游戏机控制板需要同时完成显示输出和按键输入。显示屏用于显示游戏画面，按键用于控制角色移动或菜单操作，因此硬件连接、GPIO 配置和程序逻辑都需要配合。
+      </p>
+      <p>
+        我在调试时先验证屏幕供电和接口连接，再下载测试程序确认屏幕能够正常显示；随后逐个测试按键输入，确认按键按下后 MCU 能够读取到正确电平。最终实现屏幕显示游戏画面，并通过按键进行交互控制。
+      </p>
+
+      <h3>4. 焊接检查与上电排障流程</h3>
+      <p>
+        自制 PCB 最容易遇到的问题不是代码错误，而是焊接虚焊、短路、电源异常或器件方向错误。因此我没有直接上电运行程序，而是按照分级排查流程进行调试。
+      </p>
+      <p>
+        调试顺序为：先目测检查焊点和器件方向，再用万用表检查电源与 GND 是否短路，然后上电测量关键电压，确认电源正常后再下载程序，最后逐个验证显示屏、按键等外设。通过这种方式可以快速缩小问题范围，避免因为直接上电造成器件损坏。
+      </p>
+
+      <!-- ====== PCB 设计要点 ====== -->
       <h2>PCB 设计要点</h2>
-      <h3>供电与去耦</h3>
-      <p>
-        在电源设计阶段重点关注去耦电容、供电回路和关键电容布局。
-        每个 VDD 引脚就近放置 100nF 去耦电容，电源入口放置 10μF 电解电容，
-        保证上电稳定性和抗干扰能力。
-      </p>
-
-      <h3>布局布线</h3>
       <ul>
-        <li>MCU 居中，外设模块围绕 MCU 布局</li>
-        <li>电源走线加宽 (≥20mil)</li>
-        <li>数字信号走线远离电源和模拟信号</li>
-        <li>GND 铺铜覆铜，减少地回路阻抗</li>
+        <li>MCU 尽量放在板子中心区域，显示屏、按键、电源和下载接口围绕 MCU 布局</li>
+        <li>电源走线适当加宽，降低压降和电源回路阻抗</li>
+        <li>每个 MCU VDD 引脚附近放置 100nF 去耦电容，电源入口放置较大容量滤波电容</li>
+        <li>GND 进行覆铜处理，降低地阻抗并提高抗干扰能力</li>
+        <li>按键区域按照实际操作习惯布局，方便游戏控制</li>
+        <li>下载接口、复位按键和关键测试点尽量放在方便调试的位置</li>
+        <li>显示屏连接区域尽量减少交叉走线，保证装配和调试方便</li>
       </ul>
 
-      <div class="img-placeholder">
-        <span class="icon">📷</span>
-        PCB 实物图（待添加）
-        <br><small>请替换为 pcb-photo.jpg</small>
-      </div>
-
-      <h2>调试过程</h2>
+      <!-- ====== 调试与验证 ====== -->
+      <h2>调试与验证</h2>
+      <p>本项目通过以下步骤完成板级验证：</p>
       <ul>
-        <li><strong>焊接检查：</strong>目测 + 万用表通断测试，检查虚焊和短路</li>
-        <li><strong>上电排障：</strong>先测电源电压，再测晶振起振，最后测 MCU 程序运行</li>
-        <li><strong>外设联调：</strong>逐个使能外设，验证显示、按键、通信等功能</li>
+        <li>使用万用表检查电源与 GND 是否短路</li>
+        <li>上电后测量稳压输出和 MCU 供电电压</li>
+        <li>检查 MCU 是否能够正常下载程序</li>
+        <li>下载基础测试程序，验证屏幕显示是否正常</li>
+        <li>逐个读取按键输入，确认 GPIO 状态变化正确</li>
+        <li>运行小游戏程序，验证显示和按键交互是否正常</li>
+        <li>观察长时间运行时是否存在异常复位、过热或显示异常</li>
       </ul>
 
-      <h2>最终结果</h2>
+      <!-- ====== 最终成果 ====== -->
+      <h2>最终成果</h2>
       <div class="result-grid">
-        <div class="result-item"><span class="status">✅</span> 原理图设计完成</div>
-        <div class="result-item"><span class="status">✅</span> PCB 打样验证通过</div>
-        <div class="result-item"><span class="status">✅</span> 上电正常，无短路/过热</div>
-        <div class="result-item"><span class="status">✅</span> 基础外设功能正常</div>
+        <div class="result-item"><span class="status">✅</span> STM32 单片机最小系统集成到自制 PCB</div>
+        <div class="result-item"><span class="status">✅</span> 电源供电模块完成板载集成</div>
+        <div class="result-item"><span class="status">✅</span> PCB 打样、BOM 准备和焊接完成</div>
+        <div class="result-item"><span class="status">✅</span> 上电正常，无明显短路、过热或异常复位</div>
+        <div class="result-item"><span class="status">✅</span> 程序可以正常下载和运行</div>
+        <div class="result-item"><span class="status">✅</span> 显示屏可以正常显示游戏画面</div>
+        <div class="result-item"><span class="status">✅</span> 按键输入可以用于游戏交互</div>
+        <div class="result-item"><span class="status">✅</span> 完成从原理图、PCB 到实物运行的板级验证闭环</div>
       </div>
 
-      <h2>复盘总结</h2>
-      <ul>
-        <li><strong>去耦电容不是摆设</strong> — 位置不对等于没用，必须靠近 VDD 引脚</li>
-        <li><strong>焊接是基本功</strong> — 很多"电路问题"其实是虚焊问题</li>
-        <li><strong>上电要分级测试</strong> — 先电源、再时钟、最后功能，定位更快</li>
-        <li><strong>原理图和 PCB 是两回事</strong> — 元件布局和走线直接影响板子稳定性</li>
-      </ul>
-
-      <div class="info-block green">
-        <strong>关键词：</strong>
-        STM32 · 原理图 · PCB · 供电去耦 · 板级调试 · 外设驱动 · 硬件联调
-      </div>
+      <!-- ====== 项目复盘 ====== -->
+      <h2>项目复盘</h2>
+      <p>
+        这个项目让我第一次完整经历了从原理图到 PCB 实物运行的过程。相比直接使用开发板，自制控制板需要自己考虑 MCU 最小系统、电源输入、稳压、去耦、按键、显示屏接口和下载调试接口。这个过程让我理解到，电路能画出来不代表板子一定能稳定工作，PCB 布局、电源走线和焊接质量都会直接影响最终运行效果。
+      </p>
+      <p>
+        在调试过程中，我建立了比较清晰的上电排障流程：先检查短路，再测电源电压，再确认 MCU 能否下载程序，最后逐个验证显示屏和按键外设。这个流程比直接运行完整程序更安全，也更容易定位问题。
+      </p>
+      <p>
+        这个项目虽然功能不复杂，但它是我从单片机实验走向板级硬件设计的重要一步。它让我掌握了 BOM 准备、PCB 焊接、供电检查和外设联调的基本方法，也为后续更复杂的 STM32 项目和 PCB 项目打下了基础。
+      </p>
 
     </div>
   </div>

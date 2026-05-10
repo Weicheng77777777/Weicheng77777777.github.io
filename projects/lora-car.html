@@ -3,9 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="LoRa 遥控坦克小车系统 - 项目详情">
-  <title>LoRa 遥控坦克小车系统 | 冯威成</title>
+  <meta name="description" content="LoRa 双端遥控履带车系统 - 项目详情">
+  <title>LoRa 双端遥控履带车系统 | 冯威成</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ——— 项目亮点表 ——— */
+    .hl-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 24px;
+      font-size: 0.88rem;
+    }
+    .hl-table th, .hl-table td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .hl-table th {
+      color: var(--terminal-green);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-card);
+    }
+    .hl-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .hl-table td:last-child {
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+    }
+    .hl-table tr:hover td {
+      background: rgba(0,255,136,0.03);
+    }
+
+    /* ——— 双端架构图 ——— */
+    .dual-arch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0 28px;
+      align-items: stretch;
+    }
+    .arch-panel {
+      flex: 1;
+      min-width: 240px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .arch-panel.control {
+      border-left: 3px solid var(--accent-cyan);
+    }
+    .arch-panel.car {
+      border-left: 3px solid var(--terminal-green-dim);
+    }
+    .arch-panel h4 {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+    }
+    .arch-panel.car h4 {
+      color: var(--terminal-green);
+    }
+    .arch-panel ul {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 2;
+      padding-left: 16px;
+      margin: 0;
+    }
+    .arch-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 80px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      gap: 4px;
+    }
+    .arch-connector .arrow {
+      font-size: 1.2rem;
+      color: var(--accent-cyan);
+    }
+
+    /* ——— 调度流程 ——— */
+    .sched-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      margin: 12px 0 20px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+    }
+    .sched-flow .s-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      padding: 6px 10px;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+    }
+    .sched-flow .s-arr {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* ——— 图片说明 ——— */
+    .figure-caption {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: -10px;
+      margin-bottom: 28px;
+    }
+
+    /* ——— 代码仓库说明 ——— */
+    .repo-note {
+      display: inline-block;
+      padding: 8px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 768px) {
+      .dual-arch {
+        flex-direction: column;
+      }
+      .arch-connector {
+        flex-direction: row;
+        min-width: unset;
+        padding: 4px 0;
+      }
+      .hl-table th, .hl-table td {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+      }
+      .sched-flow {
+        gap: 3px;
+        font-size: 0.68rem;
+      }
+      .sched-flow .s-node {
+        padding: 4px 7px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -25,101 +180,180 @@
     <div class="container">
       <a href="../#projects" class="back-link">← 返回项目列表</a>
 
-      <h1>LoRa 遥控坦克小车系统</h1>
-      <p class="subtitle">双 MCU · LoRa 无线通信 · GPS 定位 · 电机控制 · ADC 回传</p>
+      <h1>LoRa 双端遥控履带车系统</h1>
+      <p class="subtitle">双 MCU · LoRa 双向通信 · PWM 电机控制 · GPS 解析 · 状态机调度</p>
 
-      <a href="https://github.com/Weicheng77777777" class="project-github-link" target="_blank">
-        ▷ 查看 GitHub 仓库
-      </a>
+      <!-- 实物图：第一屏展示 -->
+      <img src="../images/lora-car/lora小车实物图.png" alt="LoRa 双端遥控履带车实物图" loading="lazy">
+      <p class="figure-caption">比赛实物小车 · 履带底盘 + 车端控制板 + LoRa + GPS + 电机驱动模块</p>
 
-      <h2>项目背景</h2>
+      <!-- 项目简介 -->
       <p>
-        基于 STM32F4 和 STM32F1 设计双 MCU 遥控坦克小车系统。车端 STM32F4 负责运动控制、
-        传感器采集和数据回传，控制端 STM32F1 负责人机交互、指令发送和状态显示。
-        实现 LoRa 无线通信、GPS 定位解析、ADC 数据回传和电机驱动控制，
-        覆盖嵌入式系统中常见的双机通信、无线传输、传感器融合和电机控制等核心场景。
+        本项目是一个基于 STM32F1 控制端与 STM32F4 车端的双 MCU 无线遥控履带车系统。控制端负责按键输入、OLED 状态显示、控制指令发送和回传数据解析；车端负责 PWM 电机控制、GPS 数据采集、ADC 模拟量采集和 LoRa 数据回传。系统通过 LoRa 模块实现双向无线通信，并采用自定义数据包、校验机制和状态机调度，提高通信可靠性和实时响应能力。
       </p>
 
+      <span class="repo-note">比赛项目 · 代码暂未公开</span>
+
+      <!-- ====== 项目亮点 ====== -->
+      <h2>项目亮点</h2>
+      <table class="hl-table">
+        <thead>
+          <tr><th>内容</th><th>体现能力</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>双 MCU 架构</td><td>理解控制端与车端任务分工</td></tr>
+          <tr><td>LoRa 双向通信</td><td>掌握 UART 通信、无线收发和数据回传</td></tr>
+          <tr><td>自定义数据包协议</td><td>具备帧头、帧尾、校验和异常数据处理意识</td></tr>
+          <tr><td>PWM 电机控制</td><td>掌握定时器 PWM、方向控制和运动逻辑</td></tr>
+          <tr><td>GPS NMEA 解析</td><td>熟悉串口数据流解析和状态机处理</td></tr>
+          <tr><td>ADC 数据回传</td><td>掌握模拟量采集和无线遥测</td></tr>
+          <tr><td>非阻塞状态机调度</td><td>具备多任务实时性和主循环调度意识</td></tr>
+          <tr><td>整机联调</td><td>具备多模块组合、供电、通信和运动调试经验</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ====== 我的主要工作 ====== -->
+      <h2>我的主要工作</h2>
+      <p>
+        本项目主要用于比赛场景下的无线遥控与数据回传验证。我主要完成车端运动控制、LoRa 双向通信协议、GPS 数据解析、ADC 数据采集回传、多模块逻辑调度和整机调试。项目重点不是单个模块演示，而是将电机、LoRa、GPS、ADC、OLED 和按键控制组合成一个可运行的双端嵌入式系统。
+      </p>
+      <ul>
+        <li>基于 STM32F4 实现车端控制逻辑，负责电机 PWM 输出、传感器采集和 LoRa 数据回传</li>
+        <li>基于 STM32F1 实现控制端逻辑，负责按键输入、OLED 显示、指令发送和回传数据解析</li>
+        <li>使用定时器 PWM 控制电机驱动，实现前进、后退、转向、停止等运动动作</li>
+        <li>设计 LoRa 双向通信数据包，实现控制指令下发和车端状态回传</li>
+        <li>在数据包中加入帧头、帧尾和校验字段，提高通信可靠性</li>
+        <li>解析 GPS 模块输出的 NMEA 数据，提取定位状态和经纬度等信息</li>
+        <li>采集 ADC 模拟量数据，并通过 LoRa 回传给控制端或 PC 端</li>
+        <li>使用超级循环 + 状态机方式组织任务，避免电机控制、通信接收、GPS 解析和显示刷新相互阻塞</li>
+        <li>使用串口助手、逻辑分析仪、万用表等工具进行通信和硬件调试</li>
+      </ul>
+
+      <!-- ====== 系统架构 ====== -->
       <h2>系统架构</h2>
-      <div class="code-block">
-<span class="comment">/* 双 MCU 系统架构 */</span>
-┌─────────────────────┐          LoRa          ┌─────────────────────┐
-│ <span class="keyword">控制端 (STM32F1)</span>   │ ◄──────────────────► │ <span class="keyword">车端 (STM32F4)</span>    │
-│                     │       UART+无线         │                     │
-│  · 按键输入         │                         │  · 电机控制 (DRV8701)│
-│  · OLED 显示        │                         │  · GPS 数据采集     │
-│  · LoRa 发送指令     │                         │  · ADC 模拟采集     │
-│  · 回传数据解析      │                         │  · LoRa 数据回传    │
-└─────────────────────┘                         └─────────────────────┘</div>
+      <div class="dual-arch">
+        <div class="arch-panel control">
+          <h4>控制端 · STM32F1</h4>
+          <ul>
+            <li>按键输入</li>
+            <li>OLED 状态显示</li>
+            <li>指令打包</li>
+            <li>回传数据解析</li>
+          </ul>
+        </div>
+        <div class="arch-connector">
+          <span class="arrow">⇅</span>
+          <span>LoRa 双向通信</span>
+          <span>自定义数据包</span>
+        </div>
+        <div class="arch-panel car">
+          <h4>车端 · STM32F4</h4>
+          <ul>
+            <li>指令解析</li>
+            <li>PWM 电机控制 (DRV8701)</li>
+            <li>GPS NMEA 解析</li>
+            <li>ADC 模拟量采集</li>
+            <li>状态数据回传</li>
+          </ul>
+        </div>
+      </div>
 
-      <h2>硬件组成</h2>
-      <ul>
-        <li><strong>车端 MCU：</strong>STM32F4 — 运动控制、数据采集</li>
-        <li><strong>控制端 MCU：</strong>STM32F1 — 遥控输入、人机交互</li>
-        <li><strong>无线通信：</strong>LoRa 模块 (UART 接口)</li>
-        <li><strong>定位：</strong>GPS 模块 (NMEA 协议解析)</li>
-        <li><strong>电机驱动：</strong>DRV8701 驱动直流减速电机</li>
-        <li><strong>显示：</strong>OLED 屏幕</li>
-      </ul>
+      <!-- ====== 关键难点 ====== -->
+      <h2>关键难点</h2>
 
-      <h2>关键难点与解决方案</h2>
-
-      <h3>1. LoRa 通信稳定性与数据包格式</h3>
+      <h3>1. LoRa 双向通信与自定义协议</h3>
       <p>
-        LoRa 无线通信受距离和环境干扰影响，传输过程中可能出现丢包和乱序。
-        设计自定义数据包格式，加入帧头、帧尾和 CRC 校验，确保数据完整性。
+        LoRa 通信距离较远，但速率较低，并且在实际环境中可能出现丢包、半包、异常字符或数据错位。如果直接发送裸数据，控制端和车端很难判断一帧数据是否完整。
+      </p>
+      <p>
+        因此我设计了简单的数据包格式，在每帧数据中加入帧头、命令类型、数据负载、校验字段和帧尾。接收端通过状态机逐字节解析，只有帧头、长度、校验和帧尾都符合要求时才执行指令或更新数据。
       </p>
       <div class="code-block">
-<span class="comment">/* 数据包格式 */</span>
+<span class="comment">/* 自定义数据包格式 */</span>
 <span class="keyword">typedef struct</span> {
-    uint8_t  header;       <span class="comment">// 帧头 0xAA</span>
-    uint8_t  cmd;          <span class="comment">// 命令类型</span>
-    uint8_t  data[8];      <span class="comment">// 数据负载</span>
-    uint8_t  checksum;     <span class="comment">// CRC 校验</span>
-    uint8_t  footer;       <span class="comment">// 帧尾 0x55</span>
+    uint8_t header;       <span class="comment">// 帧头 0xAA</span>
+    uint8_t cmd;          <span class="comment">// 命令类型</span>
+    uint8_t data[8];      <span class="comment">// 数据负载</span>
+    uint8_t checksum;     <span class="comment">// 校验</span>
+    uint8_t footer;       <span class="comment">// 帧尾 0x55</span>
 } lora_packet_t;</div>
-
-      <h3>2. GPS NMEA 数据解析</h3>
       <p>
-        GPS 模块输出 NMEA 0183 格式数据，需要解析 $GPGGA 和 $GPRMC 语句提取经纬度、
-        时间、海拔和定位状态等信息。在串口中断中逐字符解析，状态机管理解析流程。
+        这不是简单的 UART 透传——通过帧格式和校验机制，可以有效减少误动作风险，体现的是嵌入式系统中通信协议设计能力。
       </p>
 
-      <h3>3. 电机运动与通信的协同调度</h3>
+      <h3>2. PWM 电机控制与运动逻辑</h3>
       <p>
-        电机动作、串口通信和 LoRa 数据传输需要协同工作，采用超级循环 + 状态机组织，
-        将遥控、回传和显示任务分配到不同时间片，避免任务饿死。
+        车端需要根据控制端下发的指令实时控制电机，实现前进、后退、左转、右转和停止等动作。电机控制不仅要输出 PWM 占空比，还要处理方向控制、速度变化和动作切换。
+      </p>
+      <p>
+        我使用 STM32 定时器 PWM 输出控制 DRV8701 电机驱动模块，通过调整占空比控制速度，通过 GPIO 控制方向信号。在主循环中，车端根据 LoRa 解析出的命令更新运动状态，而不是在通信接收函数中直接执行长时间阻塞动作，从而保证通信和运动控制可以持续响应。
       </p>
 
-      <h2>最终结果</h2>
+      <h3>3. GPS NMEA 数据解析</h3>
+      <p>
+        GPS 模块通过串口持续输出 NMEA 0183 格式数据，其中常见语句包括 $GPGGA 和 $GPRMC。实际串口数据是连续字节流，可能出现半包、断帧或无效定位状态，因此不能只依赖简单字符串截取。
+      </p>
+      <p>
+        我在串口接收逻辑中按字符缓存 GPS 数据，并通过状态机判断一条 NMEA 语句是否接收完整。随后解析经纬度、时间和定位状态等字段，只在数据完整且定位有效时更新车端状态，并通过 LoRa 回传给控制端。
+      </p>
+
+      <h3>4. 超级循环 + 状态机非阻塞调度</h3>
+      <p>
+        这个项目同时包含电机控制、LoRa 收发、GPS 解析、ADC 采集、OLED 显示和按键扫描。如果某个任务使用长时间 delay 或阻塞等待，就会导致遥控响应变慢、通信丢包或显示刷新不及时。
+      </p>
+      <p>
+        因此我采用超级循环 + 状态机的方式组织任务。每个任务只在自己的时间片内完成短时间处理，避免单个任务长期占用 CPU，提高系统实时性和稳定性。
+      </p>
+      <div class="sched-flow">
+        <span class="s-node">按键扫描</span><span class="s-arr">→</span>
+        <span class="s-node">LoRa 接收</span><span class="s-arr">→</span>
+        <span class="s-node">指令解析</span><span class="s-arr">→</span>
+        <span class="s-node">电机状态更新</span><span class="s-arr">→</span>
+        <span class="s-node">GPS 解析</span><span class="s-arr">→</span>
+        <span class="s-node">ADC 采集</span><span class="s-arr">→</span>
+        <span class="s-node">OLED 显示</span><span class="s-arr">→</span>
+        <span class="s-node">状态回传</span>
+      </div>
+      <p>
+        这是裸机系统中的任务调度思想——不是简单 while 循环堆代码，而是通过状态机让多任务协调运行，避免相互阻塞。
+      </p>
+
+      <!-- ====== 最终成果 ====== -->
+      <h2>最终成果</h2>
       <div class="result-grid">
-        <div class="result-item"><span class="status">✅</span> 双 MCU 系统通信正常</div>
-        <div class="result-item"><span class="status">✅</span> LoRa 无线链路稳定 (200m+)</div>
-        <div class="result-item"><span class="status">✅</span> GPS 定位数据成功解析</div>
-        <div class="result-item"><span class="status">✅</span> 电机前进/后退/转向可控</div>
-        <div class="result-item"><span class="status">✅</span> ADC 数据无线回传 PC 端</div>
+        <div class="result-item"><span class="status">✅</span> 控制端与车端 LoRa 双向通信正常</div>
+        <div class="result-item"><span class="status">✅</span> 控制端可下发运动指令</div>
+        <div class="result-item"><span class="status">✅</span> 车端可根据指令完成前进、后退、转向和停止</div>
+        <div class="result-item"><span class="status">✅</span> PWM 电机控制稳定</div>
+        <div class="result-item"><span class="status">✅</span> GPS NMEA 数据可解析</div>
+        <div class="result-item"><span class="status">✅</span> ADC 模拟量数据可无线回传</div>
+        <div class="result-item"><span class="status">✅</span> OLED 可显示状态信息</div>
+        <div class="result-item"><span class="status">✅</span> 系统采用状态机方式调度，遥控响应及时</div>
+        <div class="result-item"><span class="status">✅</span> 比赛实物小车完成搭建和运行验证</div>
       </div>
 
-      <h2>调试工具</h2>
+      <!-- ====== 调试与验证 ====== -->
+      <h2>调试与验证</h2>
+      <p>本项目通过多种方式验证系统功能：</p>
       <ul>
-        <li><strong>串口调试助手</strong> — 查看 LoRa 收发数据</li>
-        <li><strong>逻辑分析仪</strong> — 分析 UART 通信时序</li>
-        <li><strong>万用表</strong> — 检查供电和信号电平</li>
-        <li><strong>PC 端串口解析工具</strong> — 验证 GPS 和 ADC 回传数据</li>
+        <li>使用串口助手查看 LoRa 收发数据，验证控制指令和回传数据格式</li>
+        <li>使用 PC 端串口工具查看 GPS NMEA 数据和 ADC 回传结果</li>
+        <li>使用万用表检查电源、电机驱动和模块供电状态</li>
+        <li>使用逻辑分析仪分析 UART 通信时序，排查异常数据和通信不稳定问题</li>
+        <li>通过实物运行测试验证电机动作、遥控响应和无线回传效果</li>
       </ul>
 
-      <h2>复盘总结</h2>
-      <ul>
-        <li>双 MCU 系统的核心是 <strong>通信协议设计</strong> — 帧格式、校验、超时重传缺一不可</li>
-        <li>LoRa 虽然传输距离远，但 <strong>速率和稳定性需要权衡</strong></li>
-        <li><strong>状态机</strong> 是组织多任务嵌入式系统的核心思想</li>
-        <li>GPS NMEA 解析看似简单，但 <strong>异常字符和断帧处理</strong> 才是工程难点</li>
-      </ul>
-
-      <div class="info-block green">
-        <strong>关键词：</strong>
-        STM32F4 · STM32F1 · LoRa · UART · ADC · OLED · GPS NMEA · DRV8701 · 电机控制 · 状态机 · 无线通信 · 系统联调
-      </div>
+      <!-- ====== 项目复盘 ====== -->
+      <h2>项目复盘</h2>
+      <p>
+        这个项目让我理解到，无线遥控小车的难点不只是让电机转起来，而是让控制端、通信链路和车端执行逻辑稳定配合。LoRa 通信在实际环境中可能出现延迟、丢包或异常字节，因此必须通过帧格式、校验和接收状态机保证指令不会被误解析。
+      </p>
+      <p>
+        在裸机 STM32 系统中，多模块同时运行时最容易出现的问题是阻塞。GPS 串口接收、LoRa 通信、电机控制、ADC 采样和 OLED 刷新如果都直接使用 delay 或阻塞等待，系统响应会明显变慢。因此我在项目中使用超级循环 + 状态机拆分任务，让每个任务短时间执行，提高系统实时性。
+      </p>
+      <p>
+        这个项目也让我积累了整机联调经验。实际小车运行时，供电、电机干扰、串口通信、模块接线和数据格式都会影响最终效果。相比单独点亮某个模块，把多个模块组合成一个能跑、能通信、能回传数据的系统，更能体现嵌入式工程能力。
+      </p>
 
     </div>
   </div>

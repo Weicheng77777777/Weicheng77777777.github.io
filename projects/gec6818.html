@@ -6,10 +6,103 @@
   <meta name="description" content="GEC6818 ARM64 Linux 系统移植 - 项目详情">
   <title>GEC6818 ARM64 Linux 系统移植 | 冯威成</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ——— 项目亮点表 ——— */
+    .hl-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 24px;
+      font-size: 0.88rem;
+    }
+    .hl-table th, .hl-table td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .hl-table th {
+      color: var(--terminal-green);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-card);
+    }
+    .hl-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .hl-table td:last-child {
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+    }
+    .hl-table tr:hover td {
+      background: rgba(0,255,136,0.03);
+    }
+
+    /* ——— 架构流程图 ——— */
+    .arch-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin: 16px 0 28px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+    }
+    .arch-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+      text-align: center;
+      min-width: 0;
+    }
+    .arch-node.kernel {
+      border-color: var(--terminal-green-dim);
+      color: var(--terminal-green);
+    }
+    .arch-node.target {
+      border-color: rgba(0,255,136,0.3);
+      background: rgba(0,255,136,0.06);
+    }
+    .arch-arrow {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .arch-break {
+      width: 100%;
+      height: 0;
+    }
+
+    /* ——— 图片说明 ——— */
+    .figure-caption {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: -10px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 768px) {
+      .arch-flow {
+        gap: 4px;
+        font-size: 0.7rem;
+      }
+      .arch-node {
+        padding: 8px 10px;
+      }
+      .hl-table th, .hl-table td {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- 导航栏 -->
   <nav class="nav-bar">
     <div class="nav-inner">
       <a href="../" class="nav-brand">weicheng.dev</a>
@@ -22,82 +115,107 @@
     </div>
   </nav>
 
-  <!-- 项目详情 -->
   <div class="project-detail">
     <div class="container">
-      <!-- 返回链接 -->
       <a href="../#projects" class="back-link">← 返回项目列表</a>
 
       <h1>GEC6818 ARM64 Linux 系统移植</h1>
       <p class="subtitle">基于 S5P6818 Cortex-A53 · 板级 bring-up · DTS/DTB · LCD · Touch</p>
 
-      <!-- GitHub 链接 -->
+      <!-- 实物图：第一屏展示 -->
+      <img src="../images/gec6818/GEC6818实物图.jpg" alt="GEC6818 开发板运行 ARM64 Linux，LCD 正常显示" loading="lazy">
+      <p class="figure-caption">GEC6818 开发板运行 ARM64 Linux · LCD RGB 800×480 正常显示</p>
+
+      <!-- 项目简介 -->
+      <p>
+        本项目基于 S5P6818 Cortex-A53 开发板，完成 GEC6818 从参考 BSP 到 ARM64 Linux 可运行系统的板级适配。
+        实现了 SD 卡启动 ARM64 Linux、GEC6818 专属 DTS/DTB、RGB LCD 显示、PWM 背光、FT5206 I2C 触摸和 I2C 外设验证。
+      </p>
+
       <a href="https://github.com/Weicheng77777777/GEC6818-Friendly-Smart6818-64-" class="project-github-link" target="_blank">
         ▷ 查看 GitHub 仓库
       </a>
 
-      <!-- 项目背景 -->
-      <h2>项目背景</h2>
+      <!-- ====== 项目亮点 ====== -->
+      <h2>项目亮点</h2>
+      <table class="hl-table">
+        <thead>
+          <tr><th>内容</th><th>体现能力</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ARM64 Linux 系统启动</td><td>熟悉 U-Boot、Kernel、启动链路</td></tr>
+          <tr><td>DTS/DTB 适配</td><td>理解 Linux 设备树和板级硬件描述</td></tr>
+          <tr><td>LCD RGB 显示</td><td>熟悉显示链路、pinctrl、背光控制</td></tr>
+          <tr><td>FT5206 触摸适配</td><td>熟悉 I2C、GPIO 中断、input 子系统</td></tr>
+          <tr><td>串口日志调试</td><td>具备嵌入式 Linux 问题定位能力</td></tr>
+          <tr><td>Git Release 管理</td><td>具备工程化版本管理意识</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ====== 我的主要工作 ====== -->
+      <h2>我的主要工作</h2>
       <p>
-        GEC6818 开发板基于 S5P6818 Cortex-A53 处理器，但官方资料以 32 位系统为主。
-        本项目尝试移植 ARM64 Linux，基于 FriendlyElec Smart6818 的 ARM64 FriendlyCore 系统，
-        在 GEC6818 开发板上跑通 SD 卡启动链路，并逐步完成 U-Boot、Kernel、DTS/DTB、LCD、触摸等板级适配工作。
-        项目使用 Git tag / GitHub Release 记录阶段性成果，将项目拆分为 v0.1.0~v0.3.0 等版本，
-        分别固化 DTS bring-up、LCD 适配和触摸适配结果。
+        本项目基于 FriendlyElec Smart6818 ARM64 FriendlyCore 作为参考 BSP，我主要完成 GEC6818 开发板的板级差异适配：
       </p>
-
-      <!-- 系统架构 -->
-      <h2>系统架构</h2>
-      <div class="img-placeholder">
-        <span class="icon">📐</span>
-        系统框图（待添加）
-        <br><small>请替换为 architecture.png</small>
-      </div>
-
-      <h2>硬件组成</h2>
       <ul>
-        <li><strong>主控：</strong>S5P6818 (Cortex-A53, 8 核)</li>
-        <li><strong>显示：</strong>AT070TN92 RGB 接口 7 寸屏 (800×480)</li>
-        <li><strong>触摸：</strong>FT5206 电容触摸 (I2C-1, 0x38)</li>
-        <li><strong>外设：</strong>I2C 传感器、UART 调试口、SD 卡启动</li>
-        <li><strong>系统：</strong>FriendlyCore ARM64 (Linux 4.4.172)</li>
+        <li>修正 U-Boot 阶段 DTB 加载路径，解决 Kernel panic</li>
+        <li>新建 GEC6818 专属 DTS 文件，修改 model、compatible 和外设节点</li>
+        <li>将显示链路从 LVDS / 1024×600 适配为 RGB / AT070TN92 / 800×480</li>
+        <li>添加 LCD_EN GPIO、PWM 背光和 RGB pinctrl 配置</li>
+        <li>修正 FT5206 触摸的 I2C bus、INT GPIO、WAKE GPIO 配置</li>
+        <li>使用 dmesg、i2cdetect、/proc/device-tree、/proc/bus/input/devices 验证适配结果</li>
       </ul>
 
-      <!-- 关键难点 -->
-      <h2>关键难点与调试过程</h2>
+      <!-- ====== 系统架构 ====== -->
+      <h2>系统架构</h2>
+      <div class="arch-flow">
+        <span class="arch-node">SD Card Boot</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node">U-Boot</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node">Load Kernel Image</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node">Load GEC6818 DTB</span>
+        <span class="arch-break"></span>
+        <span class="arch-node kernel">Linux Kernel 4.4.172 ARM64</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node">Device Tree Match</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node target">RGB LCD</span>
+        <span class="arch-node target">FT5206 Touch</span>
+        <span class="arch-node target">I2C Sensor</span>
+      </div>
 
-      <h3>1. DTB 加载失败导致 Kernel panic</h3>
+      <!-- ====== 关键难点 ====== -->
+      <h2>关键难点</h2>
+
+      <h3>1. DTB 加载错误导致 Kernel panic</h3>
       <p>
-        首次启动时，U-Boot 加载 DTB 后 Kernel 直接 panic。
-        通过串口日志定位发现 U-Boot 阶段 DTB 地址配置错误，
-        实际加载的是 NanoPi3 的 DTB 而非 GEC6818 的 DTB。
+        首次启动时，Kernel 在早期阶段 panic。通过串口日志发现 <code>Machine model</code> 显示为 FriendlyElec NanoPi3，而不是 GEC6818。
+      </p>
+      <p>
+        我判断 Kernel image 已经被加载，问题更可能出在 DTB 加载路径或设备树内容。随后检查 U-Boot 启动参数和 DTB 文件，发现实际加载的是 NanoPi3 的 DTB。
       </p>
       <div class="code-block">
 <span class="comment">// 串口日志关键输出</span>
 [    0.000000] <span class="keyword">Machine model:</span> FriendlyElec NanoPi3
 [    0.000000] <span class="keyword">Kernel panic</span> - not syncing: Unable to ...</div>
       <p>
-        <strong>解决方案：</strong>修改设备树 <code>model</code> 和 <code>compatible</code> 字段，
-        创建 GEC6818 专属 DTS 文件 <code>s5p6818-gec6818-rev01.dts</code>，
-        并通过 <code>cat /proc/device-tree/model</code> 验证。
+        最终我新建 <code>s5p6818-gec6818-rev01.dts</code>，修改 <code>model</code> 和 <code>compatible</code> 字段，并修正 U-Boot 阶段 DTB 加载配置。
       </p>
       <div class="code-block">
-<span class="comment">// 验证命令</span>
+<span class="comment">// 修复后验证</span>
 <span class="prompt">#</span> cat /proc/device-tree/model
 GEC6818 based on S5P6818<br>
 <span class="prompt">#</span> cat /proc/device-tree/compatible
 samsung,gec6818,samsung,s5p6818</div>
 
-      <div class="img-placeholder">
-        <span class="icon">📷</span>
-        串口日志截图（待添加）
-        <br><small>请替换为 serial-log.png</small>
-      </div>
-
-      <h3>2. LCD 显示链路适配</h3>
+      <h3>2. LCD RGB 显示链路适配</h3>
       <p>
-        原系统使用 NanoPi3 的 LVDS / 1024×600 链路，GEC6818 使用 RGB / AT070TN92 / 800×480。
-        需要切换驱动链路、添加面板描述、恢复 RGB pinctrl 并添加 LCD_EN 与 PWM 背光控制。
+        参考系统使用 NanoPi3 的 LVDS / 1024×600 显示链路，而 GEC6818 使用 AT070TN92 RGB 接口 800×480 屏幕。
+      </p>
+      <p>
+        我将显示链路从 <code>dp_drm_lvds</code> 切换为 <code>dp_drm_rgb</code>，添加 AT070TN92 面板参数，恢复 RGB pinctrl，并增加 LCD_EN GPIO 与 PWM 背光控制。最终 LCD 屏幕正常显示，见上方实物图。
       </p>
       <div class="info-block">
         <strong>关键修改：</strong>
@@ -111,72 +229,62 @@ samsung,gec6818,samsung,s5p6818</div>
 
       <h3>3. FT5206 触摸 probe 失败</h3>
       <p>
-        旧设备树路径为 <code>i2c_2 + GPIOC16 + one-wire</code>，正确路径应为
-        <code>i2c_1 + GPIOB26(INT) + GPIOB8(WAKE) + FT5206</code>。
-        通过 <code>/sys/bus/i2c/devices</code> 和串口日志比对，发现 I2C 地址和中断引脚配置错误。
+        原设备树中的触摸路径与 GEC6818 实际硬件不一致，导致 FT5206 probe 失败。
+        原路径为 <code>i2c_2 + GPIOC16 + one-wire</code>，而 GEC6818 实际使用 <code>i2c_1 + GPIOB26(INT) + GPIOB8(WAKE) + FT5206</code>。
       </p>
       <div class="info-block yellow">
-        <strong>调试工具：</strong>
+        <strong>调试命令链：</strong>
         <ul>
+          <li><code>i2cdetect -y 1</code> — 确认 I2C 地址 0x38</li>
           <li><code>dmesg | grep ft5206</code> — 查看驱动 probe 日志</li>
-          <li><code>cat /proc/bus/input/devices</code> — 验证输入设备注册</li>
+          <li><code>cat /proc/bus/input/devices</code> — 验证 input 设备注册</li>
           <li><code>hexdump /dev/input/event1</code> — 验证触摸事件流</li>
-          <li><code>i2cdetect -y 1</code> — 扫描 I2C 总线设备</li>
         </ul>
       </div>
       <div class="code-block">
-<span class="comment">// 验证触摸事件流</span>
+<span class="comment">// hexdump 验证触摸事件流</span>
 <span class="prompt">#</span> hexdump /dev/input/event1
 0000000 <span class="number">00b4</span> <span class="number">0000</span> <span class="number">5f05</span> <span class="number">0005</span> <span class="number">0003</span> <span class="number">0000</span> <span class="number">01a8</span> <span class="number">0000</span>
 0000010 <span class="number">00b4</span> <span class="number">0000</span> <span class="number">5f05</span> <span class="number">0005</span> <span class="number">0003</span> <span class="number">0001</span> <span class="number">0106</span> <span class="number">0000</span></div>
+      <p>
+        通过以上命令链逐步排查，确认 I2C 地址、中断引脚和驱动匹配关系，修复后触摸功能正常。
+      </p>
 
-      <!-- 最终结果 -->
-      <h2>最终结果</h2>
+      <!-- ====== 最终成果 ====== -->
+      <h2>最终成果</h2>
       <div class="result-grid">
-        <div class="result-item"><span class="status">✅</span> 成功启动 ARM64 Linux 系统</div>
-        <div class="result-item"><span class="status">✅</span> LCD 屏幕正常显示 (RGB 800×480)</div>
-        <div class="result-item"><span class="status">✅</span> 触摸功能可用 (FT5206)</div>
+        <div class="result-item"><span class="status">✅</span> ARM64 Linux 系统成功启动</div>
+        <div class="result-item"><span class="status">✅</span> GEC6818 专属 DTS/DTB 加载正常</div>
+        <div class="result-item"><span class="status">✅</span> LCD RGB 800×480 显示正常</div>
+        <div class="result-item"><span class="status">✅</span> PWM 背光控制正常</div>
+        <div class="result-item"><span class="status">✅</span> FT5206 电容触摸可用</div>
         <div class="result-item"><span class="status">✅</span> I2C 传感器读取正常</div>
-        <div class="result-item"><span class="status">✅</span> Git Release 版本管理 (v0.1.0~v0.3.0)</div>
+        <div class="result-item"><span class="status">✅</span> Git tag / Release 记录阶段成果</div>
       </div>
 
-      <div class="img-placeholder">
-        <span class="icon">📷</span>
-        运行效果图（待添加）
-        <br><small>请替换为 final.jpg</small>
-      </div>
+      <!-- ====== 项目复盘 ====== -->
+      <h2>项目复盘</h2>
+      <p>
+        这个项目让我真正理解了设备树在嵌入式 Linux 中的作用。驱动能否正常 probe，不只取决于驱动代码是否存在，还取决于 compatible、reg、interrupt、pinctrl、gpio 等硬件描述是否与实际板卡一致。
+      </p>
+      <p>
+        同时，我也建立了比较完整的 bring-up 排查顺序：先确认 U-Boot 是否正确加载 Kernel 和 DTB，再看 Kernel early log，然后确认 machine model、driver probe、/proc 和 /sys 中的运行状态。
+      </p>
+      <p>
+        参考相近开发板的配置可以大幅减少试错成本，但必须验证每个差异点——看似相同的 SoC 在不同板卡上的外设引脚、I2C 地址、显示链路都可能不同。
+      </p>
 
-      <!-- 调试工具 -->
-      <h2>调试工具</h2>
-      <ul>
-        <li><strong>串口调试助手</strong> — 查看启动日志</li>
-        <li><strong>dmesg</strong> — 内核日志分析</li>
-        <li><strong>/proc/device-tree</strong> — 验证设备树节点加载</li>
-        <li><strong>/proc/bus/input/devices</strong> — 验证输入设备</li>
-        <li><strong>i2cdetect / i2cget</strong> — I2C 设备扫描</li>
-        <li><strong>示波器</strong> — 验证 LCD 时序</li>
-        <li><strong>Git tag / Release</strong> — 版本管理与可复现</li>
-      </ul>
-
-      <!-- 复盘总结 -->
-      <h2>复盘总结</h2>
-      <p>这次移植让我深刻理解了：</p>
-      <ul>
-        <li><strong>设备树是 Linux 描述硬件的核心</strong> — 节点和 compatible 必须与驱动匹配，否则外设无法 probe</li>
-        <li><strong>串口日志是最重要的调试手段</strong> — 从第一行日志开始顺序分析，不要跳过任何 INFO/WARNING</li>
-        <li><strong>参考相近开发板的配置</strong> — 可以大幅减少试错成本，但必须验证每个差异点</li>
-        <li><strong>版本管理对 BSP 开发至关重要</strong> — Git tag 让每个阶段都可复现、可回滚</li>
-      </ul>
-
-      <div class="info-block green">
-        <strong>关键词：</strong>
-        ARM64 · S5P6818 · GEC6818 · FriendlyCore · U-Boot · Linux Kernel · DTS/DTB · BSP · LCD RGB · AT070TN92 · FT5206 · I2C · dmesg · 串口日志 · Git Release
+      <!-- ====== GitHub 入口 ====== -->
+      <div class="info-block green" style="margin-top: 32px;">
+        <strong>完整源码、Release 版本和详细调试记录见 GitHub 仓库：</strong><br>
+        <a href="https://github.com/Weicheng77777777/GEC6818-Friendly-Smart6818-64-" target="_blank" style="color: var(--terminal-green);">
+          github.com/Weicheng77777777/GEC6818-Friendly-Smart6818-64-
+        </a>
       </div>
 
     </div>
   </div>
 
-  <!-- 页脚 -->
   <footer class="footer">
     <div class="container">
       <div class="footer-links">
