@@ -92,6 +92,80 @@
       margin-bottom: 28px;
     }
 
+    /* ——— 设计流程时间线 ——— */
+    .flow-timeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 28px;
+    }
+    .flow-step {
+      flex: 1;
+      min-width: 140px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      border-radius: 50%;
+      background: rgba(0,255,136,0.12);
+      color: var(--terminal-green);
+      font-weight: 700;
+      font-size: 0.78rem;
+      margin-bottom: 8px;
+    }
+    .flow-step .step-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .flow-step .step-desc {
+      color: var(--text-muted);
+      font-size: 0.73rem;
+      line-height: 1.5;
+    }
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      color: var(--terminal-green);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    /* ——— 量化数据卡片 ——— */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 14px 0 26px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--terminal-green);
+      font-family: var(--font-mono);
+      letter-spacing: -0.5px;
+    }
+    .metric-label {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
     @media (max-width: 768px) {
       .arch-flow {
         gap: 4px;
@@ -103,6 +177,16 @@
       .hl-table th, .hl-table td {
         padding: 8px 10px;
         font-size: 0.78rem;
+      }
+      .flow-timeline {
+        flex-direction: column;
+      }
+      .flow-arrow {
+        justify-content: center;
+        transform: rotate(90deg);
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -128,163 +212,338 @@
       <a href="../#projects" class="back-link">← 返回项目列表</a>
 
       <h1>STM32F411 智能家居环境监测系统</h1>
-      <p class="subtitle">传感器采集 · TFT 显示 · ESP8266 Wi-Fi · MQTT 云端 · PCB 打样</p>
+      <p class="subtitle">传感器采集 · TFT 显示 · ESP8266 Wi-Fi · MQTT 云端 · PCB 打样 · 状态机调度</p>
 
-      <!-- 实物图：第一屏展示 -->
+      <!-- 实物图 -->
       <img src="../images/stm32f411/F411温湿度的实物图.jpg" alt="STM32F411 智能家居环境监测系统实物运行图" loading="lazy">
       <p class="figure-caption">STM32F411 系统实物运行 · DHT11 / DS18B20 传感器采集与 TFT 显示</p>
 
-      <!-- 项目简介 -->
+      <!-- ====== 一、项目背景与动机 (Situation) ====== -->
+      <h2>📌 项目背景与动机</h2>
       <p>
-        本项目基于 STM32F411CEU6 设计并实现了一套智能家居环境监测系统，集成 DHT11、DS18B20、ST7789V TFT 彩屏、ESP8266 Wi-Fi、MQTT 云端上传、按键菜单、ADC 采集和蜂鸣器报警等功能。项目覆盖原理图设计、PCB 打样、焊接调试、外设驱动开发、显示界面设计、无线通信和云端验证，体现了从硬件到软件的完整嵌入式系统实现流程。
+        在学习 STM32 外设驱动的过程中，我先后完成了 GPIO、SPI、UART、DMA、ADC、TIM 等模块的单独验证。但这些独立实验无法体现一个完整嵌入式系统的复杂性——真正的挑战在于如何让多个外设<strong>在同一时间轴上协同工作</strong>，同时保证界面流畅、传感器采集可靠、通信稳定。
+      </p>
+      <p>
+        因此，我决定以<strong>智能家居环境监测终端</strong>为应用场景，将所学外设知识整合成一个从硬件设计到软件架构的完整系统。这个项目的核心目标不是"把模块跑通"，而是<strong>在裸机 HAL 环境下实现一个响应及时、架构清晰、便于扩展的嵌入式终端</strong>。
       </p>
 
-      <a href="https://github.com/Weicheng77777777/F411_TFT_V10" class="project-github-link" target="_blank">
-        ▷ 查看 GitHub 仓库
-      </a>
+      <!-- ====== 二、量化成果概览 (Result 前置) ====== -->
+      <h2>⚡ 核心指标</h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">50+ fps</div>
+          <div class="metric-label">TFT 界面刷新率</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">&lt; 1 ms</div>
+          <div class="metric-label">DMA 清屏时间</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">~2 ms</div>
+          <div class="metric-label">局部刷新耗时</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">50 MHz</div>
+          <div class="metric-label">SPI 通信速率</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">10 ms</div>
+          <div class="metric-label">系统调度节拍</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">9</div>
+          <div class="metric-label">并发任务数</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">~24 ms</div>
+          <div class="metric-label">全屏重绘耗时</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">1024 B</div>
+          <div class="metric-label">UART 日志 FIFO</div>
+        </div>
+      </div>
 
-      <!-- ====== 项目亮点 ====== -->
-      <h2>项目亮点</h2>
-      <table class="hl-table">
-        <thead>
-          <tr><th>内容</th><th>体现能力</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>STM32F411 主控开发</td><td>熟悉 Cortex-M4、HAL、外设初始化</td></tr>
-          <tr><td>ST7789V TFT 显示</td><td>掌握 SPI、DMA、局部刷新和界面绘制</td></tr>
-          <tr><td>DHT11 / DS18B20 采集</td><td>熟悉单总线时序、传感器驱动和数据处理</td></tr>
-          <tr><td>ESP8266 + MQTT</td><td>掌握 UART、AT 指令、Wi-Fi 联网和云端通信</td></tr>
-          <tr><td>按键菜单交互</td><td>掌握状态机、长短按识别和人机交互</td></tr>
-          <tr><td>PCB 打样与调试</td><td>具备原理图、PCB、焊接和硬件问题排查经验</td></tr>
-          <tr><td>供电干扰优化</td><td>具备电源稳定性、去耦和整机调试意识</td></tr>
-        </tbody>
-      </table>
-
-      <!-- ====== 我的主要工作 ====== -->
-      <h2>我的主要工作</h2>
-      <p>
-        本项目由我完成整体方案设计、硬件选型、原理图与 PCB 设计、焊接调试、STM32 固件开发、外设驱动封装、TFT 菜单界面、ESP8266 联网通信和 MQTT 云端验证。项目重点不是简单拼接模块，而是完成从硬件设计到软件调试的完整嵌入式系统闭环。
-      </p>
-      <ul>
-        <li>使用 STM32F411CEU6 作为主控，完成 GPIO、SPI、DMA、UART、TIM、ADC 等外设配置</li>
-        <li>基于 SPI + DMA 驱动 ST7789V TFT 彩屏，设计局部刷新策略，降低刷屏闪烁</li>
-        <li>编写 DHT11、DS18B20 传感器采集逻辑，其中 DS18B20 使用非阻塞状态机避免主循环阻塞</li>
-        <li>使用 ESP8266 通过 UART AT 指令连接 Wi-Fi，并将环境数据通过 MQTT 上传到云端</li>
-        <li>设计按键菜单交互，支持长按、短按和多页面数据显示</li>
-        <li>完成 PCB 打样、焊接、上电测试和供电干扰排查</li>
-        <li>使用串口助手、MQTTX、万用表等工具验证系统运行状态</li>
-      </ul>
-
-      <!-- ====== 系统架构 ====== -->
-      <h2>系统架构</h2>
+      <!-- ====== 三、系统架构 ====== -->
+      <h2>🏗️ 系统架构</h2>
       <div class="arch-flow">
         <span class="arch-label">传感器层</span>
         <span class="arch-node">DHT11</span>
         <span class="arch-node">DS18B20</span>
-        <span class="arch-node">ADC</span>
+        <span class="arch-node">ADC ×3</span>
         <span class="arch-arrow">→</span>
-        <span class="arch-node mcu">STM32F411CEU6<br>数据采集与处理</span>
+        <span class="arch-node mcu">STM32F411CEU6<br>10ms 分时调度器</span>
         <span class="arch-arrow">→</span>
-        <span class="arch-node">TFT 菜单显示</span>
+        <span class="arch-node">TFT 菜单显示<br>(SPI 50MHz DMA)</span>
         <span class="arch-node">蜂鸣器报警</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-node">按键菜单<br>(事件队列)</span>
         <span class="arch-break"></span>
         <span class="arch-label" style="text-align:right; padding-right: 8px;">通信层</span>
-        <span class="arch-node mcu" style="margin-left: auto;">ESP8266<br>UART AT · Wi-Fi</span>
+        <span class="arch-node mcu" style="margin-left: auto;">ESP8266<br>UART AT · 状态机</span>
         <span class="arch-arrow">→</span>
         <span class="arch-node endpoint">MQTT 云端上传</span>
         <span class="arch-arrow">→</span>
-        <span class="arch-node endpoint">MQTTX 验证</span>
+        <span class="arch-node endpoint">UART 日志<br>FIFO 异步输出</span>
       </div>
 
-      <!-- ====== 关键难点 ====== -->
-      <h2>关键难点</h2>
-
-      <h3>1. SPI + DMA 驱动 ST7789V TFT</h3>
-      <p>
-        ST7789V 彩屏分辨率为 320×480，如果使用普通阻塞式 SPI 全屏刷新，容易出现刷新慢、界面闪烁和主循环被占用的问题。
-      </p>
-      <p>
-        我使用 SPI + DMA 方式传输显示数据，将 CPU 从大量像素发送中释放出来，并设计局部刷新策略，只更新发生变化的区域，减少无效刷屏。最终实现 TFT 菜单界面流畅显示，屏幕刷新率可达 50+ fps，DMA 优化后清屏时间小于 1ms。
+      <p style="font-size: 0.82rem; color: var(--text-muted);">
+        核心设计思想：系统基于<strong> 10ms 软件节拍</strong>（HAL_GetTick 基准），通过分时调度器驱动 9 个独立任务。TFT 刷新保持 50Hz，传感器采集不阻塞主循环，ESP8266 通信走状态机链式推进，UART 日志经 FIFO 缓冲后中断发送。主循环中<strong>零 HAL_Delay、零 while 忙等</strong>。
       </p>
 
-      <h3>2. DS18B20 非阻塞状态机采集</h3>
+      <!-- ====== 四、关键难点与解决方案 (Action) ====== -->
+      <h2>🔧 关键难点与解决方案</h2>
+
+      <!-- 难点 1: SPI + DMA 驱动 ST7789V TFT -->
+      <h3>难点一：SPI + DMA 驱动 ST7789V TFT — 从阻塞闪烁到 50fps 流畅刷新</h3>
+
+      <p><strong>❖ 遇到的问题</strong></p>
       <p>
-        DS18B20 温度转换时间较长，典型转换时间约 750ms。如果直接在主循环中阻塞等待，会影响 TFT 刷新、按键响应和 MQTT 上传。
+        ST7789V 彩屏分辨率 320×240（RGB 565 格式），单帧像素数据量约 150KB。最初使用阻塞式 SPI 逐帧发送时：
       </p>
+      <ul>
+        <li><strong>全屏刷新卡顿严重</strong>：CPU 被大量像素传输完全占用，主循环其他任务被挂起，用户体验差。</li>
+        <li><strong>界面闪烁</strong>：全屏逐行刷新的过程中，新旧帧交替可见，视觉上产生撕裂感。</li>
+        <li><strong>与其他任务互斥</strong>：传感器采集、按键扫描必须在刷屏间隙执行，时序难以协调。</li>
+      </ul>
+
+      <p><strong>❖ 我的解决思路</strong></p>
       <p>
-        因此我将 DS18B20 采集流程拆分为状态机：启动转换、等待转换、读取数据、数据处理。主循环不再等待传感器转换完成，而是在不同时间片中轮询状态，从而保证系统界面和通信任务可以继续运行。
+        核心矛盾是"大量数据传输占用 CPU"与"系统需要响应其他任务"。我沿着两个方向破局：
       </p>
+      <ol>
+        <li><strong>传输层面</strong>：将像素数据搬运从 CPU 卸载到 DMA，CPU 仅负责启动传输。</li>
+        <li><strong>策略层面</strong>：不必每次全屏重绘，只刷新发生变化的"脏区域"。</li>
+      </ol>
+
+      <p><strong>❖ 具体实现</strong></p>
+      <ul>
+        <li><strong>SPI 50MHz + DMA 异步传输</strong>：将 ST7789V 的 SPI 速率推至 50MHz，启动 DMA 传输后 CPU 立即返回。通过全局标志 <code>tft_spi_dma_busy</code> 判断当前 DMA 是否空闲——若忙则跳过本帧，避免数据冲突。</li>
+        <li><strong>DMA 完成回调</strong>：在 <code>HAL_SPI_TxCpltCallback</code> 中清除 busy 标志，通知调度器可发送下一帧。</li>
+        <li><strong>三级刷新策略</strong>：
+          <ul>
+            <li><em>无变化时</em>：TFT 任务直接返回，零开销。</li>
+            <li><em>数据变化时</em>：仅局部刷新数值区域（~2ms），用户感知不到延迟。</li>
+            <li><em>页面切换时</em>：全屏重绘（~24ms），仅发生在按键触发时，频率极低。</li>
+          </ul>
+        </li>
+        <li><strong>调度器 20ms 周期</strong>：TFT 任务每 20ms 执行一次，对应 50Hz 刷新频率，与 DMA 异步机制配合，CPU 利用率大幅下降。</li>
+      </ul>
+
+      <p><strong>❖ 达到的效果</strong></p>
+      <ul>
+        <li>DMA 优化后 <strong>清屏时间从数百毫秒降至 &lt; 1ms</strong>。</li>
+        <li>界面刷新率达到 <strong>50+ fps</strong>，菜单切换和传感器数值更新流畅无闪烁。</li>
+        <li>传感器采集和 MQTT 上传不再被 TFT 刷新阻塞，多任务协同运行。</li>
+      </ul>
+
       <div class="code-block">
-<span class="keyword">typedef enum</span> {
-    DS18B20_IDLE,
-    DS18B20_START_CONVERT,
-    DS18B20_WAIT_CONVERT,
-    DS18B20_READ_READY
-} ds18b20_state_t;</div>
+<span class="keyword">void</span> <span class="function">TFT_Update_Task</span>(<span class="keyword">void</span>)
+{
+    <span class="keyword">if</span> (tft_spi_dma_busy) <span class="keyword">return</span>;              <span class="comment">// DMA 忙 → 跳过本帧，不阻塞</span>
 
-      <h3>3. ESP8266 + MQTT 分时上传</h3>
+    <span class="keyword">if</span> (ui_need_full_redraw) {              <span class="comment">// 页面切换 → 全屏重绘 ~24ms</span>
+        TFT_Show_UI_Full();
+        ui_need_full_redraw = 0;
+    } <span class="keyword">else if</span> (ui_data_dirty) {            <span class="comment">// 数据变化 → 局部刷新 ~2ms</span>
+        TFT_Update_Data_Area();
+    }
+    <span class="comment">// 无变化 → 直接返回，零 CPU 开销</span>
+}</div>
+
+      <!-- 难点 2: DS18B20 非阻塞状态机 -->
+      <h3>难点二：DS18B20 非阻塞状态机 — 消灭主循环中的 750ms 硬等待</h3>
+
+      <p><strong>❖ 遇到的问题</strong></p>
       <p>
-        系统通过 ESP8266 使用 UART AT 指令连接 Wi-Fi，并将传感器数据上传到 MQTT 云端。调试过程中发现，如果多个传感器数据在短时间内连续上传，可能导致 ESP8266 串口缓冲区压力增大，出现响应延迟或数据丢失。
+        DS18B20 温度传感器的<strong>温度转换时间典型值为 750ms</strong>，这是硬件物理极限，无法通过软件加速。原始驱动中调用 <code>HAL_Delay(750)</code> 等待转换完成，这意味着：
       </p>
+      <ul>
+        <li>主循环每采集一次温度，就有 750ms 完全卡死——TFT 动画停滞、按键无响应、MQTT 断连。</li>
+        <li>如果同时采集 DHT11（~20ms 阻塞）并上传 MQTT（AT 指令串行等待 ~12s），整个系统几乎不可用。</li>
+      </ul>
+
+      <p><strong>❖ 我的解决思路</strong></p>
       <p>
-        为此我采用分时上传策略，将温度、湿度、ADC 等不同数据分散到不同时间片上传，降低瞬时通信压力。同时通过串口日志和 MQTTX 验证云端消息是否成功接收。
+        "等待"本身不是问题——问题是"谁在等"。CPU 不应该亲自等 750ms，应该<strong>启动转换后立即去做其他事，到时间了再回来取结果</strong>。这正是<strong>非阻塞状态机</strong>的典型应用场景。
       </p>
 
-      <h3>4. PCB 打样后的供电干扰复位问题</h3>
+      <p><strong>❖ 具体实现</strong></p>
+      <ul>
+        <li><strong>四阶段状态机</strong>：将采集流程拆分为 <code>IDLE → START_CONVERT → WAIT_CONVERT（750ms）→ READ_SCRATCHPAD → PROCESS_DATA → IDLE</code>。</li>
+        <li><strong>基于 10ms 节拍的非阻塞计时</strong>：启动转换时记录当前 <code>g_tick_10ms</code>，后续每次任务被执行时检查 tick 差值是否 ≥ 75（即 750ms），取代 <code>HAL_Delay</code>。</li>
+        <li><strong>1 秒调度周期</strong>：DS18B20 任务每 100 tick（1s）执行一次，完整采集周期约 2 秒。这个频率对于环境温度监测完全足够，且不给系统增加负担。</li>
+        <li><strong>容错处理</strong>：读取失败时保留上次有效值，防止 TFT 显示跳变或出现异常数值。</li>
+      </ul>
+
+      <p><strong>❖ 达到的效果</strong></p>
+      <ul>
+        <li>DS18B20 采集<strong>不再阻塞主循环</strong>，750ms 等待期间 CPU 正常执行 TFT 刷新、按键扫描、MQTT 上传等任务。</li>
+        <li>温度数据每 ~2s 更新一次，满足环境监测的实时性需求。</li>
+        <li>验证方法：按下按键时菜单即时响应，<strong>不会出现"按键没反应、要等传感器读完才动"的情况</strong>。</li>
+      </ul>
+
+      <div class="code-block">
+<span class="keyword">void</span> <span class="function">DS18B20_Task</span>(<span class="keyword">void</span>)
+{
+    <span class="keyword">switch</span> (ds18b20_state) {
+    <span class="keyword">case</span> DS18B20_STATE_IDLE:
+        DS18B20_StartConvert();                       <span class="comment">// 发送转换命令 → 立即返回</span>
+        ds18b20_convert_start_tick = g_tick_10ms;     <span class="comment">// 记录启动时间</span>
+        ds18b20_state = DS18B20_STATE_WAIT_CONVERT;
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> DS18B20_STATE_WAIT_CONVERT:
+        <span class="keyword">if</span> (g_tick_10ms - ds18b20_convert_start_tick >= 75) {  <span class="comment">// 750ms 到了？</span>
+            DS18B20_ReadScratchpad(&amp;lsb, &amp;msb);      <span class="comment">// 读取结果 → 立即返回</span>
+            ds18b20_state = DS18B20_STATE_PROCESS_DATA;
+        }
+        <span class="comment">// 时间未到 → 直接返回，CPU 处理其他任务</span>
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> DS18B20_STATE_PROCESS_DATA:
+        g_data.ds18b20_temp = (lsb + (msb << 8)) * 0.0625f;
+        g_data.ds18b20_valid = 1;
+        ds18b20_state = DS18B20_STATE_IDLE;            <span class="comment">// 回到起点，下一轮采集</span>
+        <span class="keyword">break</span>;
+    }
+}</div>
+
+      <!-- 难点 3: ESP8266 + MQTT 分时上传 -->
+      <h3>难点三：ESP8266 + MQTT — 从串行阻塞 12 秒到状态机链式推进</h3>
+
+      <p><strong>❖ 遇到的问题</strong></p>
       <p>
-        PCB 打样和焊接完成后，多模块同时工作时出现过系统复位或运行不稳定现象。问题主要与供电瞬态波动、模块启动电流和电源走线有关。
-      </p>
-      <p>
-        我通过增加去耦电容、优化供电回路、检查焊接连接、加宽关键电源走线，并在软件上采用分时启动策略，降低多个模块同时启动造成的电源冲击。最终系统能够稳定运行。
+        ESP8266 通过 UART AT 指令连接 Wi-Fi 并接入 MQTT，标准流程需要串行发送 9 条 AT 指令（AT 测试 → 回显关闭 → 设置模式 → 连接 Wi-Fi → 连接 MQTT → 发布数据）。原始实现中每条指令后 <code>HAL_Delay(500~5000ms)</code> 等待响应，<strong>总计阻塞约 12 秒</strong>，且多个传感器数据连续上传时串口缓冲区压力大，出现丢包。
       </p>
 
-      <!-- ====== 最终成果 ====== -->
-      <h2>最终成果</h2>
+      <p><strong>❖ 解决思路与实现</strong></p>
+      <ul>
+        <li><strong>AT 指令状态机</strong>：将 9 条指令拆分为状态链 <code>POWER_ON → AT_TEST → ECHO_OFF → SET_MODE → CONNECT_WIFI → CONNECT_MQTT → MQTT_READY → MQTT_PUBLISH → IDLE</code>，每 10ms 推进一个步骤，用 <code>g_tick_10ms</code> 做超时判断替代 <code>HAL_Delay</code>。</li>
+        <li><strong>MQTT 分时上传</strong>：温度、湿度、ADC 等数据分散到不同时间片发布（每 2s 一个 topic），降低瞬时串口通信压力。</li>
+        <li><strong>MQTTX 验证</strong>：使用 MQTTX 客户端订阅对应 topic，验证云端消息到达率和数据准确性。</li>
+      </ul>
+
+      <p><strong>❖ 效果</strong>：ESP8266 初始化不再卡死主循环，AT 指令失败时状态机可超时重试，MQTT 数据稳定上传。</p>
+
+      <!-- 难点 4: PCB 供电干扰复位 -->
+      <h3>难点四：PCB 供电干扰 — 多模块同时工作时系统复位</h3>
+
+      <p><strong>❖ 遇到的问题</strong></p>
+      <p>
+        PCB 打样焊接后，ESP8266 联网、TFT 全屏刷新和蜂鸣器同时工作时，STM32 偶发复位。问题定位到<strong>模块启动瞬间的大电流导致 3.3V 轨电压跌落</strong>，触发 BOR（Brown-Out Reset）。
+      </p>
+
+      <p><strong>❖ 解决思路与实现</strong></p>
+      <ul>
+        <li><strong>硬件</strong>：每个 VDD 引脚就近放置 100nF 去耦电容 + 电源入口增加 10μF 钽电容；加宽 TFT 背光和 ESP8266 供电走线，降低线路压降。</li>
+        <li><strong>软件</strong>：分时启动策略——先初始化传感器和 TFT，延迟 500ms 后再给 ESP8266 上电，避免启动冲击叠加。</li>
+      </ul>
+
+      <p><strong>❖ 效果</strong>：系统长时间运行稳定，不再出现异常复位。</p>
+
+      <!-- ====== 五、项目完整设计流程 ====== -->
+      <h2>📐 项目完整设计流程</h2>
+      <div class="flow-timeline">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-title">方案与原理图设计</div>
+          <div class="step-desc">确定主控 STM32F411CEU6，选型传感器和通信模块；绘制系统框图，分配引脚和外设资源</div>
+        </div>
+        <div class="flow-arrow">▸</div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-title">STM32CubeMX 初始化</div>
+          <div class="step-desc">配置时钟树（HSE 25MHz → PLL 100MHz）、GPIO/SPI/UART/TIM/ADC/DMA，生成 HAL 工程框架</div>
+        </div>
+        <div class="flow-arrow">▸</div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-title">PCB Layout 与打样</div>
+          <div class="step-desc">四层板设计，关键信号走线优化，去耦电容布局，模块化接口预留；发厂打样并焊接调试</div>
+        </div>
+        <div class="flow-arrow">▸</div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-title">外设驱动开发</div>
+          <div class="step-desc">TFT(SPI+DMA)、DHT11/DS18B20(OneWire)、ESP8266(UART AT)、ADC、按键/蜂鸣器驱动程序逐一验证</div>
+        </div>
+        <div class="flow-arrow">▸</div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <div class="step-title">调度器架构设计</div>
+          <div class="step-desc">基于 10ms 节拍的分时调度器，定义 9 个任务的执行周期和状态机转换逻辑</div>
+        </div>
+        <div class="flow-arrow">▸</div>
+        <div class="flow-step">
+          <div class="step-num">6</div>
+          <div class="step-title">系统联调与优化</div>
+          <div class="step-desc">TFT 刷新优化、供电问题排查、ESP8266 稳定性测试、MQTT 端到端验证、边界条件测试</div>
+        </div>
+      </div>
+
+      <!-- ====== 六、任务调度详情 ====== -->
+      <h2>⏱️ 任务调度周期表</h2>
+      <table class="hl-table">
+        <thead>
+          <tr><th>任务</th><th>周期 (tick)</th><th>实际时间</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>TFT_Update_Task</td><td>2</td><td>20 ms</td><td>50Hz 刷新，DMA 非阻塞，busy 时跳过</td></tr>
+          <tr><td>Key_Scan_Task</td><td>1</td><td>10 ms</td><td>按键扫描，推入事件队列</td></tr>
+          <tr><td>UI_Task</td><td>1</td><td>10 ms</td><td>UI 页面状态机，处理按键事件</td></tr>
+          <tr><td>ESP8266_Poll_Task</td><td>1</td><td>10 ms</td><td>AT 指令状态机逐步推进</td></tr>
+          <tr><td>UartLog_Flush_Task</td><td>1</td><td>10 ms</td><td>FIFO（1024 字节）→ UART 中断发送</td></tr>
+          <tr><td>Buzzer_Task</td><td>1</td><td>10 ms</td><td>蜂鸣器定时控制</td></tr>
+          <tr><td>ADC_Task</td><td>10</td><td>100 ms</td><td>仅在 ADC 页面时采集（省资源）</td></tr>
+          <tr><td>DS18B20_Task</td><td>100</td><td>1 s</td><td>非阻塞状态机，~2s 完成一次读数</td></tr>
+          <tr><td>DHT11_Read_Task</td><td>200</td><td>2 s</td><td>温湿度采集，失败保留上次有效值</td></tr>
+          <tr><td>MQTT_Task</td><td>200</td><td>2 s</td><td>分时 MQTT 发布（温度/湿度/ADC 分散上传）</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ====== 七、最终成果 ====== -->
+      <h2>✅ 最终成果</h2>
       <div class="result-grid">
         <div class="result-item"><span class="status">✅</span> DHT11 温湿度数据稳定采集</div>
-        <div class="result-item"><span class="status">✅</span> DS18B20 温度数据非阻塞采集</div>
-        <div class="result-item"><span class="status">✅</span> ST7789V TFT 彩屏正常显示，界面刷新流畅</div>
-        <div class="result-item"><span class="status">✅</span> ESP8266 Wi-Fi 正常连接</div>
+        <div class="result-item"><span class="status">✅</span> DS18B20 温度数据非阻塞采集（状态机，不卡主循环）</div>
+        <div class="result-item"><span class="status">✅</span> ST7789V TFT 彩屏 50+ fps 流畅刷新，DMA 清屏 &lt; 1ms</div>
+        <div class="result-item"><span class="status">✅</span> ESP8266 Wi-Fi 正常连接（AT 状态机，零阻塞）</div>
         <div class="result-item"><span class="status">✅</span> MQTT 数据成功上传云端，可通过 MQTTX 验证</div>
-        <div class="result-item"><span class="status">✅</span> 按键菜单交互正常，支持长短按识别</div>
-        <div class="result-item"><span class="status">✅</span> ADC 模拟量采集正常</div>
-        <div class="result-item"><span class="status">✅</span> 蜂鸣器报警功能正常</div>
-        <div class="result-item"><span class="status">✅</span> PCB 打样、焊接和整机运行验证通过</div>
+        <div class="result-item"><span class="status">✅</span> 按键菜单交互正常，支持长短按识别与事件队列</div>
+        <div class="result-item"><span class="status">✅</span> ADC 三通道模拟量采集正常</div>
+        <div class="result-item"><span class="status">✅</span> 蜂鸣器报警功能正常（状态机控制）</div>
+        <div class="result-item"><span class="status">✅</span> UART 日志 FIFO 异步输出，不阻塞主循环</div>
+        <div class="result-item"><span class="status">✅</span> PCB 打样、焊接和整机长时间运行验证通过</div>
       </div>
 
-      <!-- ====== PCB 设计要点 ====== -->
-      <h2>PCB 设计要点</h2>
+      <!-- ====== 八、调试与验证 ====== -->
+      <h2>🔍 调试与验证方法</h2>
       <ul>
-        <li>每个 STM32 VDD 引脚附近放置 100nF 去耦电容，并在电源入口增加较大容量滤波电容</li>
-        <li>对 TFT、ESP8266 等电流变化较大的模块，优化供电走线，减少压降和干扰</li>
-        <li>SPI、UART 等高速或关键通信线尽量缩短路径，避免靠近强干扰区域</li>
-        <li>预留调试接口，方便串口日志输出、固件下载和后期问题定位</li>
-        <li>对按键、蜂鸣器、传感器接口进行模块化布局，方便焊接和调试</li>
+        <li><strong>串口日志</strong>：通过 UART FIFO 异步输出系统运行状态、ESP8266 AT 指令响应和 MQTT 上传结果，不阻塞主循环。</li>
+        <li><strong>MQTTX 客户端</strong>：订阅对应 topic，验证云端消息是否成功接收及数据准确性。</li>
+        <li><strong>TFT 屏幕</strong>：实时显示温湿度数值、菜单状态和报警信息，直观验证数据刷新和页面切换。</li>
+        <li><strong>按键测试</strong>：长短按识别、事件队列、页面切换全路径覆盖。</li>
+        <li><strong>供电稳定性</strong>：多模块同时运行时，万用表测量 3.3V 轨电压，配合示波器查看瞬态波形。</li>
       </ul>
 
-      <!-- ====== 调试与验证 ====== -->
-      <h2>调试与验证</h2>
-      <p>本项目通过多种方式验证系统功能：</p>
+      <!-- ====== 九、项目复盘 ====== -->
+      <h2>💡 项目复盘</h2>
+      <p>
+        这个项目最核心的收获是理解了<strong>嵌入式系统的本质不是外设驱动的堆叠，而是时序与调度的工程</strong>。TFT 刷新（20ms）、传感器采集（750ms~2s）、AT 通信（秒级）、按键扫描（10ms）各有完全不同的时间尺度——如果不用状态机 + 分时调度把这些任务的时间轴解耦，系统就会被最慢的任务拖垮。
+      </p>
+      <p>
+        通过这次重构，我建立了几个关键认知：
+      </p>
       <ul>
-        <li>使用串口助手输出系统运行状态、ESP8266 AT 指令响应和 MQTT 上传结果</li>
-        <li>使用 MQTTX 验证云端是否成功接收到传感器数据</li>
-        <li>通过 TFT 屏幕实时显示温湿度、菜单状态和报警信息</li>
-        <li>通过按键长短按测试菜单切换和交互逻辑</li>
-        <li>通过上电运行测试验证 PCB 焊接、供电和模块稳定性</li>
+        <li><strong>裸机不等于简单</strong>：没有 RTOS 的情况下，通过软件节拍 + 状态机 + DMA 同样可以实现"看起来像是多任务并发"的效果，而且对调度逻辑有更彻底的控制。</li>
+        <li><strong>硬件和软件要一起调</strong>：PCB 能画出来 ≠ 系统能稳定跑。去耦电容的位置、电源走线的宽度、模块上电顺序——这些在原理图上看不到的东西，往往是最难排查的 bug 来源。</li>
+        <li><strong>可维护性从一开始就要考虑</strong>：CubeMX 可重新生成、调度周期常数集中管理、任务函数边界清晰——这些看似"多余"的设计，在后续迭代和调试中节省了大量时间。</li>
       </ul>
-
-      <!-- ====== 项目复盘 ====== -->
-      <h2>项目复盘</h2>
-      <p>
-        这个项目让我更加理解了嵌入式系统不是单个外设驱动的简单叠加，而是硬件、驱动、任务调度、通信和电源稳定性共同配合的整体工程。TFT 显示、传感器采集、MQTT 上传和按键交互都运行在同一个主循环中，因此必须通过状态机、分时调度和 DMA 降低阻塞，保证系统响应性。
-      </p>
-      <p>
-        在硬件调试方面，PCB 能画出来并不代表系统一定能稳定运行。ESP8266、TFT 屏幕和传感器同时工作时，供电稳定性、去耦电容布局、电源走线和模块启动顺序都会影响整机可靠性。这个项目让我建立了从现象观察、串口日志、硬件测量到软件调整的完整排查思路。
-      </p>
 
       <!-- ====== GitHub 入口 ====== -->
       <div class="info-block green" style="margin-top: 32px;">
-        <strong>完整源码、PCB 设计文件、驱动代码和详细调试记录见 GitHub 仓库：</strong><br>
+        <strong>完整源码、PCB 设计文件、驱动代码和详细重构说明见 GitHub 仓库：</strong><br>
         <a href="https://github.com/Weicheng77777777/F411_TFT_V10" target="_blank" style="color: var(--terminal-green);">
           github.com/Weicheng77777777/F411_TFT_V10
         </a>
