@@ -274,6 +274,17 @@ samsung,gec6818,samsung,s5p6818</div>
         <span class="step-label">电源轨</span> 按板级实际供电结构描述 regulator 节点，匹配 3P3_SYS / 1P1_ARM / 1P5_SYS / 1P5_DDR / VCC_RTC 等电压域
       </div>
 
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; margin: 24px 0;">
+        <div style="flex: 1; min-width: 280px;">
+          <img src="../images/gec6818/原供电采用32芯片.png" alt="原供电采用 STM32 芯片" loading="lazy" style="width: 100%;">
+          <p class="figure-caption">原供电方案：采用 STM32 芯片进行电源管理</p>
+        </div>
+        <div style="flex: 1; min-width: 280px;">
+          <img src="../images/gec6818/gec供电pmuAXP228.png" alt="GEC6818 采用 AXP228 PMU 供电架构" loading="lazy" style="width: 100%;">
+          <p class="figure-caption">适配后：GEC6818 采用 AXP228 PMU 供电架构</p>
+        </div>
+      </div>
+
       <p><strong>❖ 认知收获</strong></p>
       <p>
         AXP228 这类 PMU 不只是供电芯片，它还参与开机、复位和状态管理，在系统移植里是很关键的板级资源。这个适配让我理解到，<strong>系统移植中不仅是外设接口需要适配，供电架构同样属于板级适配的核心内容</strong>——如果供电描述与实际硬件不一致，后续所有外设的稳定性都缺乏基础。
