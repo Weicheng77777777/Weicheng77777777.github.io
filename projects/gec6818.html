@@ -145,7 +145,7 @@
       <a href="../#projects" class="back-link">← 返回项目列表</a>
 
       <h1>GEC6818 ARM64 Linux 系统移植</h1>
-      <p class="subtitle">基于 S5P6818 Cortex-A53 · 板级 bring-up · DTS/DTB · LCD · Touch · I2C</p>
+      <p class="subtitle">基于 S5P6818 Cortex-A53 · 板级 bring-up · DTS/DTB · PMU · LCD · Touch · Network · Audio</p>
 
       <!-- 实物图 -->
       <img src="../images/gec6818/GEC6818实物图.jpg" alt="GEC6818 开发板运行 ARM64 Linux，LCD 正常显示" loading="lazy">
@@ -154,13 +154,11 @@
       <!-- ====== 项目动机 ====== -->
       <h2>📌 项目动机</h2>
       <p>
-        GEC6818 是嵌入式 Linux 教学中广泛使用的开发板，但<strong>常见资料和课程配套系统几乎全部基于 32 位（ARM32）</strong>。
-        而 S5P6818 芯片本身搭载 Cortex-A53 核心，<strong>原生支持 64 位 ARMv8-A 指令集</strong>。
-        这意味着当面试官问到"你会 64 位嵌入式 Linux 吗"，如果我只停留在 32 位 BSP 的使用层面，就无法证明自己的系统级理解。
+        项目的起点是一个很实际的需求：<strong>在 GEC6818 上播放视频</strong>。但原有的 32 位系统非常老旧、依赖库严重缺失，想要运行播放器只能静态编译，而且 SSH 也一直连不上，调试效率很低。
+        正是在解决这些问题的过程中，我注意到 S5P6818 搭载的 Cortex-A53 核心<strong>原生支持 ARMv8-A 64 位指令集</strong>——板子本身的硬件能力远没有被用起来。
       </p>
       <p>
-        因此，我以 FriendlyElec Smart6818（同样使用 S5P6818）的 ARM64 FriendlyCore 作为参考 BSP，<strong>将 ARM64 Linux 移植到 GEC6818 开发板上</strong>。
-        这不是从零构建 Kernel，而是一次<strong>板级差异分析与适配</strong>——找出两块板子在外设引脚、显示链路、I2C 总线、设备树描述等方面的差异，并逐一修正。
+        于是我决定不再在 32 位系统上修修补补，而是<strong>直接移植一套 ARM64 Linux</strong>。以 FriendlyElec Smart6818（同款 SoC）的 ARM64 FriendlyCore 作为参考 BSP，<strong>完成从参考板到 GEC6818 的板级差异分析与适配</strong>——外设引脚、显示链路、I2C 总线、PMU 型号、设备树描述等，逐一比对、逐一修正。
       </p>
 
       <!-- ====== 项目亮点 ====== -->
@@ -170,10 +168,12 @@
           <tr><th>内容</th><th>体现能力</th></tr>
         </thead>
         <tbody>
-          <tr><td>ARM64 Linux 系统启动</td><td>熟悉 U-Boot、Kernel、启动链路</td></tr>
-          <tr><td>DTS/DTB 适配</td><td>理解 Linux 设备树和板级硬件描述</td></tr>
-          <tr><td>LCD RGB 显示</td><td>熟悉显示链路、pinctrl、背光控制</td></tr>
+          <tr><td>ARM64 Linux 系统启动</td><td>理解 U-Boot、Kernel、DTB、rootfs 启动组件匹配</td></tr>
+          <tr><td>DTS/DTB 适配</td><td>新建板级专属 DTS，系统化收敛硬件差异</td></tr>
+          <tr><td>PMU AXP228 适配</td><td>理解板级供电架构、I2C 控制、上电管理</td></tr>
+          <tr><td>LCD RGB 显示</td><td>熟悉显示链路、时序参数、pinctrl、背光控制</td></tr>
           <tr><td>FT5206 触摸适配</td><td>熟悉 I2C、GPIO 中断、input 子系统</td></tr>
+          <tr><td>网口 PHY 适配</td><td>理解 MAC-PHY 拓扑、MDIO 地址匹配</td></tr>
           <tr><td>串口日志调试</td><td>具备嵌入式 Linux 问题定位能力</td></tr>
           <tr><td>Git Release 管理</td><td>具备工程化版本管理意识</td></tr>
         </tbody>
@@ -185,11 +185,15 @@
         本项目基于 FriendlyElec Smart6818 ARM64 FriendlyCore 作为参考 BSP，我主要完成 GEC6818 开发板的<strong>板级差异适配</strong>：
       </p>
       <ul>
+        <li>从启动链路入手，验证镜像中 boot 组件、Kernel、DTB、rootfs 的匹配关系</li>
         <li>修正 U-Boot 阶段 DTB 加载路径，解决 Kernel panic</li>
-        <li>新建 GEC6818 专属 DTS 文件，修改 model、compatible 和外设节点</li>
+        <li>新建 GEC6818 专属 DTS 文件，将板级硬件差异系统化收敛到统一板级描述</li>
+        <li>根据原理图确认 PMU 为 AXP228，修正设备树中 I2C 控制、IRQ 和电源轨配置</li>
         <li>将显示链路从 LVDS / 1024×600 适配为 RGB / AT070TN92 / 800×480</li>
         <li>添加 LCD_EN GPIO、PWM 背光和 RGB pinctrl 配置</li>
         <li>修正 FT5206 触摸的 I2C bus、INT GPIO、WAKE GPIO 配置</li>
+        <li>根据原理图修正网口 PHY 地址，建立正确的 MAC-PHY 硬件拓扑</li>
+        <li>整理声卡 codec、接口关系和板级连接的设备树与驱动匹配框架</li>
         <li>使用 dmesg、i2cdetect、/proc/device-tree、/proc/bus/input/devices 验证适配结果</li>
       </ul>
 
@@ -252,7 +256,30 @@ GEC6818 based on S5P6818<br>
 <span class="prompt">#</span> cat /proc/device-tree/compatible
 samsung,gec6818,samsung,s5p6818</div>
 
-      <h3>难点二：LCD RGB 显示链路适配 — 从 LVDS 到 RGB 的跨协议切换</h3>
+      <h3>难点二：PMU AXP228 板级供电适配 — 供电架构也是板级资源</h3>
+
+      <p><strong>❖ 背景</strong></p>
+      <p>
+        参考 BSP 的电源管理描述针对的是参考板，不是 GEC6818。通过查阅原理图，我确认 GEC6818 实际使用的 PMU 是 <strong>AXP228</strong>，它负责多路电压轨输出（3P3_SYS、1P1_ARM、1P5_SYS、1P5_DDR、VCC_RTC 等），并通过 I2C、IRQ、PWRON、PWROK 与 MCU 交互，参与开机、复位和状态管理。
+      </p>
+
+      <p><strong>❖ 适配内容</strong></p>
+      <p>
+        我将设备树中 PMU 相关配置从参考板的描述改为匹配 AXP228 的方式，包括：
+      </p>
+
+      <div class="debug-flow">
+        <span class="step-label">I2C</span> 确认 AXP228 挂载的 I2C 总线及设备地址，修正 reg 和 compatible 字段<br>
+        <span class="step-label">IRQ</span> 根据原理图确认 IRQ 引脚连接，修正中断配置<br>
+        <span class="step-label">电源轨</span> 按板级实际供电结构描述 regulator 节点，匹配 3P3_SYS / 1P1_ARM / 1P5_SYS / 1P5_DDR / VCC_RTC 等电压域
+      </div>
+
+      <p><strong>❖ 认知收获</strong></p>
+      <p>
+        AXP228 这类 PMU 不只是供电芯片，它还参与开机、复位和状态管理，在系统移植里是很关键的板级资源。这个适配让我理解到，<strong>系统移植中不仅是外设接口需要适配，供电架构同样属于板级适配的核心内容</strong>——如果供电描述与实际硬件不一致，后续所有外设的稳定性都缺乏基础。
+      </p>
+
+      <h3>难点三：LCD RGB 显示链路适配 — 从 LVDS 到 RGB 的跨协议切换</h3>
 
       <p><strong>❖ 现象</strong></p>
       <p>
@@ -286,7 +313,7 @@ samsung,gec6818,samsung,s5p6818</div>
         </ul>
       </div>
 
-      <h3>难点三：FT5206 触摸 probe 失败 — I2C 设备树的引脚级排查</h3>
+      <h3>难点四：FT5206 触摸 probe 失败 — I2C 设备树的引脚级排查</h3>
 
       <p><strong>❖ 现象</strong></p>
       <p>
@@ -326,9 +353,12 @@ samsung,gec6818,samsung,s5p6818</div>
       <div class="result-grid">
         <div class="result-item"><span class="status">✅</span> ARM64 Linux 系统成功启动，SD 卡引导正常</div>
         <div class="result-item"><span class="status">✅</span> GEC6818 专属 DTS/DTB 加载正常</div>
+        <div class="result-item"><span class="status">✅</span> PMU AXP228 供电描述与板级硬件一致</div>
         <div class="result-item"><span class="status">✅</span> LCD RGB 800×480 显示正常</div>
         <div class="result-item"><span class="status">✅</span> PWM 背光控制正常</div>
         <div class="result-item"><span class="status">✅</span> FT5206 电容触摸可用</div>
+        <div class="result-item"><span class="status">✅</span> 网口 PHY 地址修正，MAC-PHY 拓扑正确</div>
+        <div class="result-item"><span class="status">✅</span> 声卡 codec 设备树首轮适配完成</div>
         <div class="result-item"><span class="status">✅</span> I2C 传感器读取正常</div>
         <div class="result-item"><span class="status">✅</span> Git tag / Release 记录阶段成果</div>
       </div>
@@ -338,6 +368,7 @@ samsung,gec6818,samsung,s5p6818</div>
       <p>
         做完这个项目后，我对设备树的理解发生了根本变化：<strong>驱动能否 probe，不再只是驱动代码的问题，更是硬件描述是否准确的问题</strong>。
         compatible、reg、interrupt、pinctrl、gpio——只要有一个字段与板卡实际情况不符，驱动就找不到设备。这不是"代码写错了"，而是"描述写错了"。
+        触摸和 PMU 的适配过程尤其印证了这一点：很多驱动起不来不是驱动代码本身有问题，而是设备树没有把硬件描述对。
       </p>
       <p>
         同时，我建立了一套可复用的 bring-up 排查流程：
@@ -345,7 +376,8 @@ samsung,gec6818,samsung,s5p6818</div>
         这个顺序不是拍脑袋想的——每一步对应一个可能的"断点"，按链路排查能最快定位问题。
       </p>
       <p>
-        参考 BSP 的价值在于它验证了 SoC 级别的配置是可行的，但不能假设它正确描述了外设——<strong>相同的 SoC，不同的板卡，外设引脚、I2C 地址、显示链路都可能不一样</strong>，每个差异点都要逐项验证。
+        参考 BSP 的价值在于它验证了 SoC 级别的配置是可行的，但不能假设它正确描述了外设——<strong>相同的 SoC，不同的板卡，外设引脚、I2C 地址、显示链路、PMU 型号都可能不一样</strong>，每个差异点都要逐项验证。
+        PMU 适配更是让我认识到，板级适配不仅包括外设接口，<strong>供电架构同样属于系统移植的核心内容</strong>。
       </p>
 
       <!-- ====== GitHub 入口 ====== -->
