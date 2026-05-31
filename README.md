@@ -13,7 +13,7 @@
 | 功能 | 说明 |
 |---|---|
 | 🏠 **个人主页** | 终端风格首页，展示个人定位、技术栈、项目概览 |
-| 📂 **项目详情页** | 6 个嵌入式项目的完整记录（背景 / 难点 / 代码 / 调试工具 / 复盘） |
+| 📂 **项目详情页** | 7 个嵌入式项目的完整记录（背景 / 难点 / 代码 / 调试工具 / 复盘） |
 | 📝 **调试笔记** | 板级调试中的真实问题排查过程 |
 | 📄 **简历下载** | 一页精简简历 PDF 可直接下载 |
 | 🔗 **GitHub 跳转** | 每个项目都关联 GitHub 仓库源码 |
@@ -36,13 +36,14 @@ weichengfeng.github.io/
 │   └── style.css              # 深色终端风格样式
 ├── js/
 │   └── main.js                # 交互脚本
-├── projects/                  # 项目详情页（6个）
+├── projects/                  # 项目详情页（7个）
 │   ├── gec6818.html           # GEC6818 ARM64 Linux 系统移植
 │   ├── stm32f411.html         # STM32F411 智能家居环境监测系统
 │   ├── lora-car.html          # LoRa 遥控坦克小车系统
 │   ├── maglev.html            # 电赛磁悬浮控制系统
 │   ├── game-console.html      # STM32 小游戏机控制板
-│   └── rk3566.html            # RK3566 泰山派 Linux 训练营
+│   ├── rk3566.html            # RK3566 泰山派 Linux 训练营
+│   └── rk3566-camera-learn.html  # RK3566 视觉学习与自制 Ubuntu 系统实践
 ├── notes/
 │   └── debug-log-1.html       # 调试笔记（DTB 加载 + FT5206 触摸）
 └── images/                    # 项目图片（等待添加）
@@ -50,7 +51,9 @@ weichengfeng.github.io/
     ├── stm32f411/
     ├── lora-car/
     ├── maglev/
-    └── game-console/
+    ├── game-console/
+    ├── rk3566-camera-learn/
+    └── moments/
 ```
 
 ---
@@ -180,6 +183,7 @@ git push -u origin main
 
 - [GEC6818-Friendly-Smart6818-64-](https://github.com/Weicheng77777777/GEC6818-Friendly-Smart6818-64-) — ARM64 Linux 移植
 - [F411_TFT_V10](https://github.com/Weicheng77777777/F411_TFT_V10) — STM32F411 智能家居
+- [rk3566-camera-learn](https://github.com/Weicheng77777777/rk3566-camera-learn) — RK3566 视觉学习、自制 Ubuntu rootfs、摄像头链路和板端 AI 辅助调试记录
 
 ---
 

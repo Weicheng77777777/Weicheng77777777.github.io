@@ -30,6 +30,7 @@
     { num: '4', key: 'maglev', name: '电赛磁悬浮控制系统', url: 'projects/maglev.html' },
     { num: '5', key: 'console', name: 'STM32 小游戏机控制板', url: 'projects/game-console.html' },
     { num: '6', key: 'rk3566', name: 'RK3566 泰山派 Linux 训练营', url: 'projects/rk3566.html' },
+    { num: '7', key: 'rk3566-camera', name: 'RK3566 Camera Learn', url: 'projects/rk3566-camera-learn.html' },
   ];
 
   function printLine(html, className) {
@@ -126,7 +127,7 @@
       ['help', '显示帮助信息'],
       ['about', '关于我'],
       ['projects', '项目列表'],
-      ['projects &lt;n&gt;', '查看项目详情 (1-6)'],
+      ['projects &lt;n&gt;', '查看项目详情 (1-7)'],
       ['resume', '下载简历 PDF'],
       ['contact', '联系方式'],
       ['skills', '技术栈'],
@@ -266,7 +267,7 @@
     printLine('<span class="green-text">        ╱        ╲       </span><span class="cyan-text">Kernel</span><span class="dim-text">: ARM64 Linux 6.1.0</span>');
     printLine('<span class="green-text">       ╱__________╲      </span><span class="cyan-text">Shell</span><span class="dim-text">: embedded-portfolio</span>');
     printLine('<span class="green-text">                          </span><span class="cyan-text">Uptime</span><span class="dim-text">: 求职中 · 随时到岗</span>');
-    printLine('                         <span class="cyan-text">Packages</span><span class="dim-text">: 6 projects</span>');
+    printLine('                         <span class="cyan-text">Packages</span><span class="dim-text">: 7 projects</span>');
   }
 
   function echoCmd(args) {
