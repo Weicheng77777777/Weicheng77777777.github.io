@@ -83,7 +83,6 @@
       margin-bottom: 28px;
     }
 
-    /* ——— 排查流程图 ——— */
     .debug-flow {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -105,6 +104,49 @@
       margin: 0 4px;
     }
 
+    .roadmap-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 24px;
+    }
+    .roadmap-list li {
+      position: relative;
+      padding: 14px 16px 14px 28px;
+      margin-bottom: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .roadmap-list li::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 18px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--terminal-green-dim);
+    }
+    .roadmap-list li .tag {
+      display: inline-block;
+      padding: 1px 8px;
+      margin-right: 8px;
+      border-radius: 4px;
+      background: rgba(0,255,136,0.1);
+      color: var(--terminal-green);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .roadmap-list li .summary {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+
     @media (max-width: 768px) {
       .arch-flow {
         gap: 4px;
@@ -120,6 +162,10 @@
       .debug-flow {
         font-size: 0.72rem;
         padding: 12px 14px;
+      }
+      .roadmap-list li {
+        padding: 12px 14px 12px 24px;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -142,23 +188,24 @@
 
   <div class="project-detail">
     <div class="container">
-      <a href="../#projects" class="back-link">← 返回项目列表</a>
+      <a href="../#projects" class="back-link">&larr; 返回项目列表</a>
 
       <h1>GEC6818 ARM64 Linux 系统移植</h1>
-      <p class="subtitle">基于 S5P6818 Cortex-A53 · 板级 bring-up · DTS/DTB · PMU · LCD · Touch · Network · Audio</p>
+      <p class="subtitle">基于 S5P6818 Cortex-A53 &middot; ARM64 Linux 移植 &middot; DTS/DTB 板级适配 &middot; LCD/Touch/Audio 外设 bring-up &middot; eMMC eFlasher 烧录 &middot; Mali GPU 用户态驱动 &middot; Ubuntu 20.04 rootfs &middot; 独立启动闭环</p>
 
-      <!-- 实物图 -->
       <img src="../images/gec6818/GEC6818实物图.jpg" alt="GEC6818 开发板运行 ARM64 Linux，LCD 正常显示" loading="lazy">
-      <p class="figure-caption">GEC6818 开发板运行 ARM64 Linux · LCD RGB 800×480 正常显示</p>
+      <p class="figure-caption">GEC6818 开发板运行 ARM64 Linux &middot; LCD RGB 800&times;480 正常显示</p>
 
       <!-- ====== 项目动机 ====== -->
-      <h2>📌 项目动机</h2>
+      <h2>项目动机</h2>
       <p>
-        项目的起点是一个很实际的需求：<strong>在 GEC6818 上播放视频</strong>。但原有的 32 位系统非常老旧、依赖库严重缺失，想要运行播放器只能静态编译，而且 SSH 也一直连不上，调试效率很低。
-        正是在解决这些问题的过程中，我注意到 S5P6818 搭载的 Cortex-A53 核心<strong>原生支持 ARMv8-A 64 位指令集</strong>——板子本身的硬件能力远没有被用起来。
+        项目的起点是一个很实际的需求：<strong>在 GEC6818 上播放视频</strong>。但原有的 32 位系统非常老旧、依赖库严重缺失，想要运行播放器只能静态编译，而且 SSH 也一直连不上，调试效率很低。正是在解决这些问题的过程中，我注意到 S5P6818 搭载的 Cortex-A53 核心<strong>原生支持 ARMv8-A 64 位指令集</strong>&mdash;&mdash;板子本身的硬件能力远没有被用起来。
       </p>
       <p>
-        于是我决定不再在 32 位系统上修修补补，而是<strong>直接移植一套 ARM64 Linux</strong>。以 FriendlyElec Smart6818（同款 SoC）的 ARM64 FriendlyCore 作为参考 BSP，<strong>完成从参考板到 GEC6818 的板级差异分析与适配</strong>——外设引脚、显示链路、I2C 总线、PMU 型号、设备树描述等，逐一比对、逐一修正。
+        于是我决定不再在 32 位系统上修修补补，而是<strong>直接移植一套 ARM64 Linux</strong>。以 FriendlyElec Smart6818（同款 SoC）的 ARM64 FriendlyCore 作为参考 BSP，<strong>完成从参考板到 GEC6818 的板级差异分析与适配</strong>。
+      </p>
+      <p>
+        项目的目标不只是让系统从 SD 卡启动，还要让 GEC6818 拥有<strong>可复刻的 ARM64 Linux 启动方案</strong>&mdash;&mdash;最终形成 SD 自动烧录 eMMC、写入 Kernel / DTB / Ubuntu 20.04 rootfs、拔卡后独立启动的完整流程。让这块旧开发板从"依赖旧 32 位资料体系"推进到<strong>"可启动、可验证、可复刻的 ARM64 Linux / Ubuntu 20.04 阶段"</strong>。
       </p>
 
       <!-- ====== 项目亮点 ====== -->
@@ -168,14 +215,20 @@
           <tr><th>内容</th><th>体现能力</th></tr>
         </thead>
         <tbody>
-          <tr><td>ARM64 Linux 系统启动</td><td>理解 U-Boot、Kernel、DTB、rootfs 启动组件匹配</td></tr>
-          <tr><td>DTS/DTB 适配</td><td>新建板级专属 DTS，系统化收敛硬件差异</td></tr>
-          <tr><td>PMU AXP228 适配</td><td>理解板级供电架构、I2C 控制、上电管理</td></tr>
-          <tr><td>LCD RGB 显示</td><td>熟悉显示链路、时序参数、pinctrl、背光控制</td></tr>
-          <tr><td>FT5206 触摸适配</td><td>熟悉 I2C、GPIO 中断、input 子系统</td></tr>
-          <tr><td>网口 PHY 适配</td><td>理解 MAC-PHY 拓扑、MDIO 地址匹配</td></tr>
-          <tr><td>串口日志调试</td><td>具备嵌入式 Linux 问题定位能力</td></tr>
-          <tr><td>Git Release 管理</td><td>具备工程化版本管理意识</td></tr>
+          <tr><td>ARM64 Linux 启动链路</td><td>理解 U-Boot、Kernel Image、DTB、rootfs 的启动关系和匹配逻辑</td></tr>
+          <tr><td>GEC6818 专属 DTS/DTB 适配</td><td>能够根据原理图和日志，将参考板 BSP 收敛为目标板专属硬件描述</td></tr>
+          <tr><td>PMU AXP228 供电适配</td><td>理解板级供电架构、I2C PMU、IRQ、电源轨和系统稳定性的关系</td></tr>
+          <tr><td>RGB LCD / AT070TN92 显示适配</td><td>能够从 LVDS / 1024&times;600 参考配置切换到 RGB / 800&times;480 实际屏幕链路</td></tr>
+          <tr><td>FT5206 触摸适配</td><td>熟悉 I2C、GPIO 中断、wake 引脚和 Linux input 子系统验证</td></tr>
+          <tr><td>ALC5621 声卡适配</td><td>具备 ALSA / ASoC codec、I2S、machine driver 和 DTS 协同调试经验</td></tr>
+          <tr><td>GPIO / LED / KEY / PWM 蜂鸣器整理</td><td>能够清理参考板残留配置，并完成基础板级外设 bring-up</td></tr>
+          <tr><td>Mali GPU 用户态驱动栈</td><td>理解 GPU 驱动分层架构，补齐用户态 EGL/GLES/GBM 库并验证兼容性</td></tr>
+          <tr><td>eMMC eFlasher 自动烧录</td><td>理解 SD 维护系统、自动烧录镜像、eMMC 分区和启动介质切换</td></tr>
+          <tr><td>eMMC BL1 启动通道 patch</td><td>具备低级启动链路分析能力，能定位并修正 eMMC boot 通道字段</td></tr>
+          <tr><td>Ubuntu 20.04 rootfs 写入与独立启动</td><td>具备 Kernel / DTB / rootfs 集成能力，完成从 SD 启动到 eMMC 独立启动闭环</td></tr>
+          <tr><td>板级 DTS 持续完善</td><td>逐步补齐 ADC NTC / IrDA / G-Sensor / EEPROM 等外设节点，持续收敛硬件描述</td></tr>
+          <tr><td>Git Release 阶段化管理</td><td>能够用版本记录目标、问题、修改、验证方式和阶段结论，具备工程化沉淀意识</td></tr>
+          <tr><td>AI 辅助测试验证</td><td>部署 Claude Code + Deepseek 搭建自动化测试环境，用于编译验证、启动日志分析与回归测试</td></tr>
         </tbody>
       </table>
 
@@ -189,206 +242,317 @@
         <li>修正 U-Boot 阶段 DTB 加载路径，解决 Kernel panic</li>
         <li>新建 GEC6818 专属 DTS 文件，将板级硬件差异系统化收敛到统一板级描述</li>
         <li>根据原理图确认 PMU 为 AXP228，修正设备树中 I2C 控制、IRQ 和电源轨配置</li>
-        <li>将显示链路从 LVDS / 1024×600 适配为 RGB / AT070TN92 / 800×480</li>
+        <li>将显示链路从 LVDS / 1024&times;600 适配为 RGB / AT070TN92 / 800&times;480</li>
         <li>添加 LCD_EN GPIO、PWM 背光和 RGB pinctrl 配置</li>
         <li>修正 FT5206 触摸的 I2C bus、INT GPIO、WAKE GPIO 配置</li>
         <li>根据原理图修正网口 PHY 地址，建立正确的 MAC-PHY 硬件拓扑</li>
         <li>整理声卡 codec、接口关系和板级连接的设备树与驱动匹配框架</li>
+        <li>制作 SD eFlasher 烧录卡，替换 GEC6818 专用 U-Boot，打通 eMMC 自动烧录流程</li>
+        <li>patch eMMC BL1 启动通道字段，修复低级启动链路</li>
+        <li>将 Kernel Image、GEC6818 DTB、Ubuntu 20.04 rootfs 写入 eMMC，实现独立启动</li>
+        <li>补齐 Mali GPU 用户态驱动栈，从参考系统中提取并验证 ARM64 Mali 用户态库</li>
+        <li>持续完善 DTS，新增 ADC NTC 热敏电阻、IrDA 红外接收、G-Sensor、EEPROM 等节点</li>
         <li>使用 dmesg、i2cdetect、/proc/device-tree、/proc/bus/input/devices 验证适配结果</li>
       </ul>
 
       <!-- ====== 系统架构启动链路 ====== -->
-      <h2>系统架构 · 启动链路</h2>
+      <h2>系统架构 &middot; 启动链路</h2>
+      <p>项目最终形成两条启动路径：SD 卡直接启动和 SD eFlasher 烧录 eMMC 后独立启动。</p>
+
+      <p style="margin-bottom:4px;color:var(--text-secondary);font-size:0.82rem;">路径一：SD 卡直接启动</p>
       <div class="arch-flow">
         <span class="arch-node">SD Card Boot</span>
-        <span class="arch-arrow">→</span>
+        <span class="arch-arrow">&rarr;</span>
         <span class="arch-node">U-Boot</span>
-        <span class="arch-arrow">→</span>
+        <span class="arch-arrow">&rarr;</span>
         <span class="arch-node">Load Kernel Image</span>
-        <span class="arch-arrow">→</span>
+        <span class="arch-arrow">&rarr;</span>
         <span class="arch-node">Load GEC6818 DTB</span>
         <span class="arch-break"></span>
         <span class="arch-node kernel">Linux Kernel 4.4.172 ARM64</span>
-        <span class="arch-arrow">→</span>
+        <span class="arch-arrow">&rarr;</span>
         <span class="arch-node">Device Tree Match</span>
-        <span class="arch-arrow">→</span>
-        <span class="arch-node target">RGB LCD</span>
-        <span class="arch-node target">FT5206 Touch</span>
-        <span class="arch-node target">I2C Sensor</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node target">LCD / Touch / Audio / GPU</span>
       </div>
+
+      <p style="margin-bottom:4px;color:var(--text-secondary);font-size:0.82rem;">路径二：SD eFlasher &rarr; eMMC 独立启动</p>
+      <div class="arch-flow">
+        <span class="arch-node">SD eFlasher</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">自动烧录 eMMC</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">boot/rootfs/data 分区</span>
+        <span class="arch-break"></span>
+        <span class="arch-node">patch BL1 通道</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">写入 Kernel + DTB</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">写入 Ubuntu 20.04</span>
+        <span class="arch-break"></span>
+        <span class="arch-node kernel">拔掉 SD 卡</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node target">eMMC 独立启动 Ubuntu 20.04</span>
+      </div>
+
+      <!-- ====== 新版阶段成果 ====== -->
+      <h2>新版阶段成果：从 SD 启动到 eMMC 独立启动</h2>
+      <p>
+        在早期版本中，项目已经完成 ARM64 Kernel、GEC6818 DTB 和 FriendlyCore rootfs 的 SD 卡启动验证；新版进一步推进到 eMMC 启动链路。通过制作 SD eFlasher 烧录卡、替换 GEC6818 专用 U-Boot、调整 eFlasher 配置、写入 eMMC 分区、patch BL1 启动通道字段，并安装 GEC6818 Kernel Image、DTB 和 Ubuntu 20.04 rootfs，最终实现拔掉 SD 卡后由 eMMC 独立启动系统。
+      </p>
+
+      <div class="code-block">
+        <span class="comment">// 串口输出 &mdash; eMMC 独立启动成功标志</span>
+        MMC PORT_NUM: 2
+        EMMC BOOT
+        Starting kernel ...
+        Ubuntu 20.04.6 LTS
+        WC-gec6818 login:
+      </div>
+
+      <p>这代表：</p>
+      <ul>
+        <li>eMMC 低级启动链路已经打通</li>
+        <li>U-Boot 能够从正确介质启动</li>
+        <li>Kernel Image 和 GEC6818 DTB 能够被正确加载</li>
+        <li>rootfs 已经能进入 Ubuntu 20.04 登录阶段</li>
+        <li>项目从"能启动"推进到"能烧录、能复刻、能独立运行"</li>
+      </ul>
+
+      <img src="../images/gec6818/emmc-burn-ubuntu.jpg" alt="SD eFlasher 自动烧录 Ubuntu 20.04 到 eMMC" loading="lazy" style="margin-top:12px;">
+      <p class="figure-caption">SD eFlasher 自动烧录 Ubuntu 20.04 到 eMMC &middot; eMMC 分区写入与验证</p>
+
+      <!-- ====== 版本路线图 ====== -->
+      <h2>版本路线图</h2>
+      <p>项目按 Git Release 阶段化演进，每个版本聚焦一个明确的工程目标：</p>
+
+      <ul class="roadmap-list">
+        <li>
+          <span class="tag">v0.0</span> ARM64 启动基线
+          <span class="summary">完成工具链、WSL2 Ubuntu 20.04 编译环境、SD 启动、U-Boot、Kernel / DTS 基础流程。</span>
+        </li>
+        <li>
+          <span class="tag">v0.1.0</span> DTS 第一轮 bring-up
+          <span class="summary">确认 SDMMC、eMMC、USB OTG、AXP228 regulator、panel/backlight 等基础硬件身份。</span>
+        </li>
+        <li>
+          <span class="tag">v0.2.0</span> RGB LCD 显示适配
+          <span class="summary">从参考板 LVDS / 1024&times;600 切换到 GEC6818 RGB / 800&times;480。</span>
+        </li>
+        <li>
+          <span class="tag">v0.3.0&ndash;v0.3.1</span> 触摸与声卡最小验证
+          <span class="summary">FT5206 触摸适配（i2c_1 / 0x38 / GPIOB26 INT / GPIOB8 WAKE）；ALC5621 声卡最小 bring-up。</span>
+        </li>
+        <li>
+          <span class="tag">v0.4.0</span> 声卡优化
+          <span class="summary">ALC5621 从 16bit 提升到 24bit，优化 ASoC 配置。</span>
+        </li>
+        <li>
+          <span class="tag">v0.5.0</span> GPIO / LED / KEY / PWM
+          <span class="summary">整理 LED、按键、PWM2 蜂鸣器，清理 NanoPi3 / Smart6818 残留配置。</span>
+        </li>
+        <li>
+          <span class="tag">v0.6.0&ndash;v0.6.5</span> eMMC 启动链路打通
+          <span class="summary">SD eFlasher 自动烧录、eMMC 分区、BL1 patch、Kernel/DTB/Ubuntu 20.04 rootfs 写入，拔卡独立启动。</span>
+        </li>
+        <li>
+          <span class="tag">v0.7.0</span> GPU 驱动与板级 DTS 完善
+          <span class="summary">Mali GPU 用户态驱动修复，从 FriendlyCore Ubuntu16 提取并验证 ARM64 Mali 库，建立 EGL/GLES 链接方案；修复 HDMI DDC 总线，新增 ADC NTC 热敏电阻、IrDA 红外接收、MMA8653FC G-Sensor、AT24C04 EEPROM 节点，清理 I2C2 遗留配置。</span>
+        </li>
+      </ul>
 
       <!-- ====== 关键难点 ====== -->
       <h2>关键难点</h2>
 
-      <h3>难点一：DTB 加载错误导致 Kernel panic — 启动链路的第一道坎</h3>
+      <h3>难点一：DTB 加载错误导致 Kernel panic &mdash; 启动链路的第一道坎</h3>
 
-      <p><strong>❖ 现象</strong></p>
+      <p><strong>现象</strong></p>
       <p>
         首次启动时，Kernel 在早期阶段直接 panic。从串口日志中捕获到关键信息：<code>Machine model</code> 显示为 <strong>FriendlyElec NanoPi3</strong>，而非期望的 GEC6818。
       </p>
 
       <div class="code-block">
-<span class="comment">// 串口日志关键输出</span>
-[    0.000000] <span class="keyword">Machine model:</span> FriendlyElec NanoPi3
-[    0.000000] <span class="keyword">Kernel panic</span> - not syncing: Unable to ...</div>
+        <span class="comment">// 串口日志关键输出</span>
+        [    0.000000] <span class="keyword">Machine model:</span> FriendlyElec NanoPi3
+        [    0.000000] <span class="keyword">Kernel panic</span> - not syncing: Unable to ...
+      </div>
 
-      <p><strong>❖ 排查过程</strong></p>
+      <p><strong>排查过程</strong></p>
       <div class="debug-flow">
-        <span class="step-label">Step 1</span> 串口日志确认 Kernel image 被正确加载并开始执行
-        <span class="step-arrow">→</span> U-Boot 阶段无异常<br>
-        <span class="step-label">Step 2</span> 检查 Machine model 字段
-        <span class="step-arrow">→</span> 显示为 NanoPi3 而非 GEC6818
-        <span class="step-arrow">→</span> 怀疑 DTB 加载了错误文件<br>
-        <span class="step-label">Step 3</span> 检查 U-Boot 环境变量和 DTB 加载路径
-        <span class="step-arrow">→</span> 确认加载的是 NanoPi3 的 DTB<br>
+        <span class="step-label">Step 1</span> 串口日志确认 Kernel image 被正确加载并开始执行 <span class="step-arrow">&rarr;</span> U-Boot 阶段无异常<br>
+        <span class="step-label">Step 2</span> 检查 Machine model 字段 <span class="step-arrow">&rarr;</span> 显示为 NanoPi3 而非 GEC6818 <span class="step-arrow">&rarr;</span> 怀疑 DTB 加载了错误文件<br>
+        <span class="step-label">Step 3</span> 检查 U-Boot 环境变量和 DTB 加载路径 <span class="step-arrow">&rarr;</span> 确认加载的是 NanoPi3 的 DTB<br>
         <span class="step-label">Step 4</span> 新建 <code>s5p6818-gec6818-rev01.dts</code>，修正 model/compatible 字段，修改 U-Boot DTB 加载配置
       </div>
 
-      <p><strong>❖ 修复与验证</strong></p>
+      <p><strong>修复与验证</strong></p>
       <p>
         新建专属 DTS 文件后，通过 <code>/proc/device-tree/</code> 验证系统正确识别为 GEC6818：
       </p>
 
       <div class="code-block">
-<span class="comment">// 修复后验证</span>
-<span class="prompt">#</span> cat /proc/device-tree/model
-GEC6818 based on S5P6818<br>
-<span class="prompt">#</span> cat /proc/device-tree/compatible
-samsung,gec6818,samsung,s5p6818</div>
+        <span class="comment">// 修复后验证</span>
+        <span class="prompt">#</span> cat /proc/device-tree/model
+        GEC6818 based on S5P6818<br>
+        <span class="prompt">#</span> cat /proc/device-tree/compatible
+        samsung,gec6818,samsung,s5p6818
+      </div>
 
-      <h3>难点二：PMU AXP228 板级供电适配 — 供电架构也是板级资源</h3>
+      <h3>难点二：PMU AXP228 板级供电适配 &mdash; 供电架构也是板级资源</h3>
 
-      <p><strong>❖ 背景</strong></p>
+      <p><strong>背景</strong></p>
       <p>
         参考 BSP 的电源管理描述针对的是参考板，不是 GEC6818。通过查阅原理图，我确认 GEC6818 实际使用的 PMU 是 <strong>AXP228</strong>，它负责多路电压轨输出（3P3_SYS、1P1_ARM、1P5_SYS、1P5_DDR、VCC_RTC 等），并通过 I2C、IRQ、PWRON、PWROK 与 MCU 交互，参与开机、复位和状态管理。
       </p>
 
-      <p><strong>❖ 适配内容</strong></p>
-      <p>
-        我将设备树中 PMU 相关配置从参考板的描述改为匹配 AXP228 的方式，包括：
-      </p>
-
+      <p><strong>适配内容</strong></p>
       <div class="debug-flow">
         <span class="step-label">I2C</span> 确认 AXP228 挂载的 I2C 总线及设备地址，修正 reg 和 compatible 字段<br>
         <span class="step-label">IRQ</span> 根据原理图确认 IRQ 引脚连接，修正中断配置<br>
         <span class="step-label">电源轨</span> 按板级实际供电结构描述 regulator 节点，匹配 3P3_SYS / 1P1_ARM / 1P5_SYS / 1P5_DDR / VCC_RTC 等电压域
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 20px; margin: 24px 0;">
-        <div style="flex: 1; min-width: 280px;">
-          <img src="../images/gec6818/原供电采用32芯片.png" alt="原供电采用 STM32 芯片" loading="lazy" style="width: 100%;">
-          <p class="figure-caption">原供电方案：采用 STM32 芯片进行电源管理</p>
-        </div>
-        <div style="flex: 1; min-width: 280px;">
-          <img src="../images/gec6818/gec供电pmuAXP228.png" alt="GEC6818 采用 AXP228 PMU 供电架构" loading="lazy" style="width: 100%;">
-          <p class="figure-caption">适配后：GEC6818 采用 AXP228 PMU 供电架构</p>
-        </div>
-      </div>
+      <h3>难点三：LCD RGB 显示链路适配 &mdash; 从 LVDS 到 RGB 的跨协议切换</h3>
 
-      <p><strong>❖ 认知收获</strong></p>
+      <p><strong>现象</strong></p>
       <p>
-        AXP228 这类 PMU 不只是供电芯片，它还参与开机、复位和状态管理，在系统移植里是很关键的板级资源。这个适配让我理解到，<strong>系统移植中不仅是外设接口需要适配，供电架构同样属于板级适配的核心内容</strong>——如果供电描述与实际硬件不一致，后续所有外设的稳定性都缺乏基础。
+        参考 BSP 的显示链路配置为 LVDS / 1024&times;600，与 GEC6818 上的 AT070TN92 RGB 800&times;480 屏幕完全不兼容。直接使用参考 DTS 启动后屏幕无任何显示。
       </p>
 
-      <h3>难点三：LCD RGB 显示链路适配 — 从 LVDS 到 RGB 的跨协议切换</h3>
-
-      <p><strong>❖ 现象</strong></p>
+      <p><strong>排查过程</strong></p>
       <p>
-        参考 BSP 的显示链路配置为 LVDS / 1024×600，与 GEC6818 上的 AT070TN92 RGB 800×480 屏幕完全不兼容。直接使用参考 DTS 启动后屏幕无任何显示。
-      </p>
-
-      <p><strong>❖ 排查过程</strong></p>
-      <p>
-        两块板子虽然使用同一颗 S5P6818 SoC，但 LCD 接口类型（LVDS vs RGB）、分辨率（1024×600 vs 800×480）、面板时序参数均不同。需要从显示控制器（DP）的输出模式开始，一路排查到背光 PWM 引脚。
+        两块板子虽然使用同一颗 S5P6818 SoC，但 LCD 接口类型（LVDS vs RGB）、分辨率、面板时序参数均不同。需要从显示控制器（DP）的输出模式开始，一路排查到背光 PWM 引脚。
       </p>
 
       <div class="debug-flow">
-        <span class="step-label">Step 1</span> 定位参考 DTS 中的显示节点
-        <span class="step-arrow">→</span> <code>dp_drm_lvds</code> 与 GEC6818 硬件不匹配<br>
-        <span class="step-label">Step 2</span> 切换显示输出模式
-        <span class="step-arrow">→</span> <code>dp_drm_lvds</code> → <code>dp_drm_rgb</code><br>
+        <span class="step-label">Step 1</span> 定位参考 DTS 中的显示节点 <span class="step-arrow">&rarr;</span> <code>dp_drm_lvds</code> 与 GEC6818 硬件不匹配<br>
+        <span class="step-label">Step 2</span> 切换显示输出模式 <span class="step-arrow">&rarr;</span> <code>dp_drm_lvds</code> &rarr; <code>dp_drm_rgb</code><br>
         <span class="step-label">Step 3</span> 在 <code>panel-friendlyelec.c</code> 中添加 AT070TN92 面板时序参数<br>
         <span class="step-label">Step 4</span> 恢复 RGB pinctrl 配置，添加 LCD_EN GPIO 和 PWM 背光节点
       </div>
 
-      <p><strong>❖ 修复与验证</strong></p>
-      <p>修改后 LCD 屏幕正常点亮，显示效果见页面顶部实物图。</p>
+      <h3>难点四：FT5206 触摸 probe 失败 &mdash; I2C 设备树的引脚级排查</h3>
 
-      <div class="info-block">
-        <strong>关键修改：</strong>
-        <ul>
-          <li><code>dp_drm_lvds</code> → <code>dp_drm_rgb</code></li>
-          <li>在 <code>panel-friendlyelec.c</code> 中添加 AT070TN92 面板参数</li>
-          <li>恢复 RGB pinctrl 配置</li>
-          <li>添加 LCD_EN GPIO 和 PWM 背光控制</li>
-        </ul>
-      </div>
-
-      <h3>难点四：FT5206 触摸 probe 失败 — I2C 设备树的引脚级排查</h3>
-
-      <p><strong>❖ 现象</strong></p>
+      <p><strong>现象</strong></p>
       <p>
         Kernel 启动后 FT5206 触摸驱动未能成功 probe，触摸屏无响应。原设备树中的触摸路径为 <code>i2c_2 + GPIOC16 + one-wire</code>，而 GEC6818 实际使用的触摸芯片和引脚完全不同。
       </p>
 
-      <p><strong>❖ 排查过程</strong></p>
-      <p>
-        我在用户空间用四条命令逐层确认硬件-驱动-系统的连通性：
-      </p>
+      <p><strong>排查过程</strong></p>
+      <p>我在用户空间用四条命令逐层确认硬件-驱动-系统的连通性：</p>
 
       <div class="debug-flow">
-        <span class="step-label">Layer 1</span> <code>i2cdetect -y 1</code>
-        <span class="step-arrow">→</span> 扫描 I2C bus，确认设备地址 <strong>0x38</strong> 存在<br>
-        <span class="step-label">Layer 2</span> <code>dmesg | grep ft5206</code>
-        <span class="step-arrow">→</span> 查看驱动 probe 日志，定位失败原因<br>
-        <span class="step-label">Layer 3</span> <code>cat /proc/bus/input/devices</code>
-        <span class="step-arrow">→</span> 确认 input 设备是否正确注册<br>
-        <span class="step-label">Layer 4</span> <code>hexdump /dev/input/event1</code>
-        <span class="step-arrow">→</span> 触摸屏幕，验证事件流数据
+        <span class="step-label">Layer 1</span> <code>i2cdetect -y 1</code> <span class="step-arrow">&rarr;</span> 扫描 I2C bus，确认设备地址 <strong>0x38</strong> 存在<br>
+        <span class="step-label">Layer 2</span> <code>dmesg | grep ft5206</code> <span class="step-arrow">&rarr;</span> 查看驱动 probe 日志，定位失败原因<br>
+        <span class="step-label">Layer 3</span> <code>cat /proc/bus/input/devices</code> <span class="step-arrow">&rarr;</span> 确认 input 设备是否正确注册<br>
+        <span class="step-label">Layer 4</span> <code>hexdump /dev/input/event1</code> <span class="step-arrow">&rarr;</span> 触摸屏幕，验证事件流数据
       </div>
 
-      <p><strong>❖ 修复</strong></p>
+      <p><strong>修复</strong></p>
       <p>
         将设备树中的触摸节点修正为 GEC6818 实际硬件配置：
         <code>i2c_1 + GPIOB26（INT）+ GPIOB8（WAKE）+ FT5206</code>。
       </p>
 
-      <div class="code-block">
-<span class="comment">// hexdump 验证触摸事件流</span>
-<span class="prompt">#</span> hexdump /dev/input/event1
-0000000 <span class="number">00b4</span> <span class="number">0000</span> <span class="number">5f05</span> <span class="number">0005</span> <span class="number">0003</span> <span class="number">0000</span> <span class="number">01a8</span> <span class="number">0000</span>
-0000010 <span class="number">00b4</span> <span class="number">0000</span> <span class="number">5f05</span> <span class="number">0005</span> <span class="number">0003</span> <span class="number">0001</span> <span class="number">0106</span> <span class="number">0000</span></div>
+      <h3>难点五：eMMC eFlasher 烧录链路与启动介质切换</h3>
+
+      <p>
+        早期系统依赖 SD 卡启动，但真正可用的系统不能只停留在 SD 验证阶段。需要把系统写入板载 eMMC，并让板子脱离 SD 卡独立启动。
+      </p>
+      <p>
+        我制作了 SD eFlasher 烧录卡，替换 GEC6818 专用 U-Boot，调整烧录配置。烧录后通过 <code>lsblk</code> 确认 eMMC 分区结构。在 SD 启动环境下通常 <code>/dev/mmcblk0</code> 是 SD、<code>/dev/mmcblk1</code> 是 eMMC，但仍必须以实际 <code>lsblk</code> 输出为准。这个过程体现我对启动介质、分区布局、烧录流程和风险控制的理解。
+      </p>
+
+      <h3>难点六：eMMC BL1 启动通道 patch 与 Ubuntu 20.04 rootfs 集成</h3>
+
+      <p>
+        eMMC 不是简单写入文件就能启动，还涉及低级启动链路。BL1 中存在启动通道字段，GEC6818 eMMC 启动需要将对应字段修正为 eMMC boot 通道。完成 BL1 patch 后，U-Boot 才能进入 <code>EMMC BOOT</code> 路径。
+      </p>
+      <p>
+        随后还需要写入 GEC6818 Kernel Image、<code>s5p6818-gec6818-rev01.dtb</code> 和 Ubuntu 20.04 rootfs。最终串口出现 <code>Ubuntu 20.04.6 LTS</code> 和 <code>WC-gec6818 login:</code>，说明 rootfs 已经完成启动。这个难点体现我不只是会改 DTS，还能把 bootloader、Kernel、DTB、rootfs、分区和启动介质整合成完整系统。
+      </p>
+
+      <h3>难点七：Mali GPU 用户态驱动栈补全</h3>
+
+      <p><strong>背景</strong></p>
+      <p>
+        此前系统内核侧已经能够成功加载 Mali 驱动，<code>/dev/mali</code> 设备节点存在，Mali-400 MP4 r1p1 驱动 probe 成功。但应用程序（Qt EGLFS、OpenGL ES）仍然无法调用 GPU，因为 GPU 驱动栈由两层构成：
+      </p>
+
+      <div class="debug-flow">
+        <span class="step-label">内核层</span> mali kernel driver &rarr; 已就绪，<code>/dev/mali</code> 存在<br>
+        <span class="step-label">用户层</span> libMali.so / libEGL.so / libGLESv2.so &rarr; <strong>缺失</strong>
+      </div>
+
+      <p><strong>排查与修复</strong></p>
+      <p>
+        问题在于 Ubuntu 20.04 rootfs 中缺少 Mali 用户态图形库。应用程序不直接操作 <code>/dev/mali</code>，而是通过 EGL / OpenGL ES 用户态库调用 GPU。即使内核驱动正常，没有 <code>libMali.so</code>，Qt 和 GLES 程序仍然无法使用 GPU。
+      </p>
+      <p>
+        我从 FriendlyCore Ubuntu16 rootfs（Android sparse image）中提取 ARM64 Mali 用户态库，经过格式转换（<code>simg2img</code>）、挂载提取、ELF 架构验证，确认 <code>libmali-fb.so</code> 为 ELF64 AArch64 动态库，与 Ubuntu 20.04 ARM64 系统兼容，并建立了完整的 EGL / GLES / GBM 链接方案。
+      </p>
+
+      <!-- ====== 应用验证与 AI 辅助开发 ====== -->
+      <h2>应用验证与 AI 辅助开发</h2>
+      <p>
+        系统启动完成后，我在 Ubuntu 20.04 上开发了简单的系统监控和任务管理应用，验证系统调用、显示框架和输入子系统的可用性。
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 24px;">
+        <div style="flex: 1; min-width: 280px;">
+          <img src="../images/gec6818/system-monitor-app.jpg" alt="CPU/内存/硬盘占用监控应用" loading="lazy" style="width: 100%; border-radius: 6px;">
+          <p class="figure-caption">CPU / 内存 / 存储占用监控应用</p>
+        </div>
+        <div style="flex: 1; min-width: 280px;">
+          <img src="../images/gec6818/task-manager-app.jpg" alt="任务管理器应用" loading="lazy" style="width: 100%; border-radius: 6px;">
+          <p class="figure-caption">任务管理器应用</p>
+        </div>
+      </div>
+
+      <p>
+        在开发过程中，我还搭建了一套 <strong>Claude Code + Deepseek</strong> 的 AI 辅助测试环境，用于自动化编译验证、内核启动日志分析和回归测试。这套流程帮助我在频繁的交叉编译和烧录验证中减少了重复劳动，也让我能在调试链路中更快定位问题。
+      </p>
+
+      <img src="../images/gec6818/claude-deepseek-testing.jpg" alt="部署 Claude Code + Deepseek 进行自动化测试" loading="lazy" style="max-width:85%;">
+      <p class="figure-caption">部署 Claude Code 接入 Deepseek 进行编译验证与回归测试</p>
 
       <!-- ====== 最终成果 ====== -->
       <h2>最终成果</h2>
       <div class="result-grid">
-        <div class="result-item"><span class="status">✅</span> ARM64 Linux 系统成功启动，SD 卡引导正常</div>
-        <div class="result-item"><span class="status">✅</span> GEC6818 专属 DTS/DTB 加载正常</div>
-        <div class="result-item"><span class="status">✅</span> PMU AXP228 供电描述与板级硬件一致</div>
-        <div class="result-item"><span class="status">✅</span> LCD RGB 800×480 显示正常</div>
-        <div class="result-item"><span class="status">✅</span> PWM 背光控制正常</div>
-        <div class="result-item"><span class="status">✅</span> FT5206 电容触摸可用</div>
-        <div class="result-item"><span class="status">✅</span> 网口 PHY 地址修正，MAC-PHY 拓扑正确</div>
-        <div class="result-item"><span class="status">✅</span> 声卡 codec 设备树首轮适配完成</div>
-        <div class="result-item"><span class="status">✅</span> I2C 传感器读取正常</div>
-        <div class="result-item"><span class="status">✅</span> Git tag / Release 记录阶段成果</div>
+        <div class="result-item"><span class="status">&#10003;</span> ARM64 Linux 系统启动方向验证完成</div>
+        <div class="result-item"><span class="status">&#10003;</span> FriendlyCore ARM64 SD 启动成功</div>
+        <div class="result-item"><span class="status">&#10003;</span> GEC6818 专属 DTS / DTB 加载正常</div>
+        <div class="result-item"><span class="status">&#10003;</span> PMU AXP228 供电描述与板级硬件一致</div>
+        <div class="result-item"><span class="status">&#10003;</span> RGB LCD / AT070TN92 / 800&times;480 显示正常</div>
+        <div class="result-item"><span class="status">&#10003;</span> FT5206 电容触摸可用</div>
+        <div class="result-item"><span class="status">&#10003;</span> ALC5621 声卡最小验证与阶段优化完成</div>
+        <div class="result-item"><span class="status">&#10003;</span> GPIO / LED / KEY / PWM 蜂鸣器基础外设整理完成</div>
+        <div class="result-item"><span class="status">&#10003;</span> 网口 PHY 地址修正，MAC-PHY 拓扑正确</div>
+        <div class="result-item"><span class="status">&#10003;</span> SD eFlasher 自动烧录 eMMC 流程打通</div>
+        <div class="result-item"><span class="status">&#10003;</span> eMMC BL1 启动通道 patch 完成</div>
+        <div class="result-item"><span class="status">&#10003;</span> Kernel Image / GEC6818 DTB 写入 eMMC boot 分区</div>
+        <div class="result-item"><span class="status">&#10003;</span> Ubuntu 20.04 rootfs 写入 eMMC</div>
+        <div class="result-item"><span class="status">&#10003;</span> 拔掉 SD 卡后，eMMC 独立启动 Ubuntu 20.04</div>
+        <div class="result-item"><span class="status">&#10003;</span> Mali GPU 用户态驱动补全（libMali.so / EGL / GLES 链接方案）</div>
+        <div class="result-item"><span class="status">&#10003;</span> ADC NTC / IrDA / G-Sensor / EEPROM 等 DTS 节点新增</div>
+        <div class="result-item"><span class="status">&#10003;</span> Git tag / Release 记录完整阶段成果</div>
       </div>
 
       <!-- ====== 项目复盘 ====== -->
       <h2>项目复盘</h2>
       <p>
         做完这个项目后，我对设备树的理解发生了根本变化：<strong>驱动能否 probe，不再只是驱动代码的问题，更是硬件描述是否准确的问题</strong>。
-        compatible、reg、interrupt、pinctrl、gpio——只要有一个字段与板卡实际情况不符，驱动就找不到设备。这不是"代码写错了"，而是"描述写错了"。
-        触摸和 PMU 的适配过程尤其印证了这一点：很多驱动起不来不是驱动代码本身有问题，而是设备树没有把硬件描述对。
+        compatible、reg、interrupt、pinctrl、gpio&mdash;&mdash;只要有一个字段与板卡实际情况不符，驱动就找不到设备。这不是"代码写错了"，而是"描述写错了"。
+        触摸和 PMU 的适配过程尤其印证了这一点。
       </p>
       <p>
-        同时，我建立了一套可复用的 bring-up 排查流程：
-        <strong>U-Boot 阶段 → Kernel early log → machine model → driver probe → /proc 和 /sys 运行状态</strong>。
-        这个顺序不是拍脑袋想的——每一步对应一个可能的"断点"，按链路排查能最快定位问题。
+        通过后续 eMMC 和 Ubuntu 20.04 rootfs 集成，我进一步意识到，嵌入式 Linux 移植不是单点驱动调通，而是一个完整系统工程。只有当 U-Boot、Kernel Image、DTB、rootfs、分区布局、启动介质和烧录流程全部匹配，系统才算真正具备可复刻和可交付价值。
       </p>
       <p>
-        参考 BSP 的价值在于它验证了 SoC 级别的配置是可行的，但不能假设它正确描述了外设——<strong>相同的 SoC，不同的板卡，外设引脚、I2C 地址、显示链路、PMU 型号都可能不一样</strong>，每个差异点都要逐项验证。
-        PMU 适配更是让我认识到，板级适配不仅包括外设接口，<strong>供电架构同样属于系统移植的核心内容</strong>。
+        GPU 用户态驱动的修复则让我对驱动栈的分层有了更具体的认识：内核驱动就绪不等于整个子系统可用，用户态库同样是驱动栈的关键组成部分。
+      </p>
+      <p>
+        回顾全程，我的能力经历了几个层次的升级：从<strong>"单个外设 bring-up"</strong>升级到<strong>"完整启动链路闭环"</strong>，从<strong>"能跑起来"</strong>升级到<strong>"能自动烧录、能写入 eMMC、能独立启动"</strong>，从<strong>"调试某个驱动"</strong>升级到<strong>"组织一个可验证、可复刻、按 Release 演进的系统移植项目"</strong>。这体现了嵌入式 Linux 系统工程意识的逐步建立。
       </p>
 
       <!-- ====== GitHub 入口 ====== -->
@@ -409,7 +573,7 @@ samsung,gec6818,samsung,s5p6818</div>
         <a href="mailto:2590752572@qq.com">Email</a>
         <a href="../resume.pdf" download>Resume</a>
       </div>
-      <p class="footer-copy">© 2026 Feng Weicheng · Embedded Portfolio</p>
+      <p class="footer-copy">&copy; 2026 Feng Weicheng &middot; Embedded Portfolio</p>
     </div>
   </footer>
 
