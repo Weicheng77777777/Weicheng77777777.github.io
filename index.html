@@ -55,14 +55,14 @@
 
       <!-- ====== 项目卡片 ====== -->
       <div id="projects">
-        <h2 class="section-title">已部署项目 (6)</h2>
+        <h2 class="section-title">已部署项目 (7)</h2>
       </div>
       <div class="projects-grid">
         <!-- 项目 1: GEC6818 -->
         <div class="card">
-          <div class="card-tag">ARM64 · Linux BSP</div>
-          <h3>GEC6818 ARM64 Linux 系统移植</h3>
-          <p>基于 S5P6818 Cortex-A53 进行 ARM64 Linux bring-up，完成 U-Boot、Kernel、DTS/DTB、LCD RGB、FT5206 触摸和 I2C 板级适配。</p>
+          <div class="card-tag">ARM64 · Linux BSP · OTA</div>
+          <h3>GEC6818 ARM64 Linux 系统移植 + 局域网 OTA 升级</h3>
+          <p>基于 S5P6818 Cortex-A53 完成 ARM64 Linux 完整移植链路，并独立实现局域网 OTA 固件升级：Windows HTTP 服务器提供固件，开发板通过局域网下载、sha256 校验、p3 备份、p1 写入、重启生效，替代传统重新烧录。</p>
           <div class="card-tech">
             <span>ARM64</span>
             <span>S5P6818</span>
@@ -71,11 +71,32 @@
             <span>DTS/DTB</span>
             <span>LCD RGB</span>
             <span>I2C</span>
+            <span>OTA</span>
+            <span>sha256</span>
+            <span>AB分区</span>
           </div>
           <a href="projects/gec6818.html" class="card-link">查看详情 →</a>
         </div>
 
-        <!-- 项目 2: STM32F411 -->
+        <!-- 项目 2: GEC6818 OTA -->
+        <div class="card">
+          <div class="card-tag">OTA · 局域网固件升级</div>
+          <h3>GEC6818 OTA 局域网固件升级系统</h3>
+          <p>在局域网环境下独立实现嵌入式 OTA 最小可用闭环：开发板通过 HTTP 从 Windows PC 下载新固件，sha256 校验后自动备份旧固件到 userdata、写入 boot 分区、重启生效，替代传统重新烧录。了解内网穿透/公网服务器等远程扩展方案。</p>
+          <div class="card-tech">
+            <span>OTA</span>
+            <span>HTTP</span>
+            <span>sha256</span>
+            <span>Shell</span>
+            <span>Boot分区</span>
+            <span>备份恢复</span>
+            <span>AB分区</span>
+            <span>bootcount</span>
+          </div>
+          <a href="projects/gec6818.html#ota" class="card-link">查看详情 →</a>
+        </div>
+
+        <!-- 项目 3: STM32F411 -->
         <div class="card">
           <div class="card-tag">STM32 · IoT · 智能家居</div>
           <h3>STM32F411 智能家居环境监测系统</h3>
@@ -92,7 +113,7 @@
           <a href="projects/stm32f411.html" class="card-link">查看详情 →</a>
         </div>
 
-        <!-- 项目 3: LoRa 小车 -->
+        <!-- 项目 4: LoRa 小车 -->
         <div class="card">
           <div class="card-tag">STM32 · LoRa · 无线通信</div>
           <h3>LoRa 遥控坦克小车系统</h3>
@@ -109,7 +130,7 @@
           <a href="projects/lora-car.html" class="card-link">查看详情 →</a>
         </div>
 
-        <!-- 项目 4: 小游戏机 -->
+        <!-- 项目 5: 小游戏机 -->
         <div class="card">
           <div class="card-tag">PCB · 硬件设计</div>
           <h3>STM32 小游戏机控制板</h3>

@@ -555,6 +555,132 @@
         回顾全程，我的能力经历了几个层次的升级：从<strong>"单个外设 bring-up"</strong>升级到<strong>"完整启动链路闭环"</strong>，从<strong>"能跑起来"</strong>升级到<strong>"能自动烧录、能写入 eMMC、能独立启动"</strong>，从<strong>"调试某个驱动"</strong>升级到<strong>"组织一个可验证、可复刻、按 Release 演进的系统移植项目"</strong>。这体现了嵌入式 Linux 系统工程意识的逐步建立。
       </p>
 
+      <!-- ====== OTA 固件局域网升级 ====== -->
+      <span id="ota"></span>
+      <h2>OTA 固件局域网升级 &middot; LAN Over-The-Air Update</h2>
+      <p>
+        系统移植完成后，一个实际问题浮出水面：<strong>每次升级都要重新烧录</strong>&mdash;&mdash;插 SD 卡、拉镜像、写 eMMC、插拔卡、重启。如果只是修一个 DTB 参数或换一个内核选项，这套流程要走十几分钟，而且一旦量产的设备部署出去，根本不可能派人去现场烧录。
+      </p>
+      <p>
+        于是我独立启动了 <strong>OTA_Learn</strong> 项目。当前阶段在<strong>局域网环境</strong>下跑通最小可用 OTA 流程：开发板通过局域网从 Windows PC 的 HTTP 服务器下载新固件，自动校验、备份、写入 boot 分区，重启后生效。传统"重新烧录"升级方式被替换为"联网下载新固件和脚本实现升级"。
+      </p>
+      <p>
+        后续如需实现公网远程升级，可以通过内网穿透（如 frp/ngrok）或购买公网服务器部署固件服务来扩展，当前阶段先聚焦局域网 OTA 流程本身的完整性。
+      </p>
+      <p>
+        OTA_Learn 作为独立仓库记录了这一过程的完整实验日志与踩坑记录：
+        <a href="https://github.com/Weicheng77777777/OTA_Learn" target="_blank" style="color:var(--terminal-green);">github.com/Weicheng77777777/OTA_Learn</a>
+      </p>
+
+      <p style="margin-bottom:4px;color:var(--text-secondary);font-size:0.82rem;">局域网 OTA 升级流程</p>
+      <div class="arch-flow">
+        <span class="arch-node">Windows PC<br>HTTP 服务器</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">wget 下载<br>manifest + sha256</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">下载 Image<br>+ DTB</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node kernel">sha256sum<br>完整性校验</span>
+        <span class="arch-break"></span>
+        <span class="arch-node">旧固件备份<br>到 p3 userdata</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node">新固件写入<br>p1 boot 分区</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node target">sync<br>+ reboot</span>
+      </div>
+
+      <!-- ====== Stage 1 关键设计 ====== -->
+      <h3>Stage 1：最小可用 OTA 闭环</h3>
+      <p>
+        Stage 1 的目标不是实现完整商用 OTA，而是先跑通最小可用流程。当前阶段只升级 <code>Image</code> 和 <code>s5p6818-gec6818-rev01.dtb</code>，不升级 ramdisk 和 rootfs&mdash;&mdash;因为后两者影响早期启动链路，风险更高。
+      </p>
+
+      <p><strong>eMMC 分区布局</strong></p>
+      <table class="hl-table">
+        <thead>
+          <tr><th>分区</th><th>作用</th><th>OTA 角色</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/dev/mmcblk0p1</code></td><td>boot 分区</td><td>存放 Image、ramdisk.img、DTB，OTA 写入目标</td></tr>
+          <tr><td><code>/dev/mmcblk0p2</code></td><td>rootfs lowerdir</td><td>基础系统，暂不更新</td></tr>
+          <tr><td><code>/dev/mmcblk0p3</code></td><td>userdata</td><td>存放 overlay 和 OTA 备份</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>关键设计决策</strong></p>
+      <div class="debug-flow">
+        <span class="step-label">备份策略</span> 旧文件备份到 p3 userdata，<strong>不备份到 p1</strong> <span class="step-arrow">&rarr;</span> boot 分区仅 64MB，防止空间爆掉<br>
+        <span class="step-label">写时保护</span> 先写 <code>Image.new</code>，sync 后再 <code>mv Image.new Image</code> <span class="step-arrow">&rarr;</span> 避免写到一半断电导致 p1 损坏<br>
+        <span class="step-label">双重校验</span> 下载后先 <code>sha256sum -c</code> 校验，写入后再校验一次 <span class="step-arrow">&rarr;</span> 保证固件完整<br>
+        <span class="step-label">SSH 修复</span> OTA 后自动创建 <code>/var/run/sshd</code> + 配置 tmpfiles <span class="step-arrow">&rarr;</span> 修复首次 OTA 后 SSH 连不上的问题
+      </div>
+
+      <p><strong>实际执行输出</strong></p>
+      <div class="code-block">
+        <span class="comment"># /usr/sbin/ota_stage1_update.sh http://192.168.88.1:8000</span><br>
+        [OTA-STAGE1] Base URL: http://192.168.88.1:8000<br>
+        [OTA-STAGE1] Version: 2026.06.08-stage1<br>
+        [OTA-STAGE1] Board: WC-gec6818<br>
+        [OTA-STAGE1] sha256 OK<br>
+        [OTA-STAGE1] Old Image backed up to: /mnt/ota-data/ota-backup/boot/20260608-115046/Image<br>
+        [OTA-STAGE1] Old DTB backed up to: .../s5p6818-gec6818-rev01.dtb<br>
+        [OTA-STAGE1] Image updated<br>
+        [OTA-STAGE1] DTB updated<br>
+        [OTA-STAGE1] OTA Stage 1 finished successfully
+      </div>
+
+      <p><strong>Stage 1 成果</strong></p>
+      <div class="result-grid">
+        <div class="result-item"><span class="status">&#10003;</span> Windows HTTP 固件服务器搭建</div>
+        <div class="result-item"><span class="status">&#10003;</span> manifest.txt 版本管理</div>
+        <div class="result-item"><span class="status">&#10003;</span> sha256sum 双重完整性校验</div>
+        <div class="result-item"><span class="status">&#10003;</span> 自动备份旧固件到 p3 userdata</div>
+        <div class="result-item"><span class="status">&#10003;</span> Image / DTB 写入 p1 boot 分区</div>
+        <div class="result-item"><span class="status">&#10003;</span> p1 分区 resize2fs 扩容</div>
+        <div class="result-item"><span class="status">&#10003;</span> SSH 运行时目录自动修复</div>
+        <div class="result-item"><span class="status">&#10003;</span> 重启后 hash 一致性验证</div>
+        <div class="result-item"><span class="status">&#10003;</span> HTTP 断连后 sha256 拒写保护</div>
+      </div>
+
+      <!-- ====== AB 分区 OTA 计划 ====== -->
+      <h3>进阶计划：AB 分区 OTA</h3>
+      <p>
+        Stage 1 实现了"能升级"，但升级过程中如果断电、写坏、重启失败，设备将无法回退。<strong>AB 分区方案是解决这个问题的标准工业做法</strong>。
+      </p>
+
+      <div class="arch-flow">
+        <span class="arch-node">Slot A<br><span style="font-size:0.7rem;color:var(--terminal-green);">active</span></span>
+        <span class="arch-arrow">&larr;&rarr;</span>
+        <span class="arch-node">U-Boot<br>active_slot</span>
+        <span class="arch-arrow">&larr;&rarr;</span>
+        <span class="arch-node">Slot B<br><span style="font-size:0.7rem;color:var(--text-muted);">standby</span></span>
+        <span class="arch-break"></span>
+        <span class="arch-node kernel">bootcount<br>自动回滚</span>
+        <span class="arch-arrow">&rarr;</span>
+        <span class="arch-node target">OTA 失败 &rarr; 切回旧槽</span>
+      </div>
+
+      <p>后续计划分为两个阶段推进：</p>
+
+      <div class="debug-flow">
+        <span class="step-label">Stage 2A</span> U-Boot 添加 <code>active_slot</code> 环境变量 <span class="step-arrow">&rarr;</span> 根据 active_slot 加载对应分区的 Kernel/DTB<br>
+        <span class="step-label">Stage 2B</span> Kernel 侧添加 <code>bootcount</code> 机制 <span class="step-arrow">&rarr;</span> 启动失败自动递减，归零后切换 active_slot 回滚<br>
+        <span class="step-label">Stage 3A</span> ramdisk 分区 A/B 化 <span class="step-arrow">&rarr;</span> 支持 ramdisk 级别回滚<br>
+        <span class="step-label">Stage 3B</span> rootfs A/B 或 overlay 增量升级 <span class="step-arrow">&rarr;</span> 完整系统级 OTA
+      </div>
+
+      <p>
+        AB 分区的核心价值在于：<strong>升级过程中断电或写坏，不会导致设备变砖</strong>。未激活槽始终保留上一次可用系统，U-Boot 通过 bootcount 检测启动失败后自动切换回旧槽。这套方案在量产设备中广泛应用，也是我下一阶段的重点学习方向。
+      </p>
+
+      <div class="info-block yellow" style="margin-top: 24px;">
+        <strong>OTA 相关仓库：</strong><br>
+        <a href="https://github.com/Weicheng77777777/OTA_Learn" target="_blank" style="color:var(--terminal-green);">
+          github.com/Weicheng77777777/OTA_Learn
+        </a>
+        &nbsp;— 记录 OTA 实验全流程、脚本、踩坑和后续 AB 分区计划
+      </div>
+
       <!-- ====== GitHub 入口 ====== -->
       <div class="info-block green" style="margin-top: 32px;">
         <strong>完整源码、Release 版本和详细调试记录见 GitHub 仓库：</strong><br>

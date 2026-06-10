@@ -29,3 +29,9 @@ node_modules/
 # 临时文件
 *.tmp
 *.bak
+
+# 隐私 / 不需要提交到 GitHub 的文件
+最后一轮交流对话.md
+详细资料截图等/
+.claude/
+*.local.md
